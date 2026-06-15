@@ -6,11 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="yames.css">
     <script src="yames.js" defer></script>
-    <title>yame</title>
+    <title>Catalogue - Yames</title>
 </head>
 
 <body>
-
     <nav>
         <div class="nav-left">
             <a href="index.html">
@@ -30,22 +29,68 @@
                 <button type="submit">🔍</button>
             </form>
 
-            <a href="panier.html">Panier</a>
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
         </div>
     </nav>
+
+
     <main>
-        yhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+        <section class="catalogue-page">
+            <h1>Notre catalogue</h1>
+
+            <div class="catalogue-layout">
+
+                <aside class="filters">
+                    <h2>Filtres</h2>
+
+                    <div class="filter-group">
+                        <h3>Catégorie</h3>
+                        <label><input type="checkbox" class="filter-categorie" value="tensiometre"> Tensiomètres</label>
+                        <label><input type="checkbox" class="filter-categorie" value="thermometre"> Thermomètres</label>
+                        <label><input type="checkbox" class="filter-categorie" value="clinique"> Équipement
+                            clinique</label>
+                        <label><input type="checkbox" class="filter-categorie" value="consommable"> Consommables</label>
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>Prix (FCFA)</h3>
+                        <label>Min : <input type="number" id="prix-min" placeholder="0" min="0"></label>
+                        <label>Max : <input type="number" id="prix-max" placeholder="300000" min="0"></label>
+                    </div>
+
+                    <div class="filter-group">
+                        <h3>Trier par</h3>
+                        <select id="tri-select">
+                            <option value="defaut">Par défaut</option>
+                            <option value="prix-asc">Prix croissant</option>
+                            <option value="prix-desc">Prix décroissant</option>
+                            <option value="nom-asc">Nom (A-Z)</option>
+                        </select>
+                    </div>
+
+                    <button id="reset-filtres" class="btn-reset">Réinitialiser</button>
+                </aside>
+
+                <div class="product-grid" id="product-container">
+
+                </div>
+
+            </div>
+        </section>
+
     </main>
-
-
 
     <footer>
         <div class="footer-socials">
-            <a href="">facebook</a>
-            <a href="">tiktok</a>
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
+            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
         </div>
         <p>&copy; 2026 Yames. Tous droits réservés.</p>
     </footer>
+
 </body>
 
 </html>

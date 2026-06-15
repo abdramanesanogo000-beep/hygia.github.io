@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="yames.css">
     <script src="yames.js" defer></script>
-    <title>yame</title>
+    <title>Connexion - Yames</title>
 </head>
 
 <body>
@@ -30,53 +30,36 @@
             </form>
 
             <a href="connexion.html" class="nav-compte-link">Connexion</a>
-
             <a href="panier.html">Panier <span id="cart-count">0</span></a>
         </div>
     </nav>
 
     <main>
 
-        <section class="hero">
-            <header>
-                <h1>Matériel médical de qualité au Mali</h1>
-            </header>
-            <p>Mieux équiper — Plus sauver</p>
-            <div>
-                <a href="catalogue.html">Voir le catalogue</a>
+        <section class="auth-page">
+            <div class="auth-box">
+                <h1>Connexion</h1>
+                <p class="auth-subtitle">Connectez-vous pour suivre vos commandes et accéder à votre historique.</p>
+
+                <div id="auth-message" class="auth-message"></div>
+
+                <form id="form-connexion" class="auth-form">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Votre email" required>
+
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
+
+                    <button type="submit">Se connecter</button>
+                </form>
+
+                <p class="auth-switch">Pas encore de compte ? <a href="inscription.html">Créer un compte</a></p>
+
+                <p class="auth-note">
+                    ⚠️ Ceci est une version de démonstration : les comptes sont enregistrés uniquement
+                    dans votre navigateur (pas encore connecté à un vrai serveur).
+                </p>
             </div>
-        </section>
-
-        <section class="categories">
-            <h2>Categories</h2>
-
-            <div class="category-list">
-                <div class="category-item">Tensiomètres</div>
-                <div class="category-item">Thermomètres</div>
-                <div class="category-item">Équipement clinique</div>
-                <div class="category-item">Consommables</div>
-            </div>
-        </section>
-
-        <section class="featured-products">
-            <h2>Produits populaires</h2>
-            <div class="product-grid" id="product-container">
-
-            </div>
-        </section>
-
-        <section class="why-us">
-            <h2>Pourquoi choisir Yames ?</h2>
-            <div class="why-list">
-                <div class="why-item">Livraison rapide à Bamako</div>
-                <div class="why-item">Orange / Moov Money</div>
-                <div class="why-item">Devis cliniques</div>
-            </div>
-        </section>
-
-        <section class="whatsapp-cta">
-            <a href="https://web.whatsapp.com/" class="whatsapp-link" target="_blank"
-                rel="noopener noreferrer">WhatsApp</a>
         </section>
 
     </main>

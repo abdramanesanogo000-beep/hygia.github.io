@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="yames.css">
     <script src="yames.js" defer></script>
-    <title>yame</title>
+    <title>Mon compte - Yames</title>
 </head>
 
 <body>
@@ -30,32 +30,51 @@
             </form>
 
             <a href="connexion.html" class="nav-compte-link">Connexion</a>
-
             <a href="panier.html">Panier <span id="cart-count">0</span></a>
         </div>
     </nav>
 
     <main>
-        <div class="bientot-container">
-            <div class="bientot-content">
-                <h1>Bientôt Disponible !</h1>
-                <p>
-                    Commandes en gros pour professionnels de santéPharmacies et cliniques : profitez de tarifs
-                    dégressifs exclusifs et d'une livraison prioritaire sur tout notre matériel médical certifié.
-                </p>
-                <div class="spinner"></div>
+
+        <section class="compte-page">
+
+            <div id="compte-non-connecte" class="auth-box" style="display:none;">
+                <h1>Mon compte</h1>
+                <p class="auth-subtitle">Vous n'êtes pas connecté.</p>
+                <div class="auth-switch-buttons">
+                    <a href="connexion.html" class="btn-add-cart" style="width:auto; display:inline-block;">Se
+                        connecter</a>
+                    <a href="inscription.html" class="btn-continue">Créer un compte</a>
+                </div>
             </div>
-        </div>
+
+            <div id="compte-connecte" style="display:none;">
+                <div class="compte-header">
+                    <div>
+                        <h1 id="compte-nom">Bonjour</h1>
+                        <p id="compte-email" class="auth-subtitle"></p>
+                    </div>
+                    <button id="btn-deconnexion" class="btn-deconnexion">Se déconnecter</button>
+                </div>
+
+                <h2 class="compte-section-title">Historique de mes commandes</h2>
+                <div id="historique-commandes">
+                    <!-- généré par JS -->
+                </div>
+            </div>
+
+        </section>
 
     </main>
 
     <footer>
         <div class="footer-socials">
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
-            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
+            <a href="">facebook</a>
+            <a href="">tiktok</a>
         </div>
         <p>&copy; 2026 Yames. Tous droits réservés.</p>
     </footer>
+
 </body>
 
 </html>

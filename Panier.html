@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="yames.css">
     <script src="yames.js" defer></script>
-    <title>yame</title>
+    <title>Panier - Yames</title>
 </head>
 
 <body>
@@ -29,13 +29,63 @@
                 <button type="submit">🔍</button>
             </form>
 
-            <a href="panier.html">Panier</a>
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
         </div>
     </nav>
+
     <main>
 
-    </main>
+        <section class="panier-page">
+            <h1>Mon panier</h1>
 
+            <div id="panier-container">
+                <!-- les articles du panier seront générés ici par JS -->
+            </div>
+
+            <div class="panier-total" id="panier-total">
+                <span class="total-label">Total :</span>
+                <span class="total-amount" id="total-amount">0 FCFA</span>
+            </div>
+
+            <div class="panier-actions">
+                <a href="catalogue.html" class="btn-continue">Continuer mes achats</a>
+                <button id="btn-paiement" class="btn-paiement">Passer au paiement</button>
+            </div>
+
+            <!-- MODAL DE PAIEMENT -->
+            <div id="modal-paiement" class="modal-overlay">
+                <div class="modal-box">
+                    <button id="close-modal" class="modal-close">✕</button>
+                    <h2>Choisissez votre mode de paiement</h2>
+
+                    <div class="payment-options">
+                        <button class="payment-option" data-method="orange">
+                            <span class="payment-icon">🟠</span>
+                            <span>Orange Money</span>
+                        </button>
+                        <button class="payment-option" data-method="wave">
+                            <span class="payment-icon">🔵</span>
+                            <span>Wave</span>
+                        </button>
+                        <button class="payment-option" data-method="carte">
+                            <span class="payment-icon">💳</span>
+                            <span>Carte bancaire</span>
+                        </button>
+                        <button class="payment-option" data-method="liquide">
+                            <span class="payment-icon">💵</span>
+                            <span>Paiement en liquide (à la livraison)</span>
+                        </button>
+                    </div>
+
+                    <div id="payment-details" class="payment-details"></div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
 
     <footer>
         <div class="footer-socials">
@@ -44,6 +94,7 @@
         </div>
         <p>&copy; 2026 Yames. Tous droits réservés.</p>
     </footer>
+
 </body>
 
 </html>

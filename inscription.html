@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Créer un compte - Yames</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="logo yames.png" alt="logo de yames">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <section class="auth-page">
+            <div class="auth-box">
+                <h1>Créer un compte</h1>
+                <p class="auth-subtitle">Créez votre compte Yames pour suivre vos commandes et gagner du temps lors de
+                    vos prochains achats.</p>
+
+                <div id="auth-message" class="auth-message"></div>
+
+                <form id="form-inscription" class="auth-form">
+                    <label for="nom">Nom complet</label>
+                    <input type="text" id="nom" name="nom" placeholder="Votre nom complet" required>
+
+                    <label for="telephone">Téléphone</label>
+                    <input type="tel" id="telephone" name="telephone" placeholder="+223 ..." required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Votre email" required>
+
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Choisissez un mot de passe"
+                        required minlength="6">
+
+                    <button type="submit">Créer mon compte</button>
+                </form>
+
+                <p class="auth-switch">Vous avez déjà un compte ? <a href="connexion.html">Se connecter</a></p>
+
+                <p class="auth-note">
+                    ⚠️ Ceci est une version de démonstration : les comptes sont enregistrés uniquement
+                    dans votre navigateur (pas encore connecté à un vrai serveur).
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="">facebook</a>
+            <a href="">tiktok</a>
+        </div>
+        <p>&copy; 2026 Yames. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>
