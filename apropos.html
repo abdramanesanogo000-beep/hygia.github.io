@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>À propos — Kality Care</title>
+    <style>
+
+        /* ===== HERO APROPOS ===== */
+        .apropos-hero {
+            background: linear-gradient(135deg, #0C447C 0%, #185FA5 60%, #1a7cc1 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 70px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .apropos-hero::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 250px;
+            height: 250px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+
+        .apropos-hero::after {
+            content: "";
+            position: absolute;
+            bottom: -60px;
+            left: -30px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 50%;
+        }
+
+        .apropos-hero .label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #B5D4F4;
+            margin-bottom: 12px;
+        }
+
+        .apropos-hero h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .apropos-hero p {
+            font-size: 16px;
+            color: #E6F1FB;
+            max-width: 620px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ===== QUI SOMMES-NOUS ===== */
+        .qui-section {
+            padding: 70px 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .qui-texte {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .qui-texte .label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #185FA5;
+            margin-bottom: 10px;
+        }
+
+        .qui-texte h2 {
+            font-size: 28px;
+            color: #0C447C;
+            margin-bottom: 18px;
+            line-height: 1.3;
+        }
+
+        .qui-texte p {
+            color: #555;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+
+        .qui-texte p strong {
+            color: #185FA5;
+        }
+
+        .btn-decouvrir {
+            display: inline-block;
+            background-color: #185FA5;
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-decouvrir:hover {
+            background-color: #0C447C;
+        }
+
+        .qui-image {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .qui-image .img-placeholder {
+            background: linear-gradient(135deg, #E6F1FB 0%, #d0e8f8 100%);
+            border-radius: 12px;
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .qui-image img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        .qui-image .img-icon {
+            font-size: 80px;
+            opacity: 0.3;
+        }
+
+        .qui-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .stat-bloc {
+            background-color: #185FA5;
+            color: #ffffff;
+            border-radius: 8px;
+            padding: 16px 22px;
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .stat-bloc .stat-nb {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        .stat-bloc .stat-txt {
+            font-size: 12px;
+            color: #B5D4F4;
+            margin-top: 3px;
+        }
+
+        /* ===== NOS VALEURS ===== */
+        .valeurs-section {
+            background-color: #f5f5f5;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .valeurs-section .label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #185FA5;
+            margin-bottom: 10px;
+        }
+
+        .valeurs-section h2 {
+            color: #0C447C;
+            font-size: 26px;
+            margin-bottom: 10px;
+        }
+
+        .valeurs-section .sous-titre {
+            color: #777;
+            font-size: 15px;
+            margin-bottom: 40px;
+        }
+
+        .valeurs-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .valeur-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 28px 22px;
+            flex: 1;
+            min-width: 200px;
+            max-width: 240px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: transform 0.15s, box-shadow 0.15s;
+        }
+
+        .valeur-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+        }
+
+        .valeur-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .valeur-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .valeur-card h3 {
+            color: #0C447C;
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+
+        .valeur-card p {
+            color: #777;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ===== POURQUOI NOUS (WHY US) ===== */
+        .why-section {
+            padding: 70px 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .why-section .label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #185FA5;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .why-section h2 {
+            color: #0C447C;
+            font-size: 26px;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .why-section .sous-titre {
+            color: #777;
+            text-align: center;
+            font-size: 15px;
+            margin-bottom: 45px;
+        }
+
+        .why-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .why-card {
+            background-color: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 25px;
+            flex: 1;
+            min-width: 220px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .why-card:hover {
+            border-color: #185FA5;
+            box-shadow: 0 4px 12px rgba(24,95,165,0.1);
+        }
+
+        .why-num {
+            background-color: #185FA5;
+            color: #ffffff;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .why-content h3 {
+            color: #0C447C;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .why-content p {
+            color: #777;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ===== MISSION ===== */
+        .mission-section {
+            background: linear-gradient(135deg, #0C447C, #185FA5);
+            color: #ffffff;
+            padding: 60px 30px;
+            text-align: center;
+        }
+
+        .mission-section .label {
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #B5D4F4;
+            margin-bottom: 10px;
+        }
+
+        .mission-section h2 {
+            font-size: 26px;
+            margin-bottom: 16px;
+        }
+
+        .mission-section p {
+            color: #E6F1FB;
+            font-size: 16px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.8;
+        }
+
+        .mission-section a {
+            display: inline-block;
+            background-color: #ffffff;
+            color: #185FA5;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+
+        .mission-section a:hover {
+            background-color: #E6F1FB;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .qui-section {
+                flex-direction: column;
+                padding: 40px 20px;
+            }
+
+            .apropos-hero h1 {
+                font-size: 26px;
+            }
+
+            .why-grid {
+                flex-direction: column;
+            }
+
+            .valeur-card {
+                max-width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="logo yames.png" alt="logo de yames">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <div class="apropos-hero">
+            <div class="label">À PROPOS DE NOUS</div>
+            <h1>Kality Care</h1>
+            <p>Votre partenaire de confiance pour le matériel médical de qualité au Mali. Nous mettons la santé au cœur de notre mission.</p>
+        </div>
+
+        <!-- QUI SOMMES-NOUS -->
+        <section class="qui-section">
+            <div class="qui-texte">
+                <div class="label">QUI SOMMES-NOUS</div>
+                <h2>Une entreprise malienne au service de la santé</h2>
+                <p>
+                    <strong>Kality Care</strong> est une entreprise malienne spécialisée dans la distribution de matériel médical certifié, fondée avec une vision claire : rendre l'équipement médical de qualité <strong>accessible à tous au Mali</strong>, qu'il s'agisse de particuliers, de pharmacies ou de cliniques.
+                </p>
+                <p>
+                    Grâce à des partenariats directs avec des fabricants internationaux reconnus, nous proposons une gamme complète allant des consommables du quotidien (thermomètres, coton, tests rapides) aux équipements spécialisés pour professionnels de santé (microscopes, centrifugeuses, analyseurs d'hémoglobine).
+                </p>
+                <p>
+                    Notre engagement : <strong>mieux équiper pour plus sauver</strong>. Chaque produit que nous vendons contribue à améliorer les soins de santé au Mali et en Afrique de l'Ouest.
+                </p>
+                <a href="catalogue.html" class="btn-decouvrir">Voir notre catalogue</a>
+
+                <div class="qui-stats">
+                    <div class="stat-bloc">
+                        <div class="stat-nb">32+</div>
+                        <div class="stat-txt">Produits disponibles</div>
+                    </div>
+                    <div class="stat-bloc">
+                        <div class="stat-nb">100%</div>
+                        <div class="stat-txt">Matériel certifié</div>
+                    </div>
+                    <div class="stat-bloc">
+                        <div class="stat-nb">🇲🇱</div>
+                        <div class="stat-txt">Basé à Bamako</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="qui-image">
+                <div class="img-placeholder">
+                    <!-- Remplace par une vraie photo de l'équipe ou du stock -->
+                    <img src="logo yames.png" alt="Kality Care"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                    <span class="img-icon" style="display:none;">🏥</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- NOS VALEURS -->
+<section class="valeurs-section">
+    <div class="label">NOS VALEURS</div>
+    <h2>Ce qui nous guide au quotidien</h2>
+    <p class="sous-titre">Des principes clairs pour un service médical de confiance</p>
+
+    <div class="valeurs-grid">
+
+        <!-- QUALITÉ — médaille / certification -->
+        <div class="valeur-card">
+            <div class="valeur-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="24" cy="20" r="11" stroke="#185FA5" stroke-width="2"/>
+                    <path d="M19 25.5L15 38L24 33L33 38L29 25.5" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19 20L22.5 23.5L29.5 16.5" stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>Qualité</h3>
+            <p>Chaque produit est sélectionné selon des critères stricts de qualité et de conformité aux normes internationales.</p>
+        </div>
+
+        <!-- CONFIANCE — poignée de main -->
+        <div class="valeur-card">
+            <div class="valeur-icon">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 7L37 12V21C37 29.5 31.5 36.5 24 40C16.5 36.5 11 29.5 11 21V12L24 7Z"
+                  stroke="#185FA5" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M17.5 23L22 27.5L31 18" stroke="#185FA5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+
+            </div>
+            <h3>Confiance</h3>
+            <p>Nous construisons des relations durables avec nos clients basées sur la transparence et le sérieux.</p>
+        </div>
+
+        <!-- ACCESSIBILITÉ — croix médicale dans un bouclier -->
+        <div class="valeur-card">
+            <div class="valeur-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 8L36 12V22C36 30 31 36.5 24 40C17 36.5 12 30 12 22V12L24 8Z"
+                          stroke="#185FA5" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M24 17V31" stroke="#185FA5" stroke-width="2.2" stroke-linecap="round"/>
+                    <path d="M17 24H31" stroke="#185FA5" stroke-width="2.2" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h3>Accessibilité</h3>
+            <p>Des prix justes et une livraison rapide à Bamako pour que le matériel médical soit accessible à tous.</p>
+        </div>
+
+        <!-- ENGAGEMENT — cœur avec pouls médical -->
+        <div class="valeur-card">
+            <div class="valeur-icon">
+                <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M24 38C24 38 9 29.5 9 19.5C9 14.3 13.1 10.5 18 10.5C20.5 10.5 22.8 11.7 24 13.6C25.2 11.7 27.5 10.5 30 10.5C34.9 10.5 39 14.3 39 19.5C39 29.5 24 38 24 38Z"
+                          stroke="#185FA5" stroke-width="2" stroke-linejoin="round"/>
+                    <path d="M12 23H17L19.5 18L23 28L25.5 21L27.5 23H36"
+                          stroke="#185FA5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <h3>Engagement</h3>
+            <p>Nous sommes passionnés par la santé et convaincus que de bons équipements sauvent des vies.</p>
+        </div>
+
+    </div>
+</section>tion>
+
+        <!-- POURQUOI NOUS (WHY US) -->
+        <section class="why-section">
+            <div class="label">POURQUOI NOUS CHOISIR</div>
+            <h2>Ce qui nous différencie</h2>
+            <p class="sous-titre">Des avantages concrets pour vos achats de matériel médical</p>
+
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-num">1</div>
+                    <div class="why-content">
+                        <h3>Produits certifiés et contrôlés</h3>
+                        <p>Tout notre matériel est importé directement de fabricants certifiés et respecte les normes de qualité médicale internationale. Zéro compromis sur la fiabilité.</p>
+                    </div>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-num">2</div>
+                    <div class="why-content">
+                        <h3>Livraison rapide à Bamako</h3>
+                        <p>Livraison gratuite et rapide partout à Bamako. Nous respectons les délais parce que dans le domaine médical, chaque heure compte.</p>
+                    </div>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-num">3</div>
+                    <div class="why-content">
+                        <h3>Paiement flexible</h3>
+                        <p>Orange Money, Wave, carte bancaire ou paiement en liquide à la livraison — vous choisissez ce qui vous convient le mieux.</p>
+                    </div>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-num">4</div>
+                    <div class="why-content">
+                        <h3>Service client sur WhatsApp</h3>
+                        <p>Une question sur un produit ? Besoin d'un devis pour une clinique ? Notre équipe vous répond rapidement sur WhatsApp au +223 72 08 09 37.</p>
+                    </div>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-num">5</div>
+                    <div class="why-content">
+                        <h3>Expertise du domaine médical</h3>
+                        <p>Nous connaissons le marché malien et les besoins réels des professionnels de santé. Nos conseils sont basés sur une vraie expérience du terrain.</p>
+                    </div>
+                </div>
+
+                <div class="why-card">
+                    <div class="why-num">6</div>
+                    <div class="why-content">
+                        <h3>Tarifs compétitifs</h3>
+                        <p>Import direct depuis les fabricants = moins d'intermédiaires = des prix plus bas pour vous. Des remises spéciales pour les commandes en volume.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSION / CTA -->
+        <section class="mission-section">
+            <div class="label">NOTRE MISSION</div>
+            <h2>Mieux équiper — Plus sauver</h2>
+            <p>
+                Notre mission est simple : être le partenaire de confiance de chaque professionnel de santé, chaque clinique, chaque pharmacie et chaque famille au Mali qui a besoin de matériel médical de qualité, au juste prix, livré rapidement.
+            </p>
+            <a href="catalogue.html">Découvrir nos produits</a>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
+            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
+        </div>
+        <p>&copy; 2026 Kality Care. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

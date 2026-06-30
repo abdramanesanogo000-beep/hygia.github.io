@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="yames.css">
     <script src="yames.js" defer></script>
-    <title>Connexion — Kality Care</title>
+    <title>Commande confirmée — Kality Care</title>
 </head>
 
 <body>
     <nav>
         <div class="nav-left">
             <a href="index.html">
-                <img src="logo yames.png" alt="logo de yames">
+                <img src="logo yames.png" alt="logo Kality Care">
             </a>
         </div>
         <div class="nav-center">
@@ -36,33 +36,30 @@
     </nav>
 
     <main>
+        <section class="confirmation-page">
+            <div class="confirmation-icon">✅</div>
+            <h1>Commande confirmée !</h1>
+            <p>Merci pour votre confiance.</p>
 
-        <section class="auth-page">
-            <div class="auth-box">
-                <h1>Connexion</h1>
-                <p class="auth-subtitle">Connectez-vous pour suivre vos commandes et accéder à votre historique.</p>
+            <div class="confirmation-numero">
+                N° <span id="conf-numero">—</span>
+            </div>
 
-                <div id="auth-message" class="auth-message"></div>
+            <div class="confirmation-recap">
+                <div><strong>Client :</strong> <span id="conf-nom">—</span></div>
+                <div><strong>Mode de paiement :</strong> <span id="conf-methode">—</span></div>
+                <div><strong>Montant total :</strong> <span id="conf-total">—</span></div>
+            </div>
 
-                <form id="form-connexion" class="auth-form">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Votre email" required>
+            <p style="color:#555; font-size:14px; margin-top:16px;">
+                Nous vous contacterons au numéro fourni pour confirmer la livraison.
+            </p>
 
-                    <label for="password">Mot de passe</label>
-                    <input type="password" id="password" name="password" placeholder="Votre mot de passe" required>
-
-                    <button type="submit">Se connecter</button>
-                </form>
-
-                <p class="auth-switch">Pas encore de compte ? <a href="inscription.html">Créer un compte</a></p>
-
-                <p class="auth-note">
-                    ⚠️ Ceci est une version de démonstration : les comptes sont enregistrés uniquement
-                    dans votre navigateur (pas encore connecté à un vrai serveur).
-                </p>
+            <div class="confirmation-actions">
+                <a href="compte.html" class="btn-paiement">Voir mes commandes</a>
+                <a href="catalogue.html" class="btn-continue">Continuer mes achats</a>
             </div>
         </section>
-
     </main>
 
     <footer>

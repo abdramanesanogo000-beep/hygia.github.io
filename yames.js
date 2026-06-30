@@ -1,8 +1,10 @@
 // ===========================================
 // 1. DONNÉES PRODUITS (source unique pour tout le site)
 // ===========================================
+const BACKEND_URL = "https://nslookup-cluster1-bydepfo-mongodb-net.onrender.com";
+
 const produits = [
-    { id: 1, nom: "Tensiomètre manuel avec stéthoscope", prix: 10000, image: "img/mk01-211c.jpg", categorie: "tensiometre", promo: false, stock: true, description: "Tensiomètre à brassard manuel livré avec stéthoscope monopavillon. Mesure fiable de la pression artérielle sans pile. Idéal pour les cabinets médicaux et pharmacies." },
+    { id: 1, nom: "Tensiomètre manuel avec stéthoscope", prix: 10000, image: "tension metre manuel.png", categorie: "tensiometre", promo: false, stock: true, description: "Tensiomètre à brassard manuel livré avec stéthoscope monopavillon. Mesure fiable de la pression artérielle sans pile. Idéal pour les cabinets médicaux et pharmacies." },
     { id: 2, nom: "Tensiomètre électronique automatique", prix: 23000, image: "img/mk01-435.jpg", categorie: "tensiometre", promo: false, stock: true, description: "Tensiomètre numérique automatique pour bras, brassard 22-36 cm. Un appui suffit pour obtenir tension et pouls. Écran large, facile à utiliser à domicile ou en clinique." },
     { id: 3, nom: "Oxymètre de pouls", prix: 7000, image: "img/mk-x1906.jpg", categorie: "clinique", promo: false, stock: true, description: "Pince oxymètre à poser sur le doigt. Mesure la saturation en oxygène (SpO2) et le pouls en quelques secondes. Compact, sans douleur, indispensable pour le suivi respiratoire." },
     { id: 4, nom: "Chaise médicale pivotante", prix: 19000, image: "img/mk03-423d.jpg", categorie: "clinique", promo: false, stock: true, description: "Chaise médicale pivotante, hauteur réglable de 44 à 56 cm, assise diamètre 33 cm. Confortable pour un usage prolongé en cabinet médical ou laboratoire." },
@@ -470,6 +472,89 @@ function ajouterAuPanier(idProduit) {
 
     savePanier(panier);
     mettreAJourCompteurPanier(true);
+    
+    // Afficher l'overlay de récapitulatif
+    afficherOverlayAjoutPanier(produit);
+}
+
+function afficherOverlayAjoutPanier(produit) {
+    // Créer l'overlay s'il n'existe pas
+    let overlay = document.getElementById("cart-overlay");
+    let backdrop = document.getElementById("cart-overlay-backdrop");
+    
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "cart-overlay";
+        overlay.className = "cart-overlay";
+        
+        backdrop = document.createElement("div");
+        backdrop.id = "cart-overlay-backdrop";
+        backdrop.className = "cart-overlay-backdrop";
+        
+        document.body.appendChild(backdrop);
+        document.body.appendChild(overlay);
+        
+        // Gestionnaire de fermeture
+        backdrop.addEventListener("click", fermerOverlayAjoutPanier);
+    }
+    
+    // Calculer le total du panier
+    const panier = getPanier();
+    const totals = getCartTotals();
+    
+    // Mettre à jour le contenu
+    overlay.innerHTML = `
+        <div class="cart-overlay-header">
+            <h3>Produit ajouté au panier</h3>
+            <button class="cart-overlay-close" id="cart-overlay-close-btn">×</button>
+        </div>
+        <div class="cart-overlay-content">
+            <div class="cart-overlay-product">
+                <img src="${produit.image}" alt="${produit.nom}">
+                <div class="cart-overlay-product-info">
+                    <h4>${produit.nom}</h4>
+                    <p>${produit.prix.toLocaleString()} FCFA</p>
+                </div>
+            </div>
+            <p style="text-align: center; color: #666; font-size: 14px;">
+                ${panier.length} article${panier.length > 1 ? 's' : ''} dans votre panier
+            </p>
+            <p style="text-align: center; font-weight: bold; color: #185FA5; font-size: 16px; margin-top: 8px;">
+                Total: ${totals.total.toLocaleString()} FCFA
+            </p>
+        </div>
+        <div class="cart-overlay-footer">
+            <div class="cart-overlay-actions">
+                <button class="cart-overlay-btn-primary" id="cart-overlay-go-to-cart">
+                    Aller au panier
+                </button>
+                <button class="cart-overlay-btn-secondary" id="cart-overlay-continue-shopping">
+                    Continuer mes achats
+                </button>
+            </div>
+        </div>
+    `;
+    
+    // Ajouter les gestionnaires d'événements
+    document.getElementById("cart-overlay-close-btn").addEventListener("click", fermerOverlayAjoutPanier);
+    document.getElementById("cart-overlay-go-to-cart").addEventListener("click", () => {
+        window.location.href = "panier.html";
+    });
+    document.getElementById("cart-overlay-continue-shopping").addEventListener("click", fermerOverlayAjoutPanier);
+    
+    // Ouvrir l'overlay
+    setTimeout(() => {
+        overlay.classList.add("open");
+        backdrop.classList.add("open");
+    }, 10);
+}
+
+function fermerOverlayAjoutPanier() {
+    const overlay = document.getElementById("cart-overlay");
+    const backdrop = document.getElementById("cart-overlay-backdrop");
+    
+    if (overlay) overlay.classList.remove("open");
+    if (backdrop) backdrop.classList.remove("open");
 }
 
 function mettreAJourCompteurPanier(animer = false) {
@@ -600,6 +685,23 @@ function afficherPanier() {
     });
 
     mettreAJourResumePanier();
+
+    // Pré-remplir le formulaire livraison si l'utilisateur est connecté
+    const utilisateur = getUtilisateurConnecte();
+    if (utilisateur) {
+        const nomInput = document.getElementById("livraison-nom");
+        const emailInput = document.getElementById("livraison-email");
+        const telInput = document.getElementById("livraison-tel");
+
+        if (nomInput && !nomInput.value) nomInput.value = utilisateur.nom || "";
+        if (emailInput && !emailInput.value) emailInput.value = utilisateur.email || "";
+
+        const utilisateurs = getUtilisateurs();
+        const userComplet = utilisateurs.find(u => u.email === utilisateur.email);
+        if (telInput && !telInput.value && userComplet?.telephone) {
+            telInput.value = userComplet.telephone;
+        }
+    }
 }
 
 // ===========================================
@@ -641,19 +743,87 @@ function getTotalPanier() {
     return getCartTotals().total;
 }
 
-function confirmerCommande(methode) {
+function validerFormulaireLivraison() {
+    let valide = true;
+
+    const nom = document.getElementById("livraison-nom");
+    const tel = document.getElementById("livraison-tel");
+    const adresse = document.getElementById("livraison-adresse");
+    const email = document.getElementById("livraison-email");
+
+    function setError(input, errorId, message) {
+        input.classList.add("input-error");
+        input.classList.remove("input-ok");
+        const err = document.getElementById(errorId);
+        if (err) err.textContent = message;
+        valide = false;
+    }
+
+    function setOk(input, errorId) {
+        input.classList.remove("input-error");
+        input.classList.add("input-ok");
+        const err = document.getElementById(errorId);
+        if (err) err.textContent = "";
+    }
+
+    if (!nom || nom.value.trim().length < 2) {
+        setError(nom, "error-nom", "Veuillez entrer votre nom complet.");
+    } else {
+        setOk(nom, "error-nom");
+    }
+
+    const telRegex = /^(\+223|00223)?[6-9]\d{7}$/;
+    if (!tel || !telRegex.test(tel.value.trim().replace(/\s/g, ""))) {
+        setError(tel, "error-tel", "Numéro invalide. Format Mali attendu : +223 7X XXX XXX ou 8 chiffres.");
+    } else {
+        setOk(tel, "error-tel");
+    }
+
+    if (!adresse || adresse.value.trim().length < 5) {
+        setError(adresse, "error-adresse", "Veuillez entrer votre adresse de livraison.");
+    } else {
+        setOk(adresse, "error-adresse");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email.value.trim())) {
+        setError(email, "error-email", "Veuillez entrer une adresse email valide.");
+    } else {
+        setOk(email, "error-email");
+    }
+
+    return valide;
+}
+
+async function confirmerCommande(methode) {
     const panier = getPanier();
     if (panier.length === 0) return;
 
-    const totals = getCartTotals();
-    const couponApplique = totals.couponApplied;
-    let message = "Bonjour, je confirme ma commande :%0A";
+    const nom = document.getElementById("livraison-nom")?.value.trim() || "";
+    const telephone = document.getElementById("livraison-tel")?.value.trim() || "";
+    const adresse = document.getElementById("livraison-adresse")?.value.trim() || "";
+    const emailLivraison = document.getElementById("livraison-email")?.value.trim() || "";
 
-    panier.forEach(item => {
+    if (!nom || !telephone || !adresse || !emailLivraison) {
+        alert("Veuillez remplir vos informations de livraison");
+        return;
+    }
+
+    const totals = getCartTotals();
+    const total = totals.total;
+    const couponApplique = totals.couponApplied;
+    const email = emailLivraison;
+
+    const articles = panier.map(item => {
         const produit = produits.find(p => p.id === item.id);
-        if (!produit) return;
-        const sousTotal = produit.prix * item.quantite;
-        message += `- ${produit.nom} x${item.quantite} (${sousTotal.toLocaleString()} FCFA)%0A`;
+        const sousTotal = (produit?.prix || 0) * item.quantite;
+        return {
+            id: item.id,
+            nom: produit?.nom || "Produit",
+            prix: produit?.prix || 0,
+            quantite: item.quantite,
+            sousTotal
+        };
     });
 
     const noms = {
@@ -662,13 +832,57 @@ function confirmerCommande(methode) {
         liquide: "Paiement en liquide à la livraison"
     };
 
-    message += `%0AMode de paiement : ${noms[methode] || methode}`;
+    const modePaiement = noms[methode] || methode;
+    let numeroCommande = "";
+
+    try {
+        const response = await fetch(`${BACKEND_URL}/api/commandes`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                client: {
+                    nom,
+                    telephone,
+                    adresse,
+                    email
+                },
+                articles,
+                total: total,
+                modePaiement
+            })
+        });
+
+        const data = await response.json();
+        if (response.ok && data?.numero) {
+            numeroCommande = data.numero;
+        }
+    } catch (error) {
+        console.warn("Commande non envoyée au backend", error);
+    }
+
+    let message = "Bonjour, je confirme ma commande chez Kality Care :%0A";
+
+    articles.forEach(item => {
+        message += `- ${item.nom} x${item.quantite} (${item.sousTotal.toLocaleString()} FCFA)%0A`;
+    });
+
+    if (numeroCommande) {
+        message += `%0ANuméro de commande : ${numeroCommande}`;
+    }
+
+    message += `%0AMode de paiement : ${modePaiement}`;
+    message += `%0AClient : ${nom}`;
+    message += `%0ATéléphone : ${telephone}`;
+    message += `%0AAdresse : ${adresse}`;
+
     if (couponApplique) {
         message += `%0ACode promo : ${PROMO_CODE}`;
         message += `%0ARéduction : ${totals.discount.toLocaleString()} FCFA`;
         message += `%0ALivraison : gratuite`;
     }
-    message += `%0ATotal : ${totals.total.toLocaleString()} FCFA`;
+    message += `%0ATotal : ${total.toLocaleString()} FCFA`;
 
     window.open(`https://wa.me/22372080937?text=${message}`, "_blank");
 
@@ -676,14 +890,22 @@ function confirmerCommande(methode) {
         markCouponAsUsed();
     }
 
-    enregistrerCommande(panier, methode, totals.total);
+    enregistrerCommande(panier, methode, total);
 
     savePanier([]);
     clearAppliedCoupon();
     setCouponFeedback("", "");
-    afficherPanier();
     mettreAJourCompteurPanier();
+
     document.getElementById("modal-paiement").classList.remove("active");
+
+    const params = new URLSearchParams({
+        numero: numeroCommande || "En cours",
+        total: total,
+        methode: modePaiement,
+        nom: nom
+    });
+    window.location.href = `commande-confirmee.html?${params.toString()}`;
 }
 
 // ===========================================
@@ -702,7 +924,7 @@ function afficherPageProduit() {
         return;
     }
 
-    document.title = produit.nom + " - Yames";
+    document.title = produit.nom + " — Kality Care";
 
     container.innerHTML = `
         <div class="produit-detail-image">
@@ -716,7 +938,7 @@ function afficherPageProduit() {
             <button class="btn-add-cart" data-id="${produit.id}">Ajouter au panier</button>
 
             <section class="avantages-yames">
-                <h3>Les Avantages de yames</h3>
+                <h3>Les Avantages de Kality Care</h3>
                 <div class="avantages-yames-list">
                     <div class="avantage-item">
                         <span class="avantage-icon icon-truck"></span>
@@ -1130,6 +1352,20 @@ document.addEventListener("DOMContentLoaded", () => {
     initFormulairesAuth();
     afficherPageCompte();
 
+    const confNumero = document.getElementById("conf-numero");
+    if (confNumero) {
+        const params = new URLSearchParams(window.location.search);
+        const numero = params.get("numero") || "—";
+        const total = Number(params.get("total")) || 0;
+        const methode = params.get("methode") || "—";
+        const nom = params.get("nom") || "—";
+
+        confNumero.textContent = numero;
+        document.getElementById("conf-nom").textContent = nom;
+        document.getElementById("conf-methode").textContent = methode;
+        document.getElementById("conf-total").textContent = total.toLocaleString() + " FCFA";
+    }
+
     // --- Filtres catalogue ---
     const rechercheNom = document.getElementById("recherche-nom") || document.getElementById("search-input");
     const filtresCategorie = document.querySelectorAll(".filter-categorie");
@@ -1173,16 +1409,15 @@ document.addEventListener("DOMContentLoaded", () => {
             ajouterAuPanier(id);
 
             const btn = e.target;
-            const texteOriginal = btn.textContent;
             btn.textContent = "✓ Ajouté !";
             btn.classList.add("added");
             btn.disabled = true;
 
             setTimeout(() => {
-                btn.textContent = texteOriginal;
+                btn.textContent = "Ajouter au panier";
                 btn.classList.remove("added");
                 btn.disabled = false;
-            }, 800);
+            }, 2000);
         }
 
         if (e.target.classList.contains("btn-plus")) {
@@ -1214,6 +1449,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("Votre panier est vide.");
                 return;
             }
+
+            if (!validerFormulaireLivraison()) {
+                document.querySelector(".livraison-form").scrollIntoView({ behavior: "smooth" });
+                return;
+            }
+
             modal.classList.add("active");
         });
     }
@@ -1273,3 +1514,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+
+const form = document.getElementById("contact-form");
+if (form) {
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const data = new FormData(form);
+        try {
+            const res = await fetch(form.action, {
+                method: "POST",
+                body: data,
+                headers: { "Accept": "application/json" }
+            });
+            if (res.ok) {
+                form.reset();
+                document.getElementById("form-success").style.display = "block";
+            } else {
+                alert("Erreur lors de l'envoi. Contactez-nous sur WhatsApp.");
+            }
+        } catch {
+            alert("Erreur réseau. Contactez-nous sur WhatsApp au +223 72 08 09 37.");
+        }
+    });
+}

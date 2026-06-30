@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="yames.css">
     <script src="yames.js" defer></script>
-    <title>Panier - Yames</title>
+    <title>Mon panier — Kality Care</title>
 </head>
 
 <body>
@@ -19,6 +19,7 @@
         <div class="nav-center">
             <a href="index.html">Accueil</a>
             <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
             <a href="professionnels.html">Professionnels</a>
             <a href="contact.html">Contact</a>
         </div>
@@ -47,6 +48,31 @@
             <div class="panier-total" id="panier-total">
                 <span class="total-label">Total :</span>
                 <span class="total-amount" id="total-amount">0 FCFA</span>
+            </div>
+
+            <div class="livraison-form">
+                <h2>Informations de livraison</h2>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-nom">Nom complet</label>
+                    <input class="form-input" type="text" id="livraison-nom" placeholder="Votre nom complet">
+                    <span class="field-error" id="error-nom"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-tel">Téléphone</label>
+                    <input class="form-input" type="tel" id="livraison-tel" placeholder="+223 ...">
+                    <span class="field-error" id="error-tel"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-email">Email <span style="color:#c0392b">*</span></label>
+                    <input class="form-input" type="email" id="livraison-email" placeholder="Votre adresse email">
+                    <span class="field-error" id="error-email"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-adresse">Adresse</label>
+                    <input class="form-input" type="text" id="livraison-adresse"
+                        placeholder="Quartier, commune, point de repère...">
+                    <span class="field-error" id="error-adresse"></span>
+                </div>
             </div>
 
             <div class="coupon-section">
@@ -116,7 +142,7 @@
             <a href="">facebook</a>
             <a href="">tiktok</a>
         </div>
-        <p>&copy; 2026 Yames. Tous droits réservés.</p>
+        <p>&copy; 2026 Kality Care. Tous droits réservés.</p>
     </footer>
 
 </body>
