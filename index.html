@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Hygia — Matériel médical de qualité au Mali</title>
+
+</head>
+
+<body>
+
+    <!-- BANDEAU COOKIES -->
+    <div id="bandeau-cookies"><style>#bandeau-cookies{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;z-index:9999;box-shadow:0 -2px 10px rgba(0,0,0,.08);transition:opacity .4s ease,transform .4s ease}#bandeau-cookies.fadeout{opacity:0;transform:translateY(20px);pointer-events:none}#bandeau-cookies p{margin:0;font-size:13px;color:#555;flex:1;min-width:200px;line-height:1.6}#bandeau-cookies a{color:#185FA5;text-decoration:underline}#btn-accepter-cookies{background:#185FA5;color:#fff;border:none;border-radius:5px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}#btn-accepter-cookies:hover{background:#0C447C}</style><p>Ce site utilise le stockage local de votre navigateur pour gérer votre panier et votre compte. Aucun cookie publicitaire. <a href="cookies.html">En savoir plus</a></p><button id="btn-accepter-cookies">J'ai compris</button><script>(function(){var b=document.getElementById('bandeau-cookies');if(localStorage.getItem('cookiesAcceptes')==='true'){b.style.display='none';return;}document.getElementById('btn-accepter-cookies').addEventListener('click',function(){localStorage.setItem('cookiesAcceptes','true');b.classList.add('fadeout');setTimeout(function(){b.style.display='none';},420);});})();</script></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="img/hygia_logo_transparent.png" alt="Hygia">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="hero">
+            <header>
+                <h1>Matériel médical de qualité au Mali</h1>
+            </header>
+            <p>Mieux équiper pour — Plus sauver</p>
+            <div>
+                <a href="catalogue.html">Voir le catalogue</a>
+            </div>
+        </section>
+
+        <!-- CATEGORIES AVEC IMAGES -->
+        <section class="categories">
+            <div class="section-label">NOS CATÉGORIES</div>
+            <h2>Explorez notre catalogue</h2>
+            <p class="sous-titre">Découvrez notre gamme complète de produits médicaux certifiés</p>
+
+            <div class="category-list">
+
+                <a href="catalogue.html?categorie=clinique" class="category-item">
+                    <!-- Remplace src par une vraie photo d'équipement médical -->
+                    <img src="img/equipement medicale.avif" alt="Équipement médical" class="category-img"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="category-img-placeholder" style="display:none;">🏥</div>
+                    <div class="category-body">
+                        <h3>Équipement médical</h3>
+                        <p>Microscopes, centrifugeuses, tensiomètres, oxymètres et plus encore.</p>
+                        <span class="category-link">Explorer →</span>
+                    </div>
+                </a>
+
+                <a href="catalogue.html?categorie=consommable" class="category-item">
+                    <!-- Remplace src par une vraie photo de consommables -->
+                    <img src="img/consomable medicaux 2.avif" alt="Consommables médicaux" class="category-img"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="category-img-placeholder" style="display:none;">🩺</div>
+                    <div class="category-body">
+                        <h3>Consommables médicaux</h3>
+                        <p>Tests rapides, coton, bandelettes, abaisse-langues, lames de bistouri.</p>
+                        <span class="category-link">Explorer →</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- PRODUITS POPULAIRES -->
+        <section class="featured-products">
+            <h2>Produits populaires</h2>
+            <div class="product-grid" id="product-container"></div>
+        </section>
+
+        <!-- APERÇU À PROPOS -->
+        <section class="apropos-preview">
+            <div class="apropos-preview-inner">
+
+                <div class="apropos-preview-img">
+                    <div class="img-box">
+                        <!-- Remplace par une photo de l'équipe ou du stock -->
+                        <img src="img/logo hygia normale.png" alt="Hygia"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='block'">
+                        <span style="display:none;">🏥</span>
+                    </div>
+                </div>
+
+                <div class="apropos-preview-texte">
+                    <div class="section-label">À PROPOS DE NOUS</div>
+                    <h2>Qui sommes-nous ?</h2>
+                    <p>
+                        <strong>Hygia</strong> est une entreprise malienne spécialisée dans la
+                        distribution de matériel médical certifié. Grâce à des partenariats directs avec des fabricants
+                        internationaux, nous rendons l'équipement médical de qualité <strong>accessible à tous au
+                            Mali</strong> — particuliers, pharmacies et cliniques.
+                    </p>
+                    <p>
+                        Notre engagement : <strong>Mieux équiper pour — Plus sauver</strong>.
+                    </p>
+                    <a href="apropos.html" class="btn-en-savoir">En savoir plus</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- WHY US REDESIGNÉ -->
+        <section class="why-us">
+            <div class="section-label">POURQUOI CHOISIR Nemes</div>
+            <h2>Ce qui nous différencie</h2>
+            <p class="sous-titre">Des avantages concrets pour vos achats de matériel médical</p>
+
+            <div class="why-list">
+
+                <div class="why-item">
+                    <div class="why-icon-circle">
+                        <!-- Icône certificat/étoile -->
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="10" stroke="#185FA5" stroke-width="2" />
+                            <path d="M11 16l3 3 7-7" stroke="#185FA5" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        <div class="badge-check">✓</div>
+                    </div>
+                    <h3>Produits certifiés</h3>
+                    <p>Tout notre matériel est importé de fabricants certifiés et respecte les normes médicales
+                        internationales.</p>
+                </div>
+
+                <div class="why-item">
+                    <div class="why-icon-circle">
+                        <!-- Icône paiement mobile -->
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="8" y="4" width="16" height="24" rx="3" stroke="#185FA5" stroke-width="2" />
+                            <circle cx="16" cy="23" r="1.5" fill="#185FA5" />
+                            <line x1="11" y1="9" x2="21" y2="9" stroke="#185FA5" stroke-width="2"
+                                stroke-linecap="round" />
+                        </svg>
+                        <div class="badge-check">✓</div>
+                    </div>
+                    <h3>Paiement flexible</h3>
+                    <p>Orange Money, Wave, carte bancaire ou paiement à la livraison — vous choisissez.</p>
+                </div>
+
+                <div class="why-item">
+                    <div class="why-icon-circle">
+                        <!-- Icône WhatsApp/support -->
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M16 4C9.373 4 4 9.373 4 16c0 2.18.58 4.22 1.6 5.98L4 28l6.22-1.57A11.94 11.94 0 0016 28c6.627 0 12-5.373 12-12S22.627 4 16 4z"
+                                stroke="#185FA5" stroke-width="2" stroke-linejoin="round" />
+                            <path d="M11 13h2l1 3-2 1c1 2 3 3 4 4l1-2 3 1v2c-4 1-10-4-9-9z" fill="#185FA5" />
+                        </svg>
+                        <div class="badge-check">✓</div>
+                    </div>
+                    <h3>Support WhatsApp</h3>
+                    <p>Notre équipe vous répond rapidement sur WhatsApp pour toute question ou devis.</p>
+                </div>
+
+
+                <div class="why-item">
+                    <div class="why-icon-circle">
+                        <!-- Icône prix/tag -->
+                        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 4h10l14 14-10 10L4 14V4z" stroke="#185FA5" stroke-width="2"
+                                stroke-linejoin="round" />
+                            <circle cx="10" cy="10" r="2" fill="#185FA5" />
+                        </svg>
+                        <div class="badge-check">✓</div>
+                    </div>
+                    <h3>Tarifs compétitifs</h3>
+                    <p>Import direct = moins d'intermédiaires = prix bas. Remises spéciales pour commandes en volume.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- WHATSAPP CTA -->
+        <section class="whatsapp-cta">
+            <a href="https://wa.me/22372080937" class="whatsapp-link" target="_blank" rel="noopener noreferrer">
+                contacter sur WhatsApp
+            </a>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
+            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
+        </div>
+        <div class="footer-legal">
+            <a href="politique-confidentialite.html">Politique de confidentialité</a>
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="cookies.html">Cookies</a>
+        </div>
+        <p>&copy; 2026 Hygia. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

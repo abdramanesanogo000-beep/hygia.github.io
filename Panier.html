@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Mon panier — Hygia</title>
+</head>
+
+<body>
+
+    <!-- BANDEAU COOKIES -->
+    <div id="bandeau-cookies"><style>#bandeau-cookies{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;z-index:9999;box-shadow:0 -2px 10px rgba(0,0,0,.08);transition:opacity .4s ease,transform .4s ease}#bandeau-cookies.fadeout{opacity:0;transform:translateY(20px);pointer-events:none}#bandeau-cookies p{margin:0;font-size:13px;color:#555;flex:1;min-width:200px;line-height:1.6}#bandeau-cookies a{color:#185FA5;text-decoration:underline}#btn-accepter-cookies{background:#185FA5;color:#fff;border:none;border-radius:5px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}#btn-accepter-cookies:hover{background:#0C447C}</style><p>Ce site utilise le stockage local de votre navigateur pour gérer votre panier et votre compte. Aucun cookie publicitaire. <a href="cookies.html">En savoir plus</a></p><button id="btn-accepter-cookies">J'ai compris</button><script>(function(){var b=document.getElementById('bandeau-cookies');if(localStorage.getItem('cookiesAcceptes')==='true'){b.style.display='none';return;}document.getElementById('btn-accepter-cookies').addEventListener('click',function(){localStorage.setItem('cookiesAcceptes','true');b.classList.add('fadeout');setTimeout(function(){b.style.display='none';},420);});})();</script></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="img/hygia_logo_transparent.png" alt="Hygia">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <section class="panier-page">
+            <h1>Mon panier</h1>
+
+            <div id="panier-container">
+                <!-- les articles du panier seront générés ici par JS -->
+            </div>
+
+            <div class="panier-total" id="panier-total">
+                <span class="total-label">Total :</span>
+                <span class="total-amount" id="total-amount">0 FCFA</span>
+            </div>
+
+            <div class="livraison-form" id="livraison-form" style="display:none;">
+                <h2>Informations de livraison</h2>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-nom">Nom complet</label>
+                    <input class="form-input" type="text" id="livraison-nom" placeholder="Votre nom complet">
+                    <span class="field-error" id="error-nom"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-tel">Téléphone</label>
+                    <input class="form-input" type="tel" id="livraison-tel" placeholder="+223 ...">
+                    <span class="field-error" id="error-tel"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-email">Email <span style="color:#c0392b">*</span></label>
+                    <input class="form-input" type="email" id="livraison-email" placeholder="Votre adresse email">
+                    <span class="field-error" id="error-email"></span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="livraison-adresse">Adresse</label>
+                    <input class="form-input" type="text" id="livraison-adresse"
+                        placeholder="Quartier, commune, point de repère...">
+                    <span class="field-error" id="error-adresse"></span>
+                </div>
+            </div>
+
+            <div class="coupon-section">
+                <label for="coupon-input">Code promo</label>
+                <div class="coupon-row">
+                    <input type="text" id="coupon-input" placeholder="Saisissez votre code">
+                    <button type="button" id="coupon-button">Appliquer</button>
+                </div>
+                <p id="coupon-message" class="coupon-message"></p>
+            </div>
+
+            <div class="panier-summary">
+                <div>
+                    <span>Sous-total</span>
+                    <strong id="subtotal-amount">0 FCFA</strong>
+                </div>
+                <div>
+                    <span>Réduction</span>
+                    <strong id="discount-amount">0 FCFA</strong>
+                </div>
+                <div>
+                    <span>Livraison</span>
+                    <strong id="shipping-amount">À calculer</strong>
+                </div>
+            </div>
+
+            <div class="panier-actions">
+                <a href="catalogue.html" class="btn-continue">Continuer mes achats</a>
+                <button id="btn-paiement" class="btn-paiement">Passer au paiement</button>
+            </div>
+
+            <!-- MODAL DE PAIEMENT -->
+            <div id="modal-paiement" class="modal-overlay">
+                <div class="modal-box">
+                    <button id="close-modal" class="modal-close">✕</button>
+                    <h2>Choisissez votre mode de paiement</h2>
+
+                    <div class="payment-options">
+                        <button class="payment-option" data-method="orange">
+                            <span class="payment-icon">🟠</span>
+                            <span>Orange Money</span>
+                        </button>
+                        <button class="payment-option" data-method="wave">
+                            <span class="payment-icon">🔵</span>
+                            <span>Wave</span>
+                        </button>
+                        <button class="payment-option" data-method="carte">
+                            <span class="payment-icon">💳</span>
+                            <span>Carte bancaire</span>
+                        </button>
+                        <button class="payment-option" data-method="liquide">
+                            <span class="payment-icon">💵</span>
+                            <span>Paiement en liquide (à la livraison)</span>
+                        </button>
+                    </div>
+
+                    <div id="payment-details" class="payment-details"></div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="">facebook</a>
+            <a href="">tiktok</a>
+        </div>
+        <div class="footer-legal">
+            <a href="politique-confidentialite.html">Politique de confidentialité</a>
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="cookies.html">Cookies</a>
+        </div>
+        <p>&copy; 2026 Hygia. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

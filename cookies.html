@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Cookies et stockage local — Hygia</title>
+    <style>
+        body {
+            background: #f5f5f5;
+        }
+
+        .cookies-hero {
+            background: linear-gradient(135deg, #0C447C 0%, #185FA5 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 55px 30px;
+        }
+
+        .cookies-hero .hero-label {
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: #B5D4F4;
+            margin-bottom: 10px;
+        }
+
+        .cookies-hero h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .cookies-hero .date-maj {
+            font-size: 13px;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .cookies-contenu {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px 60px;
+        }
+
+        .cookies-section {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 28px 30px;
+            margin-bottom: 20px;
+        }
+
+        .cookies-section h2 {
+            font-size: 18px;
+            color: #185FA5;
+            border-left: 3px solid #185FA5;
+            padding-left: 12px;
+            margin: 0 0 16px;
+            line-height: 1.4;
+        }
+
+        .cookies-section p {
+            color: #555;
+            line-height: 1.8;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .cookies-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .cookies-section ul {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.8;
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+
+        .cookies-section ul li {
+            margin-bottom: 6px;
+        }
+
+        .storage-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .storage-table th {
+            background: #0C447C;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .storage-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e0eaf5;
+            color: #555;
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .storage-table tr:nth-child(even) td {
+            background: #f5f9fd;
+        }
+
+        .storage-table code {
+            background: #eef3fa;
+            color: #0C447C;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        .non-fait-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .non-fait-item {
+            background: #f0faf4;
+            border: 1px solid #b7e4c7;
+            border-radius: 8px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .non-fait-item .check {
+            color: #27ae60;
+            font-size: 18px;
+            flex-shrink: 0;
+            line-height: 1.4;
+        }
+
+        .non-fait-item p {
+            margin: 0;
+            font-size: 13px;
+            color: #1a6b3c;
+            line-height: 1.6;
+        }
+
+        .navigateur-bloc {
+            background: #f8fbff;
+            border: 1px solid #dce9f7;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+        }
+
+        .navigateur-bloc strong {
+            display: block;
+            color: #0C447C;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .navigateur-bloc ol {
+            margin: 0;
+            padding-left: 18px;
+            color: #555;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .contact-box {
+            background: #0C447C;
+            color: #fff;
+            border-radius: 10px;
+            padding: 24px 28px;
+        }
+
+        .contact-box h2 {
+            color: #fff;
+            border-left: 3px solid rgba(255,255,255,0.4);
+            padding-left: 12px;
+            margin: 0 0 14px;
+            font-size: 18px;
+        }
+
+        .contact-box p {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .contact-box a {
+            color: #a8d4f5;
+        }
+
+        @media (max-width: 600px) {
+            .cookies-contenu {
+                padding: 20px 14px 40px;
+            }
+
+            .cookies-section {
+                padding: 20px 18px;
+            }
+
+            .non-fait-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .storage-table {
+                font-size: 11px;
+            }
+
+            .storage-table th,
+            .storage-table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BANDEAU COOKIES -->
+    <div id="bandeau-cookies">
+        <style>
+            #bandeau-cookies {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: #fff;
+                border-top: 1px solid #ddd;
+                padding: 14px 30px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                gap: 12px;
+                z-index: 9999;
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+                transition: opacity 0.4s ease, transform 0.4s ease;
+            }
+
+            #bandeau-cookies.fadeout {
+                opacity: 0;
+                transform: translateY(20px);
+                pointer-events: none;
+            }
+
+            #bandeau-cookies p {
+                margin: 0;
+                font-size: 13px;
+                color: #555;
+                flex: 1;
+                min-width: 200px;
+                line-height: 1.6;
+            }
+
+            #bandeau-cookies a {
+                color: #185FA5;
+                text-decoration: underline;
+            }
+
+            #btn-accepter-cookies {
+                background: #185FA5;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                padding: 9px 20px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                white-space: nowrap;
+                transition: background 0.2s;
+            }
+
+            #btn-accepter-cookies:hover {
+                background: #0C447C;
+            }
+        </style>
+        <p>Ce site utilise le stockage local de votre navigateur pour gérer votre panier et votre compte. Aucun cookie publicitaire. <a href="cookies.html">En savoir plus</a></p>
+        <button id="btn-accepter-cookies">J'ai compris</button>
+        <script>
+            (function () {
+                var bandeau = document.getElementById("bandeau-cookies");
+                if (localStorage.getItem("cookiesAcceptes") === "true") {
+                    bandeau.style.display = "none";
+                    return;
+                }
+                document.getElementById("btn-accepter-cookies").addEventListener("click", function () {
+                    localStorage.setItem("cookiesAcceptes", "true");
+                    bandeau.classList.add("fadeout");
+                    setTimeout(function () { bandeau.style.display = "none"; }, 420);
+                });
+            })();
+        </script>
+    </div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="img/hygia_logo_transparent.png" alt="Hygia">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <div class="cookies-hero">
+            <span class="hero-label">Transparence</span>
+            <h1>Cookies et stockage local</h1>
+            <p class="date-maj">Dernière mise à jour : 1er juillet 2026</p>
+        </div>
+
+        <div class="cookies-contenu">
+
+            <!-- 1. QU'EST-CE QUE LE LOCALSTORAGE -->
+            <div class="cookies-section" id="localstorage">
+                <h2>1. Qu'est-ce que le stockage local (localStorage) ?</h2>
+                <p>Le <strong>stockage local</strong> (ou "localStorage") est une fonctionnalité intégrée à tous les navigateurs modernes. Il permet à un site web d'enregistrer de petites informations directement sur votre appareil (téléphone, ordinateur, tablette), sans les envoyer à un serveur distant.</p>
+                <p>Contrairement aux <strong>cookies</strong> traditionnels, le localStorage ne transmet rien automatiquement à chaque visite. Les données restent uniquement dans votre navigateur, jusqu'à ce que vous les supprimiez manuellement ou vidiez le cache.</p>
+                <p><strong>En résumé :</strong> c'est comme une petite mémoire locale que le site utilise pour se souvenir de votre panier ou de votre connexion entre deux visites, sans avoir à stocker ces informations sur nos serveurs.</p>
+            </div>
+
+            <!-- 2. CE QUE NOUS STOCKONS -->
+            <div class="cookies-section" id="ce-que-nous-stockons">
+                <h2>2. Ce que Hygia stocke et pourquoi</h2>
+                <p>Le site Hygia utilise uniquement le localStorage de votre navigateur, pour les quatre éléments suivants :</p>
+
+                <table class="storage-table">
+                    <thead>
+                        <tr>
+                            <th>Clé stockée</th>
+                            <th>Contenu</th>
+                            <th>Durée</th>
+                            <th>Finalité</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>panier</code></td>
+                            <td>Liste des produits ajoutés au panier (identifiants et quantités)</td>
+                            <td>Jusqu'à validation de commande ou vidage du cache</td>
+                            <td>Conserver votre sélection entre les pages et entre les visites</td>
+                        </tr>
+                        <tr>
+                            <td><code>utilisateurConnecte</code></td>
+                            <td>Email et nom de l'utilisateur connecté</td>
+                            <td>Jusqu'à la déconnexion ou vidage du cache</td>
+                            <td>Maintenir votre session de connexion sans ressaisir vos identifiants</td>
+                        </tr>
+                        <tr>
+                            <td><code>utilisateurs</code></td>
+                            <td>Comptes créés sur le site (email, nom, mot de passe hashé)</td>
+                            <td>Permanent (jusqu'au vidage du cache ou suppression manuelle)</td>
+                            <td>Permettre la connexion à votre compte Hygia depuis ce navigateur</td>
+                        </tr>
+                        <tr>
+                            <td><code>historiqueCommandes</code></td>
+                            <td>Récapitulatif de vos commandes passées sur cet appareil</td>
+                            <td>Permanent (jusqu'au vidage du cache ou suppression manuelle)</td>
+                            <td>Afficher votre historique de commandes dans votre espace compte</td>
+                        </tr>
+                        <tr>
+                            <td><code>cookiesAcceptes</code></td>
+                            <td>Indication que vous avez pris connaissance de cette politique</td>
+                            <td>Permanent (jusqu'au vidage du cache)</td>
+                            <td>Ne plus afficher le bandeau d'information après votre accord</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p style="margin-top:14px;"><strong>Important :</strong> aucune de ces données n'est partagée avec des tiers publicitaires. Les données de commandes (nom, téléphone, adresse) sont transmises à nos serveurs uniquement au moment de la validation de commande, pour traitement et livraison.</p>
+            </div>
+
+            <!-- 3. CE QUE NOUS NE FAISONS PAS -->
+            <div class="cookies-section" id="ce-que-nous-ne-faisons-pas">
+                <h2>3. Ce que Hygia ne fait pas</h2>
+                <p>Nous tenons à être clairs sur ce que notre site n'utilise <strong>pas</strong> :</p>
+
+                <div class="non-fait-grid">
+                    <div class="non-fait-item">
+                        <span class="check">✓</span>
+                        <p><strong>Pas de Google Analytics</strong> ni aucun outil de statistiques de visite tiers</p>
+                    </div>
+                    <div class="non-fait-item">
+                        <span class="check">✓</span>
+                        <p><strong>Pas de pixel Meta (Facebook)</strong> ni outil de retargeting publicitaire</p>
+                    </div>
+                    <div class="non-fait-item">
+                        <span class="check">✓</span>
+                        <p><strong>Pas de cookies publicitaires</strong> ni de profil de navigation vendu à des annonceurs</p>
+                    </div>
+                    <div class="non-fait-item">
+                        <span class="check">✓</span>
+                        <p><strong>Pas de trackers TikTok, Pinterest</strong> ou autres plateformes sociales tiers</p>
+                    </div>
+                    <div class="non-fait-item">
+                        <span class="check">✓</span>
+                        <p><strong>Pas de cookies de session serveur</strong> — l'authentification se fait uniquement en localStorage</p>
+                    </div>
+                    <div class="non-fait-item">
+                        <span class="check">✓</span>
+                        <p><strong>Aucune donnée de navigation</strong> n'est collectée ou revendue à des partenaires commerciaux</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. MODIFICATIONS -->
+            <div class="cookies-section" id="modifications">
+                <h2>4. Modifications de cette politique</h2>
+                <p>Hygia se réserve le droit de mettre à jour la présente politique si les technologies utilisées sur le site évoluent. En cas d'ajout de nouveaux types de stockage ou de trackers, cette page sera mise à jour et la date de "Dernière mise à jour" sera modifiée en conséquence.</p>
+                <p>Nous nous engageons à ne jamais introduire de trackers publicitaires ou de cookies tiers sans en informer clairement les utilisateurs au préalable.</p>
+            </div>
+
+            <!-- 5. CONTACT -->
+            <div class="contact-box" id="contact">
+                <h2>5. Contact</h2>
+                <p>Pour toute question relative au stockage de vos données ou pour en demander la suppression :</p>
+                <p>📧 <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></p>
+                <p>📱 <a href="tel:+22372080937">+223 72 08 09 37</a></p>
+                <p>🏢 Hygia — Bamako, République du Mali</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
+            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
+        </div>
+        <div class="footer-legal">
+            <a href="politique-confidentialite.html">Politique de confidentialité</a>
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="cookies.html">Cookies</a>
+        </div>
+        <p>&copy; 2026 Hygia. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Conditions Générales de Vente — Hygia</title>
+    <style>
+        .cgv-hero {
+            background: linear-gradient(135deg, #0C447C 0%, #185FA5 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 60px 30px 50px;
+        }
+
+        .cgv-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .cgv-hero .date-maj {
+            font-size: 14px;
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .cgv-contenu {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px 60px;
+            background: #ffffff;
+        }
+
+        .sommaire {
+            background: #f0f6fd;
+            border: 1px solid #d0e4f5;
+            border-radius: 8px;
+            padding: 24px 28px;
+            margin-bottom: 40px;
+        }
+
+        .sommaire h2 {
+            font-size: 16px;
+            color: #0C447C;
+            margin: 0 0 14px;
+            border: none;
+            padding: 0;
+        }
+
+        .sommaire ol {
+            margin: 0;
+            padding-left: 20px;
+            columns: 2;
+            column-gap: 30px;
+        }
+
+        .sommaire ol li {
+            margin-bottom: 7px;
+            break-inside: avoid;
+        }
+
+        .sommaire ol li a {
+            color: #185FA5;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .sommaire ol li a:hover {
+            text-decoration: underline;
+        }
+
+        .cgv-contenu h2 {
+            font-size: 18px;
+            color: #185FA5;
+            border-left: 3px solid #185FA5;
+            padding-left: 12px;
+            margin: 36px 0 14px;
+            line-height: 1.4;
+        }
+
+        .cgv-contenu p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .cgv-contenu ul,
+        .cgv-contenu ol.liste-etapes {
+            color: #555;
+            line-height: 1.8;
+            padding-left: 22px;
+            margin-bottom: 14px;
+        }
+
+        .cgv-contenu ul li,
+        .cgv-contenu ol.liste-etapes li {
+            margin-bottom: 7px;
+            font-size: 15px;
+        }
+
+        .cgv-contenu strong {
+            color: #333;
+        }
+
+        .intro-box {
+            background: #f8fbff;
+            border-left: 4px solid #0C447C;
+            padding: 18px 20px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 32px;
+        }
+
+        .intro-box p {
+            margin: 0;
+            color: #444;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .info-bloc {
+            background: #f8fbff;
+            border: 1px solid #dce9f7;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .info-bloc p {
+            margin: 0 0 6px;
+        }
+
+        .info-bloc p:last-child {
+            margin: 0;
+        }
+
+        .etape-bloc {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+            background: #f8fbff;
+            border: 1px solid #dce9f7;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 10px;
+        }
+
+        .etape-numero {
+            background: #0C447C;
+            color: #fff;
+            font-weight: 700;
+            font-size: 16px;
+            min-width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .etape-texte p {
+            margin: 0;
+            color: #444;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .etape-texte strong {
+            display: block;
+            color: #0C447C;
+            margin-bottom: 3px;
+            font-size: 15px;
+        }
+
+        .paiement-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .paiement-card {
+            background: #f8fbff;
+            border: 1px solid #dce9f7;
+            border-radius: 8px;
+            padding: 16px 18px;
+        }
+
+        .paiement-card strong {
+            display: block;
+            color: #0C447C;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .paiement-card p {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .avertissement-box {
+            background: #fff8e1;
+            border-left: 4px solid #f39c12;
+            padding: 16px 20px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 14px;
+        }
+
+        .avertissement-box p {
+            margin: 0;
+            color: #7d5a00;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .info-verte {
+            background: #f0faf4;
+            border-left: 4px solid #27ae60;
+            padding: 16px 20px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 14px;
+        }
+
+        .info-verte p {
+            margin: 0;
+            color: #1a6b3c;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .contact-box {
+            background: #0C447C;
+            color: #fff;
+            border-radius: 10px;
+            padding: 28px 30px;
+            margin-top: 30px;
+        }
+
+        .contact-box h2 {
+            color: #fff;
+            border-left: 3px solid rgba(255,255,255,0.5);
+            padding-left: 12px;
+            margin: 0 0 16px;
+            font-size: 18px;
+        }
+
+        .contact-box p {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .contact-box a {
+            color: #a8d4f5;
+        }
+
+        @media (max-width: 600px) {
+            .cgv-contenu {
+                padding: 24px 18px 40px;
+            }
+
+            .sommaire ol {
+                columns: 1;
+            }
+
+            .paiement-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .etape-bloc {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BANDEAU COOKIES -->
+    <div id="bandeau-cookies"><style>#bandeau-cookies{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;z-index:9999;box-shadow:0 -2px 10px rgba(0,0,0,.08);transition:opacity .4s ease,transform .4s ease}#bandeau-cookies.fadeout{opacity:0;transform:translateY(20px);pointer-events:none}#bandeau-cookies p{margin:0;font-size:13px;color:#555;flex:1;min-width:200px;line-height:1.6}#bandeau-cookies a{color:#185FA5;text-decoration:underline}#btn-accepter-cookies{background:#185FA5;color:#fff;border:none;border-radius:5px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}#btn-accepter-cookies:hover{background:#0C447C}</style><p>Ce site utilise le stockage local de votre navigateur pour gérer votre panier et votre compte. Aucun cookie publicitaire. <a href="cookies.html">En savoir plus</a></p><button id="btn-accepter-cookies">J'ai compris</button><script>(function(){var b=document.getElementById('bandeau-cookies');if(localStorage.getItem('cookiesAcceptes')==='true'){b.style.display='none';return;}document.getElementById('btn-accepter-cookies').addEventListener('click',function(){localStorage.setItem('cookiesAcceptes','true');b.classList.add('fadeout');setTimeout(function(){b.style.display='none';},420);});})();</script></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="img/hygia_logo_transparent.png" alt="Hygia">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <div class="cgv-hero">
+            <h1>Conditions Générales de Vente</h1>
+            <p class="date-maj">Dernière mise à jour : 1er juillet 2026</p>
+        </div>
+
+        <div class="cgv-contenu">
+
+            <!-- SOMMAIRE -->
+            <div class="sommaire">
+                <h2>Sommaire</h2>
+                <ol>
+                    <li><a href="#preambule">Préambule et champ d'application</a></li>
+                    <li><a href="#vendeur">Identification du vendeur</a></li>
+                    <li><a href="#produits">Produits</a></li>
+                    <li><a href="#commande">Processus de commande</a></li>
+                    <li><a href="#paiement">Prix et modalités de paiement</a></li>
+                    <li><a href="#livraison">Livraison</a></li>
+                    <li><a href="#retractation">Droit de rétractation</a></li>
+                    <li><a href="#retours">Retours et remboursements</a></li>
+                    <li><a href="#garanties">Garanties et SAV</a></li>
+                    <li><a href="#responsabilite">Responsabilité du vendeur</a></li>
+                    <li><a href="#donnees">Protection des données</a></li>
+                    <li><a href="#droit">Droit applicable et litiges</a></li>
+                    <li><a href="#contact-cgv">Contact</a></li>
+                </ol>
+            </div>
+
+            <!-- INTRO -->
+            <div class="intro-box">
+                <p>Les présentes Conditions Générales de Vente (CGV) régissent l'ensemble des transactions réalisées sur le site <strong>kalitycare.com</strong>, exploité par <strong>Hygia</strong>. Toute commande passée sur le site implique l'acceptation pleine et entière des présentes CGV par le client.</p>
+            </div>
+
+            <!-- 1. PRÉAMBULE -->
+            <section id="preambule">
+                <h2>1. Préambule et champ d'application</h2>
+                <p>Les présentes CGV s'appliquent à toute vente de produits proposés sur le site kalitycare.com entre Hygia, en qualité de vendeur, et toute personne physique ou morale effectuant un achat sur le site, désignée ci-après "le client".</p>
+                <p>Hygia se réserve le droit de modifier les présentes CGV à tout moment. Les CGV applicables sont celles en vigueur à la date de passation de la commande par le client. Le client est invité à les consulter avant chaque achat.</p>
+                <p>Le fait de passer commande sur le site vaut acceptation sans réserve des présentes CGV. Hygia recommande au client de les lire attentivement et de les conserver.</p>
+            </section>
+
+            <!-- 2. VENDEUR -->
+            <section id="vendeur">
+                <h2>2. Identification du vendeur</h2>
+                <div class="info-bloc">
+                    <p><strong>Dénomination :</strong> Hygia (anciennement Yama Médical Services)</p>
+                    <p><strong>Activité :</strong> Distribution et vente en ligne de matériel médical certifié</p>
+                    <p><strong>Siège social :</strong> Bamako, République du Mali</p>
+                    <p><strong>Téléphone / WhatsApp :</strong> <a href="tel:+22372080937">+223 72 08 09 37</a></p>
+                    <p><strong>Email :</strong> <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></p>
+                    <p><strong>Site web :</strong> kalitycare.com</p>
+                </div>
+            </section>
+
+            <!-- 3. PRODUITS -->
+            <section id="produits">
+                <h2>3. Produits</h2>
+                <p>Hygia propose à la vente du matériel médical certifié : tensiomètres, oxymètres, stéthoscopes, glucomètres, équipements de protection individuelle, consommables médicaux et autres dispositifs à usage professionnel ou grand public.</p>
+                <p><strong>Descriptions et photographies :</strong> Les fiches produits présentent une description aussi fidèle que possible du matériel proposé. Les photographies sont fournies à titre illustratif et peuvent légèrement différer du produit livré en raison des variations d'éclairage ou des mises à jour de conditionnement des fabricants. Ces différences ne sauraient engager la responsabilité de Hygia ni justifier une annulation de commande.</p>
+                <p><strong>Disponibilité :</strong> Les produits sont proposés à la vente dans la limite des stocks disponibles. En cas d'indisponibilité d'un article après validation de la commande, Hygia en informera le client dans les meilleurs délais par WhatsApp ou par téléphone, et proposera soit un produit de substitution équivalent, soit l'annulation et le remboursement intégral du montant payé.</p>
+                <p><strong>Prix :</strong> Tous les prix sont affichés en <strong>Francs CFA (FCFA)</strong>, toutes taxes comprises (TTC). Hygia se réserve le droit de modifier ses prix à tout moment, sans préavis. Les prix applicables sont ceux affichés au moment de la validation de la commande par le client.</p>
+            </section>
+
+            <!-- 4. COMMANDE -->
+            <section id="commande">
+                <h2>4. Processus de commande</h2>
+                <p>La commande sur le site kalitycare.com se déroule en six étapes :</p>
+
+                <div class="etape-bloc">
+                    <div class="etape-numero">1</div>
+                    <div class="etape-texte">
+                        <strong>Sélection des produits</strong>
+                        <p>Le client parcourt le catalogue, consulte les fiches produits et ajoute les articles souhaités à son panier. Le panier est conservé dans le navigateur jusqu'à la validation ou le vidage.</p>
+                    </div>
+                </div>
+
+                <div class="etape-bloc">
+                    <div class="etape-numero">2</div>
+                    <div class="etape-texte">
+                        <strong>Informations de livraison</strong>
+                        <p>Le client saisit ses coordonnées : nom complet, numéro de téléphone, adresse de livraison (quartier, commune, point de repère) et adresse email. Ces informations sont indispensables à la bonne exécution de la commande.</p>
+                    </div>
+                </div>
+
+                <div class="etape-bloc">
+                    <div class="etape-numero">3</div>
+                    <div class="etape-texte">
+                        <strong>Choix du mode de paiement</strong>
+                        <p>Le client sélectionne son mode de paiement parmi les options disponibles : Orange Money, Wave ou paiement en liquide à la livraison.</p>
+                    </div>
+                </div>
+
+                <div class="etape-bloc">
+                    <div class="etape-numero">4</div>
+                    <div class="etape-texte">
+                        <strong>Confirmation de commande</strong>
+                        <p>Une fois le paiement mobile effectué (ou le mode "à la livraison" sélectionné), un message WhatsApp récapitulatif est automatiquement envoyé à Hygia, incluant les produits commandés, le total et les coordonnées du client.</p>
+                    </div>
+                </div>
+
+                <div class="etape-bloc">
+                    <div class="etape-numero">5</div>
+                    <div class="etape-texte">
+                        <strong>Validation par Hygia</strong>
+                        <p>Hygia accuse réception de la commande et confirme sa prise en charge par retour WhatsApp ou par appel téléphonique, dans un délai maximal de <strong>24 heures ouvrées</strong>. La vente est définitivement conclue à compter de cette confirmation.</p>
+                    </div>
+                </div>
+
+                <div class="etape-bloc">
+                    <div class="etape-numero">6</div>
+                    <div class="etape-texte">
+                        <strong>Livraison</strong>
+                        <p>Le ou les articles commandés sont livrés à l'adresse indiquée par le client, dans les délais convenus. Un appel de confirmation est effectué avant la livraison.</p>
+                    </div>
+                </div>
+
+                <p style="margin-top:16px;">Toute commande non confirmée par Hygia dans le délai indiqué reste sans effet et donne lieu à un remboursement intégral si un paiement a été effectué.</p>
+            </section>
+
+            <!-- 5. PAIEMENT -->
+            <section id="paiement">
+                <h2>5. Prix et modalités de paiement</h2>
+                <p>Les modes de paiement acceptés par Hygia sont les suivants :</p>
+
+                <div class="paiement-grid">
+                    <div class="paiement-card">
+                        <strong> Orange Money</strong>
+                        <p>Virement mobile au numéro <strong>+223 72 08 09 37</strong> avant la livraison. Le client est invité à conserver la preuve de transaction.</p>
+                    </div>
+                    <div class="paiement-card">
+                        <strong> Wave</strong>
+                        <p>Virement mobile au numéro <strong>+223 72 08 09 37</strong> avant la livraison. Le client est invité à conserver la preuve de transaction.</p>
+                    </div>
+                    <div class="paiement-card">
+                        <strong> Paiement à la livraison</strong>
+                        <p>Paiement en espèces remis au livreur au moment de la réception du colis, après vérification du contenu.</p>
+                    </div>
+                    <div class="paiement-card">
+                        <strong> Carte bancaire</strong>
+                        <p>Non disponible actuellement. Cette option sera proposée dans une prochaine mise à jour du site.</p>
+                    </div>
+                </div>
+
+                <div class="avertissement-box">
+                    <p><strong>Important :</strong> Pour les paiements Orange Money et Wave, la commande ne sera traitée qu'après réception effective du virement et confirmation par Hygia. En cas de non-réception du paiement, Hygia se réserve le droit de suspendre ou d'annuler la commande après contact préalable avec le client.</p>
+                </div>
+
+                <p>Hygia ne stocke aucun identifiant de paiement mobile. Les transactions sont effectuées directement sur les plateformes Orange Money et Wave, sous leur responsabilité respective.</p>
+            </section>
+
+            <!-- 6. LIVRAISON -->
+            <section id="livraison">
+                <h2>6. Livraison</h2>
+                <p><strong>Zone de livraison :</strong> Hygia assure la livraison à domicile sur <strong>Bamako et sa périphérie immédiate</strong>. Aucune livraison internationale n'est proposée pour l'instant. Toute commande passée depuis l'extérieur de cette zone fera l'objet d'un contact de Hygia pour proposer une solution adaptée ou procéder à l'annulation.</p>
+
+                <p><strong>Délai de livraison :</strong> Le délai indicatif de livraison est de <strong>24 à 48 heures</strong> à compter de la confirmation de commande par Hygia. Ce délai est donné à titre indicatif et peut varier en fonction des conditions d'accès, de la disponibilité du stock ou de circonstances exceptionnelles. Hygia s'engage à informer le client sans délai en cas de retard prévisible.</p>
+
+                <p><strong>Frais de livraison :</strong> <!-- À COMPLÉTER selon la politique tarifaire réelle de Hygia --> Les frais de livraison applicables sont communiqués au client lors de la confirmation de commande par WhatsApp. Ils peuvent varier selon la zone géographique et le volume de la commande.</p>
+
+                <p><strong>Réception :</strong> Le client est invité à vérifier l'état et le contenu du colis à la livraison, en présence du livreur. Toute anomalie (produit manquant, endommagé ou non conforme) doit être signalée immédiatement au livreur et notifiée à Hygia par WhatsApp dans les <strong>24 heures</strong> suivant la réception.</p>
+
+                <p><strong>Responsabilité :</strong> Le transfert de risques s'opère à la livraison effective du colis au client ou à toute personne habilitée à le recevoir à l'adresse indiquée. Passé ce moment, Hygia ne saurait être tenu responsable des dommages ou pertes liés à une mauvaise utilisation ou conservation du matériel.</p>
+            </section>
+
+            <!-- 7. RÉTRACTATION -->
+            <section id="retractation">
+                <h2>7. Droit de rétractation</h2>
+                <div class="info-verte">
+                    <p><strong>Engagement commercial de Hygia :</strong> Bien que la législation malienne ne prévoie pas de délai légal de rétractation pour les achats en ligne similaire à la réglementation européenne, Hygia s'engage, par bonne pratique commerciale et dans un esprit de confiance avec ses clients, à étudier favorablement toute demande d'annulation formulée avant l'expédition de la commande.</p>
+                </div>
+                <p>Le client peut annuler sa commande sans frais <strong>tant que celle-ci n'a pas été expédiée</strong>, en contactant Hygia par WhatsApp au +223 72 08 09 37 ou par email à contact@kalitycare.com, en mentionnant son numéro de commande.</p>
+                <p>Une fois la commande expédiée, l'annulation n'est plus possible sauf en cas de produit défectueux ou non conforme à la commande (voir article 8).</p>
+                <p>Pour les professionnels de santé passant commande dans le cadre de leur activité, le droit de rétractation s'applique selon les conditions spécifiques convenues lors de la commande.</p>
+            </section>
+
+            <!-- 8. RETOURS -->
+            <section id="retours">
+                <h2>8. Retours et remboursements</h2>
+                <p>Hygia accepte le retour de produits dans les cas suivants :</p>
+                <ul>
+                    <li><strong>Produit défectueux :</strong> article présentant un défaut de fabrication ou un dysfonctionnement constaté à la première utilisation.</li>
+                    <li><strong>Produit non conforme :</strong> article différent de celui commandé (référence erronée, taille incorrecte, etc.).</li>
+                    <li><strong>Produit endommagé à la livraison :</strong> colis arrivé en mauvais état, signalé immédiatement.</li>
+                </ul>
+                <p><strong>Délai de signalement :</strong> Toute demande de retour doit être formulée <strong>dans les 48 heures suivant la réception</strong> du produit, par WhatsApp au +223 72 08 09 37 ou par email à contact@kalitycare.com, accompagnée d'une description du problème et, si possible, de photographies.</p>
+                <p><strong>Procédure :</strong> Après validation de la demande par Hygia, les modalités de retour (enlèvement par le livreur ou dépôt) seront communiquées au client. Les frais de retour sont pris en charge par Hygia en cas de défaut ou de non-conformité avérés.</p>
+                <p><strong>Remboursement :</strong> En cas de retour validé, le remboursement est effectué par le même moyen que le paiement initial (remboursement mobile ou espèces), dans un délai de <strong>5 à 7 jours ouvrés</strong> à compter de la réception et vérification du produit retourné.</p>
+
+                <div class="avertissement-box">
+                    <p><strong>Exclusions :</strong> Les produits consommables (gants, masques, compresses, etc.) et les dispositifs médicaux utilisés ou dont l'emballage stérile a été ouvert ne peuvent faire l'objet d'un retour pour des raisons d'hygiène et de sécurité sanitaire, sauf défaut de fabrication.</p>
+                </div>
+            </section>
+
+            <!-- 9. GARANTIES -->
+            <section id="garanties">
+                <h2>9. Garanties et service après-vente</h2>
+                <p>Tous les produits vendus par Hygia sont du matériel médical certifié, sélectionné auprès de fournisseurs reconnus. Hygia garantit la conformité des produits livrés aux descriptions figurant sur le site au moment de la commande.</p>
+                <p><strong>Garantie légale de conformité :</strong> Hygia s'engage à remplacer ou rembourser tout produit présentant un défaut de conformité ou un vice caché, dans les conditions décrites à l'article 8.</p>
+                <p><strong>Durée de garantie :</strong> <!-- À COMPLÉTER selon les garanties constructeurs des produits --> La durée de garantie varie selon les produits et les fabricants. Elle est précisée, le cas échéant, sur la fiche produit ou communiquée lors de la confirmation de commande.</p>
+                <p><strong>Contact SAV :</strong> Pour toute question relative à l'utilisation d'un produit, à son entretien ou à une panne survenant après la période de retour, le client peut contacter le service après-vente de Hygia :</p>
+                <ul>
+                    <li>WhatsApp / Téléphone : <a href="tel:+22372080937">+223 72 08 09 37</a></li>
+                    <li>Email : <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></li>
+                    <li>Horaires indicatifs : du lundi au samedi, de 8h à 18h</li>
+                </ul>
+            </section>
+
+            <!-- 10. RESPONSABILITÉ -->
+            <section id="responsabilite">
+                <h2>10. Responsabilité du vendeur</h2>
+                <p>Hygia s'engage à traiter les commandes avec diligence et à livrer des produits conformes aux descriptions du site. Toutefois, la responsabilité de Hygia ne saurait être engagée dans les cas suivants :</p>
+                <ul>
+                    <li>Utilisation du matériel non conforme à sa notice d'utilisation ou à des fins autres que celles pour lesquelles il est conçu.</li>
+                    <li>Mauvais entretien ou stockage inadéquat du produit après livraison.</li>
+                    <li>Dysfonctionnement résultant d'une modification ou réparation du produit par le client ou un tiers non autorisé.</li>
+                    <li>Retard de livraison imputable à des causes extérieures (grève, intempéries, inaccessibilité de l'adresse, force majeure).</li>
+                    <li>Conséquences médicales liées à l'utilisation du matériel : le site est un catalogue de vente et non un prestataire de soins. Hygia rappelle que tout usage à des fins médicales doit s'effectuer sous la supervision ou sur recommandation d'un professionnel de santé qualifié.</li>
+                </ul>
+                <p>La responsabilité de Hygia, si elle venait à être retenue, serait en tout état de cause limitée au montant de la commande concernée.</p>
+            </section>
+
+            <!-- 11. DONNÉES -->
+            <section id="donnees">
+                <h2>11. Protection des données personnelles</h2>
+                <p>Dans le cadre du traitement des commandes, Hygia collecte et traite des données personnelles (nom, téléphone, adresse, email) conformément à la loi n°2013-015 du 21 mai 2013 relative à la protection des données personnelles au Mali.</p>
+                <p>Pour toute information sur la collecte, le traitement et les droits relatifs à vos données personnelles, le client est invité à consulter la <a href="politique-confidentialite.html"><strong>Politique de confidentialité</strong></a> de Hygia, disponible sur le site.</p>
+            </section>
+
+            <!-- 12. DROIT APPLICABLE -->
+            <section id="droit">
+                <h2>12. Droit applicable et règlement des litiges</h2>
+                <p>Les présentes CGV sont régies par le <strong>droit de la République du Mali</strong>. En cas de litige relatif à une commande, à la livraison ou à l'application des présentes conditions, le client et Hygia s'engagent à rechercher en priorité une solution amiable.</p>
+                <p>Pour ce faire, le client est invité à contacter Hygia par WhatsApp ou email en exposant clairement le motif de sa réclamation. Hygia s'engage à répondre dans un délai de <strong>5 jours ouvrés</strong> et à proposer une solution raisonnable.</p>
+                <p>À défaut de règlement amiable dans un délai de <strong>30 jours</strong> à compter de la réclamation, le litige sera soumis à la compétence exclusive des <strong>tribunaux de Bamako, République du Mali</strong>.</p>
+            </section>
+
+            <!-- 13. CONTACT -->
+            <div class="contact-box" id="contact-cgv">
+                <h2>13. Contact</h2>
+                <p>Pour toute question relative aux présentes CGV, à une commande ou au service après-vente :</p>
+                <p>📱 WhatsApp / Téléphone : <a href="tel:+22372080937">+223 72 08 09 37</a></p>
+                <p>📧 Email : <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></p>
+                <p>🏢 Hygia — Bamako, République du Mali</p>
+                <p style="margin-top:16px; font-size:13px; opacity:0.8;">Horaires : lundi – samedi, 8h – 18h</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
+            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
+        </div>
+        <div class="footer-legal">
+            <a href="politique-confidentialite.html">Politique de confidentialité</a>
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="cookies.html">Cookies</a>
+        </div>
+        <p>&copy; 2026 Hygia. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

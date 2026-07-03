@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Mentions légales — Hygia</title>
+    <style>
+        .mentions-hero {
+            background: linear-gradient(135deg, #0C447C 0%, #185FA5 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 60px 30px 50px;
+        }
+
+        .mentions-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .mentions-hero .date-maj {
+            font-size: 14px;
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .mentions-contenu {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px 60px;
+            background: #ffffff;
+        }
+
+        .sommaire {
+            background: #f0f6fd;
+            border: 1px solid #d0e4f5;
+            border-radius: 8px;
+            padding: 24px 28px;
+            margin-bottom: 40px;
+        }
+
+        .sommaire h2 {
+            font-size: 16px;
+            color: #0C447C;
+            margin: 0 0 14px;
+            border: none;
+            padding: 0;
+        }
+
+        .sommaire ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .sommaire ol li {
+            margin-bottom: 6px;
+        }
+
+        .sommaire ol li a {
+            color: #185FA5;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .sommaire ol li a:hover {
+            text-decoration: underline;
+        }
+
+        .mentions-contenu h2 {
+            font-size: 18px;
+            color: #185FA5;
+            border-left: 3px solid #185FA5;
+            padding-left: 12px;
+            margin: 36px 0 14px;
+            line-height: 1.4;
+        }
+
+        .mentions-contenu p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .mentions-contenu ul {
+            color: #555;
+            line-height: 1.8;
+            padding-left: 22px;
+            margin-bottom: 14px;
+        }
+
+        .mentions-contenu ul li {
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .mentions-contenu strong {
+            color: #333;
+        }
+
+        .intro-box {
+            background: #f8fbff;
+            border-left: 4px solid #0C447C;
+            padding: 18px 20px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 32px;
+        }
+
+        .intro-box p {
+            margin: 0;
+            color: #444;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .info-bloc {
+            background: #f8fbff;
+            border: 1px solid #dce9f7;
+            border-radius: 8px;
+            padding: 20px 24px;
+            margin-bottom: 16px;
+        }
+
+        .info-bloc p {
+            margin: 0 0 6px;
+        }
+
+        .info-bloc p:last-child {
+            margin: 0;
+        }
+
+        .hebergeur-bloc {
+            background: #f8fbff;
+            border: 1px solid #dce9f7;
+            border-radius: 8px;
+            padding: 18px 22px;
+            margin-bottom: 14px;
+        }
+
+        .hebergeur-bloc strong {
+            display: block;
+            color: #0C447C;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .hebergeur-bloc p {
+            margin: 0 0 4px;
+            color: #555;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .avertissement-box {
+            background: #fff8e1;
+            border-left: 4px solid #f39c12;
+            padding: 16px 20px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 14px;
+        }
+
+        .avertissement-box p {
+            margin: 0;
+            color: #7d5a00;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .contact-box {
+            background: #0C447C;
+            color: #fff;
+            border-radius: 10px;
+            padding: 28px 30px;
+            margin-top: 30px;
+        }
+
+        .contact-box h2 {
+            color: #fff;
+            border-left: 3px solid rgba(255,255,255,0.5);
+            padding-left: 12px;
+            margin: 0 0 16px;
+            font-size: 18px;
+        }
+
+        .contact-box p {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .contact-box a {
+            color: #a8d4f5;
+        }
+
+        @media (max-width: 600px) {
+            .mentions-contenu {
+                padding: 24px 18px 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BANDEAU COOKIES -->
+    <div id="bandeau-cookies"><style>#bandeau-cookies{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;z-index:9999;box-shadow:0 -2px 10px rgba(0,0,0,.08);transition:opacity .4s ease,transform .4s ease}#bandeau-cookies.fadeout{opacity:0;transform:translateY(20px);pointer-events:none}#bandeau-cookies p{margin:0;font-size:13px;color:#555;flex:1;min-width:200px;line-height:1.6}#bandeau-cookies a{color:#185FA5;text-decoration:underline}#btn-accepter-cookies{background:#185FA5;color:#fff;border:none;border-radius:5px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}#btn-accepter-cookies:hover{background:#0C447C}</style><p>Ce site utilise le stockage local de votre navigateur pour gérer votre panier et votre compte. Aucun cookie publicitaire. <a href="cookies.html">En savoir plus</a></p><button id="btn-accepter-cookies">J'ai compris</button><script>(function(){var b=document.getElementById('bandeau-cookies');if(localStorage.getItem('cookiesAcceptes')==='true'){b.style.display='none';return;}document.getElementById('btn-accepter-cookies').addEventListener('click',function(){localStorage.setItem('cookiesAcceptes','true');b.classList.add('fadeout');setTimeout(function(){b.style.display='none';},420);});})();</script></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="img/hygia_logo_transparent.png" alt="Hygia">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <div class="mentions-hero">
+            <h1>Mentions légales</h1>
+            <p class="date-maj">Dernière mise à jour : 1er juillet 2026</p>
+        </div>
+
+        <div class="mentions-contenu">
+
+            <!-- SOMMAIRE -->
+            <div class="sommaire">
+                <h2>Sommaire</h2>
+                <ol>
+                    <li><a href="#editeur">Éditeur du site</a></li>
+                    <li><a href="#directeur">Directeur de publication</a></li>
+                    <li><a href="#hebergement">Hébergement</a></li>
+                    <li><a href="#propriete">Propriété intellectuelle</a></li>
+                    <li><a href="#responsabilite">Limitation de responsabilité</a></li>
+                    <li><a href="#liens">Liens hypertextes</a></li>
+                    <li><a href="#droit">Droit applicable et juridiction</a></li>
+                    <li><a href="#contact-legal">Contact</a></li>
+                </ol>
+            </div>
+
+            <!-- INTRODUCTION -->
+            <div class="intro-box">
+                <p>Conformément aux dispositions légales applicables en République du Mali, et notamment à la loi n°2013-015 du 21 mai 2013 relative à la protection des données personnelles, tout utilisateur du site <strong>kalitycare.com</strong> est informé des présentes mentions légales. La consultation et l'utilisation du site impliquent l'acceptation sans réserve de ces mentions.</p>
+            </div>
+
+            <!-- 1. ÉDITEUR -->
+            <section id="editeur">
+                <h2>1. Éditeur du site</h2>
+                <div class="info-bloc">
+                    <p><strong>Dénomination commerciale :</strong> Hygia (anciennement Yama Médical Services)</p>
+                    <p><strong>Forme juridique :</strong> Entreprise individuelle en cours d'enregistrement</p>
+                    <p><strong>Activité :</strong> Distribution et vente en ligne de matériel médical certifié</p>
+                    <p><strong>Siège social :</strong> Bamako, République du Mali</p>
+                    <p><strong>Téléphone :</strong> <a href="tel:+22372080937">+223 72 08 09 37</a></p>
+                    <p><strong>Email :</strong> <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></p>
+                    <p><strong>Site web :</strong> kalitycare.com</p>
+                    <p><strong>Numéro RCCM :</strong> <!-- À COMPLÉTER --><em style="color:#999;">En cours d'enregistrement</em></p>
+                    <p><strong>Numéro NIF :</strong> <!-- À COMPLÉTER --><em style="color:#999;">En cours d'enregistrement</em></p>
+                </div>
+            </section>
+
+            <!-- 2. DIRECTEUR DE PUBLICATION -->
+            <section id="directeur">
+                <h2>2. Directeur de publication</h2>
+                <div class="info-bloc">
+                    <!-- À COMPLÉTER : remplacer la ligne ci-dessous par le prénom et nom du responsable légal -->
+                    <p><strong>Nom et prénom :</strong> <!-- À COMPLÉTER --><em style="color:#999;">[Prénom Nom du responsable]</em></p>
+                    <p><strong>Qualité :</strong> Gérant et responsable de la publication du site kalitycare.com</p>
+                    <p><strong>Contact :</strong> <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></p>
+                </div>
+            </section>
+
+            <!-- 3. HÉBERGEMENT -->
+            <section id="hebergement">
+                <h2>3. Hébergement</h2>
+                <p>Le site Hygia repose sur une architecture technique répartie entre plusieurs prestataires :</p>
+
+                <div class="hebergeur-bloc">
+                    <strong>Backend et API (serveur applicatif)</strong>
+                    <p><strong>Prestataire :</strong> Render Services, Inc. (Render.com)</p>
+                    <p><strong>Adresse :</strong> 525 Brannan St, San Francisco, CA 94107, États-Unis</p>
+                    <p><strong>Site :</strong> <a href="https://render.com" target="_blank" rel="noopener noreferrer">render.com</a></p>
+                </div>
+
+                <div class="hebergeur-bloc">
+                    <strong>Base de données</strong>
+                    <p><strong>Prestataire :</strong> MongoDB, Inc. (MongoDB Atlas)</p>
+                    <p><strong>Adresse :</strong> 1633 Broadway, 38th Floor, New York, NY 10019, États-Unis</p>
+                    <p><strong>Site :</strong> <a href="https://www.mongodb.com" target="_blank" rel="noopener noreferrer">mongodb.com</a></p>
+                </div>
+
+                <div class="hebergeur-bloc">
+                    <strong>Hébergement frontend (pages web)</strong>
+                    <!-- À COMPLÉTER : indiquer le nom et les coordonnées de l'hébergeur des fichiers HTML/CSS/JS -->
+                    <p><em style="color:#999;"><!-- À COMPLÉTER — Indiquer ici le nom et les coordonnées de l'hébergeur des fichiers statiques du site (ex : GitHub Pages, Netlify, OVH, etc.) --></em></p>
+                </div>
+            </section>
+
+            <!-- 4. PROPRIÉTÉ INTELLECTUELLE -->
+            <section id="propriete">
+                <h2>4. Propriété intellectuelle</h2>
+                <p>L'ensemble des éléments constituant le site <strong>kalitycare.com</strong> — notamment la structure, les textes, les descriptions de produits, les photographies, les illustrations, le logo, la charte graphique et le code source — sont la propriété exclusive de <strong>Hygia</strong> ou de ses partenaires, et sont protégés par les lois maliennes et internationales relatives à la propriété intellectuelle et au droit d'auteur.</p>
+                <p>Toute reproduction, représentation, modification, publication, adaptation ou exploitation, totale ou partielle, de ces éléments, par quelque procédé ou support que ce soit, est strictement interdite sans l'autorisation préalable et écrite de Hygia.</p>
+                <p>Toute demande d'autorisation ou de partenariat concernant la reproduction de contenus du site doit être adressée à : <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a>.</p>
+                <p>Les marques et logos des partenaires ou prestataires apparaissant sur le site (Orange Money, Wave, etc.) sont la propriété de leurs détenteurs respectifs et sont reproduits à titre informatif uniquement.</p>
+            </section>
+
+            <!-- 5. RESPONSABILITÉ -->
+            <section id="responsabilite">
+                <h2>5. Limitation de responsabilité</h2>
+
+                <div class="avertissement-box">
+                    <p><strong>Important :</strong> Le site Hygia est un catalogue de vente en ligne de matériel médical. Il ne constitue en aucun cas un site de conseil médical, de diagnostic ou de prescription. Les informations publiées sur ce site (descriptions de produits, fiches techniques, usages) sont fournies à titre indicatif uniquement et ne remplacent pas l'avis d'un professionnel de santé qualifié.</p>
+                </div>
+
+                <p>Hygia s'efforce de fournir des informations exactes et à jour sur ses produits. Toutefois, l'entreprise ne peut garantir l'exactitude, l'exhaustivité ou l'actualité de toutes les informations publiées sur le site, et ne saurait être tenue responsable :</p>
+                <ul>
+                    <li>des erreurs ou omissions dans les fiches produits ;</li>
+                    <li>des interruptions ou dysfonctionnements techniques du site, indépendants de sa volonté ;</li>
+                    <li>des dommages directs ou indirects résultant de l'utilisation des informations publiées à des fins autres que l'achat ;</li>
+                    <li>des contenus des sites tiers vers lesquels des liens peuvent renvoyer.</li>
+                </ul>
+                <p>En cas d'erreur manifeste sur un produit (prix, description, disponibilité), Hygia se réserve le droit d'annuler ou de modifier la commande concernée, après information de l'acheteur dans les meilleurs délais.</p>
+                <p>La responsabilité de Hygia ne pourra être engagée en cas de force majeure ou de faits indépendants de sa volonté, au sens du droit malien applicable.</p>
+            </section>
+
+            <!-- 6. LIENS HYPERTEXTES -->
+            <section id="liens">
+                <h2>6. Liens hypertextes</h2>
+                <p><strong>Liens sortants :</strong> Le site Hygia peut contenir des liens vers des sites tiers (prestataires de paiement, réseaux sociaux, partenaires). Ces liens sont fournis à titre informatif. Hygia n'exerce aucun contrôle sur le contenu de ces sites et décline toute responsabilité quant à leur contenu, leur politique de confidentialité ou leur fonctionnement.</p>
+                <p><strong>Liens entrants :</strong> Tout site souhaitant établir un lien hypertexte vers le site kalitycare.com doit en faire la demande préalable par email à <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a>. Hygia se réserve le droit d'accepter ou de refuser cette demande sans avoir à motiver sa décision.</p>
+                <p>Sont en tout état de cause interdits les liens établis depuis des sites à caractère illicite, diffamatoire, pornographique ou contraire à l'ordre public et aux bonnes mœurs.</p>
+            </section>
+
+            <!-- 7. DROIT APPLICABLE -->
+            <section id="droit">
+                <h2>7. Droit applicable et juridiction compétente</h2>
+                <p>Les présentes mentions légales sont régies par le <strong>droit de la République du Mali</strong>. Tout litige relatif à l'interprétation, à l'exécution ou à la validité des présentes, qui ne pourrait être résolu à l'amiable entre les parties, sera soumis à la compétence exclusive des <strong>tribunaux de Bamako, Mali</strong>.</p>
+                <p>Pour les utilisateurs résidant dans l'Union européenne, les droits qui leur sont reconnus par la législation européenne applicable (notamment le RGPD) demeurent intégralement applicables et ne sont pas affectés par le choix de la loi malienne.</p>
+            </section>
+
+            <!-- 8. CONTACT -->
+            <div class="contact-box" id="contact-legal">
+                <h2>8. Contact</h2>
+                <p>Pour toute question relative aux présentes mentions légales, ou pour exercer vos droits, vous pouvez nous contacter :</p>
+                <p>📧 <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></p>
+                <p>📞 <a href="tel:+22372080937">+223 72 08 09 37</a></p>
+                <p>🏢 Hygia — Bamako, République du Mali</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
+            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
+        </div>
+        <div class="footer-legal">
+            <a href="politique-confidentialite.html">Politique de confidentialité</a>
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="cookies.html">Cookies</a>
+        </div>
+        <p>&copy; 2026 Hygia. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

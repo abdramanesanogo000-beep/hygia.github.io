@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Politique de confidentialité — Hygia</title>
+    <style>
+        .politique-hero {
+            background: linear-gradient(135deg, #0C447C 0%, #185FA5 100%);
+            color: #ffffff;
+            text-align: center;
+            padding: 60px 30px 50px;
+        }
+
+        .politique-hero h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px;
+            color: #ffffff;
+        }
+
+        .politique-hero .date-maj {
+            font-size: 14px;
+            opacity: 0.85;
+            margin: 0;
+        }
+
+        .politique-contenu {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 30px 60px;
+            background: #ffffff;
+        }
+
+        .sommaire {
+            background: #f0f6fd;
+            border: 1px solid #d0e4f5;
+            border-radius: 8px;
+            padding: 24px 28px;
+            margin-bottom: 40px;
+        }
+
+        .sommaire h2 {
+            font-size: 16px;
+            color: #0C447C;
+            margin: 0 0 14px;
+            border: none;
+            padding: 0;
+        }
+
+        .sommaire ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .sommaire ol li {
+            margin-bottom: 6px;
+        }
+
+        .sommaire ol li a {
+            color: #185FA5;
+            text-decoration: none;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .sommaire ol li a:hover {
+            text-decoration: underline;
+        }
+
+        .politique-contenu h2 {
+            font-size: 18px;
+            color: #185FA5;
+            border-left: 3px solid #185FA5;
+            padding-left: 12px;
+            margin: 36px 0 14px;
+            line-height: 1.4;
+        }
+
+        .politique-contenu p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 14px;
+            font-size: 15px;
+        }
+
+        .politique-contenu ul {
+            color: #555;
+            line-height: 1.8;
+            padding-left: 22px;
+            margin-bottom: 14px;
+        }
+
+        .politique-contenu ul li {
+            margin-bottom: 6px;
+            font-size: 15px;
+        }
+
+        .politique-contenu strong {
+            color: #333;
+        }
+
+        .intro-box {
+            background: #f8fbff;
+            border-left: 4px solid #0C447C;
+            padding: 18px 20px;
+            border-radius: 0 6px 6px 0;
+            margin-bottom: 32px;
+        }
+
+        .intro-box p {
+            margin: 0;
+            color: #444;
+        }
+
+        .tiers-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .tiers-table th {
+            background: #0C447C;
+            color: #fff;
+            padding: 10px 14px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .tiers-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #e0eaf5;
+            color: #555;
+            vertical-align: top;
+        }
+
+        .tiers-table tr:nth-child(even) td {
+            background: #f5f9fd;
+        }
+
+        .droits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .droit-item {
+            background: #f0f6fd;
+            border-radius: 6px;
+            padding: 14px 16px;
+        }
+
+        .droit-item strong {
+            display: block;
+            color: #0C447C;
+            margin-bottom: 4px;
+            font-size: 14px;
+        }
+
+        .droit-item p {
+            margin: 0;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .contact-box {
+            background: #0C447C;
+            color: #fff;
+            border-radius: 10px;
+            padding: 28px 30px;
+            margin-top: 30px;
+        }
+
+        .contact-box h2 {
+            color: #fff;
+            border-left: 3px solid rgba(255,255,255,0.5);
+            padding-left: 12px;
+            margin: 0 0 16px;
+            font-size: 18px;
+        }
+
+        .contact-box p {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+
+        .contact-box a {
+            color: #a8d4f5;
+        }
+
+        @media (max-width: 600px) {
+            .politique-contenu {
+                padding: 24px 18px 40px;
+            }
+
+            .droits-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tiers-table {
+                font-size: 12px;
+            }
+
+            .tiers-table th,
+            .tiers-table td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- BANDEAU COOKIES -->
+    <div id="bandeau-cookies"><style>#bandeau-cookies{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #ddd;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;z-index:9999;box-shadow:0 -2px 10px rgba(0,0,0,.08);transition:opacity .4s ease,transform .4s ease}#bandeau-cookies.fadeout{opacity:0;transform:translateY(20px);pointer-events:none}#bandeau-cookies p{margin:0;font-size:13px;color:#555;flex:1;min-width:200px;line-height:1.6}#bandeau-cookies a{color:#185FA5;text-decoration:underline}#btn-accepter-cookies{background:#185FA5;color:#fff;border:none;border-radius:5px;padding:9px 20px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}#btn-accepter-cookies:hover{background:#0C447C}</style><p>Ce site utilise le stockage local de votre navigateur pour gérer votre panier et votre compte. Aucun cookie publicitaire. <a href="cookies.html">En savoir plus</a></p><button id="btn-accepter-cookies">J'ai compris</button><script>(function(){var b=document.getElementById('bandeau-cookies');if(localStorage.getItem('cookiesAcceptes')==='true'){b.style.display='none';return;}document.getElementById('btn-accepter-cookies').addEventListener('click',function(){localStorage.setItem('cookiesAcceptes','true');b.classList.add('fadeout');setTimeout(function(){b.style.display='none';},420);});})();</script></div>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="img/hygia_logo_transparent.png" alt="Hygia">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <form action="/recherche" method="GET">
+                <label for="search-input">Rechercher</label>
+                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <button type="submit">🔍</button>
+            </form>
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <div class="politique-hero">
+            <h1>Politique de confidentialité</h1>
+            <p class="date-maj">Dernière mise à jour : 1er juillet 2026</p>
+        </div>
+
+        <div class="politique-contenu">
+
+            <!-- SOMMAIRE -->
+            <div class="sommaire">
+                <h2>Sommaire</h2>
+                <ol>
+                    <li><a href="#responsable">Identité du responsable de traitement</a></li>
+                    <li><a href="#donnees">Données collectées et finalités</a></li>
+                    <li><a href="#base-legale">Base légale du traitement</a></li>
+                    <li><a href="#conservation">Durée de conservation des données</a></li>
+                    <li><a href="#tiers">Partage des données avec des tiers</a></li>
+                    <li><a href="#securite">Sécurité des données</a></li>
+                    <li><a href="#droits">Droits des utilisateurs</a></li>
+                    <li><a href="#cookies">Cookies et stockage local (localStorage)</a></li>
+                    <li><a href="#modifications">Modifications de cette politique</a></li>
+                    <li><a href="#contact-dpo">Nous contacter</a></li>
+                </ol>
+            </div>
+
+            <!-- INTRODUCTION -->
+            <div class="intro-box">
+                <p>La présente politique de confidentialité décrit comment <strong>Hygia</strong> collecte, utilise et protège les données personnelles des utilisateurs du site <strong>kalitycare.com</strong>. Elle s'applique à toute personne naviguant sur le site, créant un compte, passant une commande ou nous contactant via le formulaire de contact.</p>
+            </div>
+
+            <!-- 1. RESPONSABLE -->
+            <section id="responsable">
+                <h2>1. Identité du responsable de traitement</h2>
+                <p>Le responsable du traitement des données personnelles collectées sur ce site est :</p>
+                <ul>
+                    <li><strong>Dénomination sociale :</strong> Hygia (anciennement Yama Médical Services)</li>
+                    <li><strong>Activité :</strong> Distribution de matériel médical certifié</li>
+                    <li><strong>Adresse :</strong> Bamako, République du Mali</li>
+                    <li><strong>Téléphone :</strong> <a href="tel:+22372080937">+223 72 08 09 37</a></li>
+                    <li><strong>Email :</strong> <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></li>
+                    <li><strong>Site web :</strong> kalitycare.com</li>
+                </ul>
+                <p>Hygia s'engage à traiter vos données personnelles conformément à la <strong>loi n°2013-015 du 21 mai 2013</strong> relative à la protection des données personnelles au Mali, ainsi qu'aux principes du <strong>Règlement Général sur la Protection des Données (RGPD — UE 2016/679)</strong> pour les visiteurs résidant dans l'Union européenne.</p>
+            </section>
+
+            <!-- 2. DONNÉES COLLECTÉES -->
+            <section id="donnees">
+                <h2>2. Données collectées et finalités</h2>
+                <p>Hygia collecte uniquement les données strictement nécessaires à la bonne exécution de ses services. Voici le détail des données collectées selon les situations :</p>
+
+                <p><strong>Lors d'une commande :</strong></p>
+                <ul>
+                    <li>Nom complet</li>
+                    <li>Numéro de téléphone</li>
+                    <li>Adresse de livraison (quartier, commune, point de repère)</li>
+                    <li>Adresse email</li>
+                    <li>Contenu du panier et montant total</li>
+                    <li>Mode de paiement choisi (Orange Money, Wave, paiement à la livraison)</li>
+                </ul>
+                <p>Ces données sont utilisées pour traiter et livrer votre commande, vous contacter en cas de problème et tenir notre registre de ventes.</p>
+
+                <p><strong>Lors de la création d'un compte :</strong></p>
+                <ul>
+                    <li>Adresse email</li>
+                    <li>Mot de passe (stocké localement dans votre navigateur via localStorage — non transmis à nos serveurs)</li>
+                    <li>Nom complet et numéro de téléphone (optionnels, pour faciliter les prochaines commandes)</li>
+                </ul>
+
+                <p><strong>Lors de l'utilisation du formulaire de contact :</strong></p>
+                <ul>
+                    <li>Nom complet</li>
+                    <li>Adresse email</li>
+                    <li>Numéro de téléphone (optionnel)</li>
+                    <li>Contenu de votre message</li>
+                </ul>
+                <p>Ces données sont utilisées exclusivement pour répondre à votre demande.</p>
+
+                <p><strong>Données de navigation :</strong> Nous ne collectons aucune donnée de navigation anonyme ou identifiée. Le site n'utilise aucun outil de statistiques ou de suivi (pas de Google Analytics, pas de pixel Meta, pas de cookies publicitaires).</p>
+            </section>
+
+            <!-- 3. BASE LÉGALE -->
+            <section id="base-legale">
+                <h2>3. Base légale du traitement</h2>
+                <p>Le traitement de vos données personnelles repose sur les bases légales suivantes :</p>
+                <ul>
+                    <li><strong>Exécution d'un contrat :</strong> le traitement des données de livraison et de commande est nécessaire à l'exécution du contrat de vente que vous concluez avec Hygia.</li>
+                    <li><strong>Consentement :</strong> lors de la création d'un compte ou de l'utilisation du formulaire de contact, vous consentez explicitement à la collecte de vos données.</li>
+                    <li><strong>Obligation légale :</strong> la conservation de certaines données comptables et commerciales est requise par la réglementation malienne applicable aux activités commerciales.</li>
+                    <li><strong>Intérêt légitime :</strong> la sécurité de notre site et la prévention des fraudes constituent un intérêt légitime justifiant le traitement minimal des données techniques.</li>
+                </ul>
+            </section>
+
+            <!-- 4. CONSERVATION -->
+            <section id="conservation">
+                <h2>4. Durée de conservation des données</h2>
+                <p>Vos données personnelles sont conservées pendant les durées suivantes :</p>
+                <ul>
+                    <li><strong>Données de commande</strong> (nom, téléphone, adresse, email, montant) : conservées <strong>5 ans</strong> à compter de la date de commande, conformément aux obligations comptables et commerciales applicables au Mali.</li>
+                    <li><strong>Données de compte utilisateur</strong> (email, mot de passe) : stockées dans votre navigateur via localStorage jusqu'à ce que vous les supprimiez manuellement ou vidiez le cache de votre navigateur. Aucune donnée de compte n'est transmise à nos serveurs.</li>
+                    <li><strong>Contenu du panier</strong> : stocké localement dans votre navigateur et supprimé automatiquement après validation de la commande ou vidage du cache.</li>
+                    <li><strong>Messages du formulaire de contact</strong> : conservés le temps de traiter votre demande, puis supprimés, sauf obligation légale de conservation.</li>
+                </ul>
+                <p>À l'expiration de ces délais, vos données sont supprimées de manière sécurisée ou anonymisées.</p>
+            </section>
+
+            <!-- 5. TIERS -->
+            <section id="tiers">
+                <h2>5. Partage des données avec des tiers</h2>
+                <p><strong>Hygia ne vend, ne loue et ne cède jamais vos données personnelles à des tiers à des fins publicitaires ou commerciales.</strong> Certains sous-traitants techniques interviennent dans le traitement de vos données dans le cadre strict de leurs missions :</p>
+
+                <table class="tiers-table">
+                    <thead>
+                        <tr>
+                            <th>Prestataire</th>
+                            <th>Rôle</th>
+                            <th>Données concernées</th>
+                            <th>Localisation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Render.com</strong></td>
+                            <td>Hébergement du serveur backend (Node.js)</td>
+                            <td>Données de commandes (nom, téléphone, adresse, email, total)</td>
+                            <td>États-Unis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>MongoDB Atlas</strong> (MongoDB Inc.)</td>
+                            <td>Base de données des commandes</td>
+                            <td>Données de commandes</td>
+                            <td>États-Unis / AWS</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Formspree</strong></td>
+                            <td>Transmission des messages du formulaire de contact par email</td>
+                            <td>Nom, email, téléphone, message</td>
+                            <td>États-Unis</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Orange Money / Wave</strong></td>
+                            <td>Traitement des paiements mobiles (redirection externe)</td>
+                            <td>Données gérées directement par ces plateformes</td>
+                            <td>Mali / Afrique de l'Ouest</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>Ces prestataires agissent en qualité de sous-traitants et ne sont autorisés à utiliser vos données qu'aux fins pour lesquelles nous faisons appel à eux. Ils sont soumis à des obligations contractuelles de confidentialité.</p>
+                <p>En cas de transfert de données vers des pays hors de l'Union africaine ou de l'Union européenne, Hygia s'assure que des garanties appropriées sont mises en place (clauses contractuelles types ou équivalentes).</p>
+            </section>
+
+            <!-- 6. SÉCURITÉ -->
+            <section id="securite">
+                <h2>6. Sécurité des données</h2>
+                <p>Hygia met en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données personnelles contre tout accès non autorisé, toute divulgation, altération ou destruction :</p>
+                <ul>
+                    <li>Les communications entre votre navigateur et notre serveur sont sécurisées par le protocole <strong>HTTPS</strong>.</li>
+                    <li>L'accès au panneau d'administration est protégé par un mot de passe et les routes sensibles sont sécurisées côté serveur.</li>
+                    <li>La base de données est hébergée sur <strong>MongoDB Atlas</strong>, avec chiffrement au repos et contrôle d'accès par liste d'adresses IP autorisées.</li>
+                    <li>Les mots de passe des comptes utilisateurs ne transitent jamais sur nos serveurs — ils sont gérés exclusivement par votre navigateur en local.</li>
+                </ul>
+                <p>Malgré ces précautions, aucun système de transmission ou de stockage de données n'est infaillible à 100 %. En cas de violation de données susceptible d'engendrer un risque pour vos droits et libertés, nous nous engageons à vous en informer dans les meilleurs délais, conformément à la réglementation applicable.</p>
+            </section>
+
+            <!-- 7. DROITS -->
+            <section id="droits">
+                <h2>7. Droits des utilisateurs</h2>
+                <p>Conformément à la loi n°2013-015 du 21 mai 2013 et, pour les résidents européens, au RGPD, vous disposez des droits suivants concernant vos données personnelles :</p>
+
+                <div class="droits-grid">
+                    <div class="droit-item">
+                        <strong>Droit d'accès</strong>
+                        <p>Vous pouvez demander à obtenir une copie de toutes les données personnelles que nous détenons vous concernant.</p>
+                    </div>
+                    <div class="droit-item">
+                        <strong>Droit de rectification</strong>
+                        <p>Vous pouvez demander la correction de données inexactes ou incomplètes vous concernant.</p>
+                    </div>
+                    <div class="droit-item">
+                        <strong>Droit à l'effacement</strong>
+                        <p>Vous pouvez demander la suppression de vos données, sous réserve de nos obligations légales de conservation.</p>
+                    </div>
+                    <div class="droit-item">
+                        <strong>Droit à la portabilité</strong>
+                        <p>Vous pouvez demander à recevoir vos données dans un format structuré et lisible par machine.</p>
+                    </div>
+                    <div class="droit-item">
+                        <strong>Droit d'opposition</strong>
+                        <p>Vous pouvez vous opposer au traitement de vos données pour des motifs légitimes.</p>
+                    </div>
+                    <div class="droit-item">
+                        <strong>Droit à la limitation</strong>
+                        <p>Vous pouvez demander la suspension temporaire du traitement de vos données dans certains cas.</p>
+                    </div>
+                </div>
+
+                <p>Pour exercer ces droits, adressez votre demande par email à <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a> ou par téléphone au <a href="tel:+22372080937">+223 72 08 09 37</a>. Nous nous engageons à répondre dans un délai de <strong>30 jours</strong>.</p>
+                <p>Si vous estimez que vos droits ne sont pas respectés, vous pouvez introduire une réclamation auprès de l'<strong>Autorité de Protection des Données Personnelles du Mali (APDP)</strong>.</p>
+            </section>
+
+            <!-- 8. COOKIES -->
+            <section id="cookies">
+                <h2>8. Cookies et stockage local (localStorage)</h2>
+                <p>Le site Hygia n'utilise <strong>aucun cookie de suivi, publicitaire ou analytique</strong>. Aucun pixel de suivi (Meta, Google, TikTok, etc.) n'est intégré au site.</p>
+                <p>Le site utilise uniquement le mécanisme de <strong>localStorage</strong> de votre navigateur pour les fonctions suivantes :</p>
+                <ul>
+                    <li><strong>Panier d'achat :</strong> le contenu de votre panier est enregistré localement pour être conservé entre vos visites. Ces données ne quittent pas votre appareil, sauf lors de la validation d'une commande.</li>
+                    <li><strong>Session de compte :</strong> votre email et nom sont stockés localement pour maintenir votre session de connexion sans avoir à vous authentifier à chaque visite. Ces données ne sont pas transmises à nos serveurs.</li>
+                </ul>
+                <p>Le localStorage est une technologie intégrée à votre navigateur. Vous pouvez à tout moment effacer ces données depuis les paramètres de votre navigateur (section "Données du site" ou "Cookies et données de navigation").</p>
+                <p>Aucun consentement préalable n'est requis pour l'utilisation du localStorage à des fins purement fonctionnelles, conformément aux recommandations réglementaires applicables.</p>
+            </section>
+
+            <!-- 9. MODIFICATIONS -->
+            <section id="modifications">
+                <h2>9. Modifications de cette politique</h2>
+                <p>Hygia se réserve le droit de modifier la présente politique de confidentialité à tout moment, notamment pour se conformer à de nouvelles obligations légales ou pour refléter l'évolution de nos pratiques.</p>
+                <p>En cas de modification substantielle, nous en informerons les utilisateurs concernés par email (si votre adresse nous est connue) et/ou par un avis visible sur le site. La date de <strong>« Dernière mise à jour »</strong> figurant en haut de cette page sera systématiquement actualisée.</p>
+                <p>Votre utilisation continue du site après toute modification vaut acceptation de la politique mise à jour.</p>
+            </section>
+
+            <!-- 10. CONTACT -->
+            <div class="contact-box" id="contact-dpo">
+                <h2>10. Nous contacter pour vos données</h2>
+                <p>Pour toute question relative à cette politique ou pour exercer vos droits, contactez-nous :</p>
+                <p>📧 <a href="mailto:contact@kalitycare.com">contact@kalitycare.com</a></p>
+                <p>📞 <a href="tel:+22372080937">+223 72 08 09 37</a></p>
+                <p>🏢 Hygia — Bamako, Mali</p>
+                <p style="margin-top:16px; font-size:13px; opacity:0.8;">Nous nous engageons à traiter votre demande dans un délai maximum de 30 jours calendaires.</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer-socials">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">facebook</a>
+            <a href="https://www.tiktok.com/fr/" target="_blank" rel="noopener noreferrer">tiktok</a>
+        </div>
+        <div class="footer-legal">
+            <a href="politique-confidentialite.html">Politique de confidentialité</a>
+            <a href="mentions-legales.html">Mentions légales</a>
+            <a href="cgv.html">CGV</a>
+            <a href="cookies.html">Cookies</a>
+        </div>
+        <p>&copy; 2026 Hygia. Tous droits réservés.</p>
+    </footer>
+
+</body>
+
+</html>

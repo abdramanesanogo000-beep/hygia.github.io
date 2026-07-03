@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toutes les commandes — Admin Kality Care</title>
+    <link rel="stylesheet" href="yames.css">
+    <style>
+        .admin-page {
+            padding: 20px 30px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .admin-header h1 {
+            color: #185FA5;
+            font-size: 22px;
+        }
+
+        .commandes-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .commandes-table th {
+            background: #185FA5;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .commandes-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        .commandes-table tr:hover {
+            background: #f9f9f9;
+        }
+
+        .statut-badge {
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .statut-badge.attente {
+            background: #ffeaa7;
+            color: #d68910;
+        }
+
+        .statut-badge.paye-non-livre {
+            background: #d6eaf8;
+            color: #1a5276;
+        }
+
+        .statut-badge.paye-livre {
+            background: #e8f8f5;
+            color: #117864;
+        }
+
+        .statut-badge.annulee {
+            background: #fadbd8;
+            color: #922b21;
+        }
+
+        .btn-gerer {
+            background: #185FA5;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        .btn-gerer:hover {
+            background: #0C447C;
+        }
+
+        .filtres-admin {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .filtre-btn {
+            padding: 6px 14px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            background: #fff;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .filtre-btn.active {
+            background: #185FA5;
+            color: #fff;
+            border-color: #185FA5;
+        }
+
+        .admin-back {
+            background: #185FA5;
+            color: #fff;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .admin-back:hover {
+            background: #0C447C;
+        }
+
+        .modal-cmd {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-cmd.active {
+            display: flex;
+        }
+
+        .modal-cmd-box {
+            background: #fff;
+            border-radius: 10px;
+            padding: 25px;
+            max-width: 480px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-cmd-box h2 {
+            color: #185FA5;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .btn-fermer {
+            position: absolute;
+            top: 12px;
+            right: 14px;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .detail-ligne {
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .detail-ligne strong {
+            color: #0C447C;
+        }
+
+        .articles-liste {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 6px;
+        }
+
+        .articles-liste div {
+            font-size: 13px;
+            padding: 3px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .select-statut {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+            margin: 10px 0 6px;
+        }
+
+        .textarea-notes {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 13px;
+            height: 65px;
+            resize: none;
+            margin-bottom: 10px;
+        }
+
+        .btn-sauvegarder {
+            width: 100%;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 11px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-sauvegarder:hover {
+            background: #1e8449;
+        }
+
+        .total-commande {
+            font-size: 15px;
+            font-weight: bold;
+            color: #185FA5;
+            margin-top: 8px;
+            text-align: right;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pagination button {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            background: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .pagination button.active {
+            background: #185FA5;
+            color: #fff;
+            border-color: #185FA5;
+        }
+
+        .pagination button:hover:not(.active) {
+            background: #f0f0f0;
+        }
+
+        .pagination-info {
+            text-align: center;
+            color: #666;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-page">
+        <div class="admin-header">
+            <h1>📋 Toutes les commandes — Admin Kality Care</h1>
+            <a href="admin.html" class="admin-back">← Retour au panel</a>
+        </div>
+
+        <div class="filtres-admin">
+            <button class="filtre-btn active" onclick="filtrer('Toutes', this)">Toutes</button>
+            <button class="filtre-btn" onclick="filtrer('En attente', this)">En attente</button>
+            <button class="filtre-btn" onclick="filtrer('Payé non livré', this)">Payé non livré</button>
+            <button class="filtre-btn" onclick="filtrer('Payé livré', this)">Payé livré</button>
+            <button class="filtre-btn" onclick="filtrer('Annulée', this)">Annulées</button>
+        </div>
+
+        <div class="table-scroll">
+            <table class="commandes-table">
+                <thead>
+                    <tr>
+                        <th>N° Commande</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Téléphone</th>
+                        <th>Total</th>
+                        <th>Paiement</th>
+                        <th>Statut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-commandes">
+                    <tr>
+                        <td colspan="8" style="text-align:center;padding:30px;color:#888;">Chargement...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+        <div class="pagination-info" id="pagination-info"></div>
+    </div>
+
+    <!-- MODAL DÉTAIL COMMANDE -->
+    <div id="modal-cmd" class="modal-cmd">
+        <div class="modal-cmd-box">
+            <button class="btn-fermer" onclick="fermerModal()">✕</button>
+            <h2 id="modal-titre">Commande</h2>
+            <div id="modal-corps"></div>
+            <div style="margin:12px 0 5px; font-weight:bold; color:#0C447C; font-size:13px;">Changer le statut :</div>
+            <select class="select-statut" id="modal-statut">
+                <option value="En attente">En attente</option>
+                <option value="Payé non livré">Payé non livré</option>
+                <option value="Payé livré">Payé livré</option>
+                <option value="Annulée">Annulée</option>
+            </select>
+            <textarea class="textarea-notes" id="modal-notes" placeholder="Notes internes (optionnel)..."></textarea>
+            <button class="btn-sauvegarder" onclick="sauvegarder()">✅ Sauvegarder</button>
+        </div>
+    </div>
+
+    <script>
+        const API = "https://nslookup-cluster1-bydepfo-mongodb-net-1.onrender.com"; // ← REMPLACER par l'URL Render réelle après déploiement
+        let pwd = localStorage.getItem("adminPwd") || "";
+        let commandes = [];
+        let numeroCourant = "";
+        let pageActuelle = 1;
+        const itemsParPage = 20;
+        let filtreActuel = "Toutes";
+
+        // Vérifier si connecté
+        if (!pwd) {
+            window.location.href = "admin.html";
+        }
+
+        // CHARGER COMMANDES
+        async function chargerCommandes() {
+            try {
+                const res = await fetch(`${API}/api/admin/commandes`, {
+                    headers: { "x-admin-password": pwd }
+                });
+                commandes = await res.json();
+                afficherCommandes();
+            } catch {
+                document.getElementById("tbody-commandes").innerHTML =
+                    `<tr><td colspan="8" style="text-align:center;color:#c0392b;padding:20px;">Erreur de chargement.</td></tr>`;
+            }
+        }
+
+        // AFFICHER TABLEAU AVEC PAGINATION
+        function afficherCommandes() {
+            const tbody = document.getElementById("tbody-commandes");
+            
+            // Filtrer
+            let listeFiltree = filtreActuel === "Toutes" ? commandes : commandes.filter(c => c.statut === filtreActuel);
+            
+            if (!listeFiltree.length) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:30px;color:#888;">Aucune commande.</td></tr>`;
+                document.getElementById("pagination").innerHTML = "";
+                document.getElementById("pagination-info").textContent = "";
+                return;
+            }
+
+            const classesStatut = {
+                "En attente": "attente",
+                "Payé non livré": "paye-non-livre",
+                "Payé livré": "paye-livre",
+                "Annulée": "annulee"
+            };
+
+            // Pagination
+           const totalPages = Math.ceil(listeFiltree.length / itemsParPage);
+            const startIndex = (pageActuelle - 1) * itemsParPage;
+            const endIndex = startIndex + itemsParPage;
+            const pageData = listeFiltree.slice(startIndex, endIndex);
+
+            tbody.innerHTML = "";
+            pageData.forEach(cmd => {
+                const date = new Date(cmd.date).toLocaleDateString("fr-FR");
+                const cls = classesStatut[cmd.statut] || "attente";
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+            <td><strong>${cmd.numero}</strong></td>
+            <td>${date}</td>
+            <td>${cmd.client.nom}</td>
+            <td>${cmd.client.telephone}</td>
+            <td><strong>${cmd.total.toLocaleString()} F</strong></td>
+            <td>${cmd.modePaiement}</td>
+            <td><span class="statut-badge ${cls}">${cmd.statut}</span></td>
+            <td><button class="btn-gerer" onclick="ouvrirModal('${cmd.numero}')">Gérer</button></td>
+        `;
+                tbody.appendChild(tr);
+            });
+
+            // Afficher pagination
+            afficherPagination(totalPages, listeFiltree.length);
+        }
+
+        // AFFICHER PAGINATION
+        function afficherPagination(totalPages, totalItems) {
+            const pagination = document.getElementById("pagination");
+            const paginationInfo = document.getElementById("pagination-info");
+            
+            pagination.innerHTML = "";
+            
+            if (totalPages <= 1) {
+                paginationInfo.textContent = `${totalItems} commande(s)`;
+                return;
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                btn.className = i === pageActuelle ? "active" : "";
+                btn.onclick = () => {
+                    pageActuelle = i;
+                    afficherCommandes();
+                };
+                pagination.appendChild(btn);
+            }
+
+            const startItem = (pageActuelle - 1) * itemsParPage + 1;
+            const endItem = Math.min(pageActuelle * itemsParPage, totalItems);
+            paginationInfo.textContent = `Affichage ${startItem}-${endItem} sur ${totalItems} commande(s)`;
+        }
+
+        // FILTRES
+        function filtrer(statut, btn) {
+            document.querySelectorAll(".filtre-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            filtreActuel = statut;
+            pageActuelle = 1;
+            afficherCommandes();
+        }
+
+        // MODAL
+        function ouvrirModal(numero) {
+            const cmd = commandes.find(c => c.numero === numero);
+            if (!cmd) return;
+            numeroCourant = numero;
+
+            const date = new Date(cmd.date).toLocaleDateString("fr-FR");
+            const heure = new Date(cmd.date).toLocaleTimeString("fr-FR");
+
+            const articlesHtml = cmd.articles.map(a =>
+                `<div>${a.nom} × ${a.quantite} = <strong>${a.sousTotal.toLocaleString()} F</strong></div>`
+            ).join("");
+
+            document.getElementById("modal-titre").textContent = `Commande ${numero}`;
+            document.getElementById("modal-corps").innerHTML = `
+        <div class="detail-ligne"><strong>Date :</strong> ${date} à ${heure}</div>
+        <div class="detail-ligne"><strong>Client :</strong> ${cmd.client.nom}</div>
+        <div class="detail-ligne"><strong>Téléphone :</strong> ${cmd.client.telephone}</div>
+        <div class="detail-ligne"><strong>Adresse :</strong> ${cmd.client.adresse}</div>
+        ${cmd.client.email ? `<div class="detail-ligne"><strong>Email :</strong> ${cmd.client.email}</div>` : ""}
+        <div class="detail-ligne"><strong>Paiement :</strong> ${cmd.modePaiement}</div>
+        <div class="articles-liste">${articlesHtml}</div>
+        <div class="total-commande">Total : ${cmd.total.toLocaleString()} FCFA</div>
+    `;
+
+            document.getElementById("modal-statut").value = cmd.statut;
+            document.getElementById("modal-notes").value = cmd.notes || "";
+            document.getElementById("modal-cmd").classList.add("active");
+        }
+
+        function fermerModal() {
+            document.getElementById("modal-cmd").classList.remove("active");
+            numeroCourant = "";
+        }
+
+        // SAUVEGARDER STATUT
+        async function sauvegarder() {
+            const statut = document.getElementById("modal-statut").value;
+            const notes = document.getElementById("modal-notes").value;
+
+            try {
+                const res = await fetch(`${API}/api/admin/commandes/${numeroCourant}/statut`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-admin-password": pwd
+                    },
+                    body: JSON.stringify({ statut, notes })
+                });
+
+                if (res.ok) {
+                    fermerModal();
+                    await chargerCommandes();
+                } else {
+                    alert("Erreur lors de la sauvegarde.");
+                }
+            } catch {
+                alert("Impossible de joindre le serveur.");
+            }
+        }
+
+        // Charger au démarrage
+        chargerCommandes();
+    </script>
+
+</body>
+
+</html>
