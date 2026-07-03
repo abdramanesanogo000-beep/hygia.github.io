@@ -42,6 +42,46 @@ const produits = [
 
 ];
 
+// Index id -> produit pour des recherches en O(1) (évite les .find() en boucle)
+const produitsById = new Map(produits.map(p => [p.id, p]));
+function getProduitById(id) {
+    return produitsById.get(id);
+}
+
+// Échappe les caractères HTML sensibles avant insertion via innerHTML
+// (protège contre l'injection si une donnée venait à contenir du HTML/JS)
+function escapeHtml(valeur) {
+    return String(valeur)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+// Libellés affichés pour chaque mode de paiement (source unique, évite la duplication)
+const MODES_PAIEMENT_LABELS = {
+    orange: "Orange Money",
+    wave: "Wave",
+    liquide: "Paiement en liquide à la livraison"
+};
+
+// Notification non bloquante (remplace les alert() bloquants)
+function afficherToast(message, type = "info") {
+    let toast = document.getElementById("site-toast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "site-toast";
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.className = `site-toast ${type}`;
+    void toast.offsetWidth;
+    toast.classList.add("show");
+    clearTimeout(toast._timeoutId);
+    toast._timeoutId = setTimeout(() => toast.classList.remove("show"), 3200);
+}
+
 // ===========================================
 // 2. AFFICHAGE DES PRODUITS (accueil / catalogue)
 // ===========================================
@@ -90,7 +130,7 @@ function setCouponUsageMap(data) {
 
 function isCouponAlreadyUsed() {
     const usage = getCouponUsageMap();
-    return usage[getClientCouponKey()] === true;
+    return !!usage[getClientCouponKey()];
 }
 
 function markCouponAsUsed() {
@@ -156,7 +196,7 @@ function getPanierSubtotal() {
     let subtotal = 0;
 
     panier.forEach(item => {
-        const produit = produits.find(p => p.id === item.id);
+        const produit = getProduitById(item.id);
         if (produit) {
             subtotal += produit.prix * item.quantite;
         }
@@ -264,8 +304,8 @@ function afficherProduits(listeProduits, limite = null, page = 1) {
 
             card.innerHTML = `
           <a href="produit.html?id=${produit.id}" class="product-link">
-            <img src="${produit.image}" alt="${produit.nom}">
-            <h3>${produit.nom}</h3>
+            <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}">
+            <h3>${escapeHtml(produit.nom)}</h3>
           </a>
           <p class="price">${produit.prix.toLocaleString()} FCFA</p>
           <button class="btn-add-cart" data-id="${produit.id}">Ajouter au panier</button>
@@ -282,7 +322,7 @@ function afficherProduits(listeProduits, limite = null, page = 1) {
 }
 
 // Génère les boutons de pagination (Précédent, numéros, Suivant)
-function afficherPagination(totalProduits, pageActuelle, totalPages) {
+function afficherPagination(_totalProduits, pageActuelle, totalPages) {
     let paginationContainer = document.getElementById("pagination-container");
 
     // crée le conteneur s'il n'existe pas encore
@@ -377,7 +417,7 @@ function appliquerFiltres(reinitialiserPage = false) {
     const filtreProduitActif = document.querySelector(".filter-box-btn.active")?.dataset.produitFilter || "tous";
 
     if (filtreProduitActif === "promo") {
-        resultat = resultat.filter(produit => produit.promo === true);
+        resultat = resultat.filter(produit => produit.promo);
     }
 
     if (filtreProduitActif === "stock") {
@@ -462,7 +502,7 @@ function savePanier(panier) {
 
 function ajouterAuPanier(idProduit) {
     const panier = getPanier();
-    const produit = produits.find(p => p.id === idProduit);
+    const produit = getProduitById(idProduit);
     if (!produit) return;
 
     const itemExistant = panier.find(item => item.id === idProduit);
@@ -513,9 +553,9 @@ function afficherOverlayAjoutPanier(produit) {
         </div>
         <div class="cart-overlay-content">
             <div class="cart-overlay-product">
-                <img src="${produit.image}" alt="${produit.nom}">
+                <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}">
                 <div class="cart-overlay-product-info">
-                    <h4>${produit.nom}</h4>
+                    <h4>${escapeHtml(produit.nom)}</h4>
                     <p>${produit.prix.toLocaleString()} FCFA</p>
                 </div>
             </div>
@@ -660,7 +700,7 @@ function afficherPanier() {
     let total = 0;
 
     panier.forEach(item => {
-        const produit = produits.find(p => p.id === item.id);
+        const produit = getProduitById(item.id);
         if (!produit) return;
 
         const sousTotal = produit.prix * item.quantite;
@@ -670,9 +710,9 @@ function afficherPanier() {
         div.className = "panier-item";
 
         div.innerHTML = `
-            <img src="${produit.image}" alt="${produit.nom}">
+            <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}">
             <div class="panier-item-info">
-                <h3>${produit.nom}</h3>
+                <h3>${escapeHtml(produit.nom)}</h3>
                 <p class="price-unit">${produit.prix.toLocaleString()} FCFA / unité</p>
             </div>
             <div class="panier-qty">
@@ -810,7 +850,7 @@ async function confirmerCommande(methode) {
     const emailLivraison = document.getElementById("livraison-email")?.value.trim() || "";
 
     if (!nom || !telephone || !adresse || !emailLivraison) {
-        alert("Veuillez remplir vos informations de livraison");
+        afficherToast("Veuillez remplir vos informations de livraison", "error");
         return;
     }
 
@@ -820,7 +860,7 @@ async function confirmerCommande(methode) {
     const email = emailLivraison;
 
     const articles = panier.map(item => {
-        const produit = produits.find(p => p.id === item.id);
+        const produit = getProduitById(item.id);
         const sousTotal = (produit?.prix || 0) * item.quantite;
         return {
             id: item.id,
@@ -831,13 +871,7 @@ async function confirmerCommande(methode) {
         };
     });
 
-    const noms = {
-        orange: "Orange Money",
-        wave: "Wave",
-        liquide: "Paiement en liquide à la livraison"
-    };
-
-    const modePaiement = noms[methode] || methode;
+    const modePaiement = MODES_PAIEMENT_LABELS[methode] || methode;
     let numeroCommande = "";
 
     try {
@@ -922,7 +956,7 @@ function afficherPageProduit() {
 
     const params = new URLSearchParams(window.location.search);
     const id = Number(params.get("id"));
-    const produit = produits.find(p => p.id === id);
+    const produit = getProduitById(id);
 
     if (!produit) {
         container.innerHTML = "<p class='no-result'>Produit introuvable.</p>";
@@ -933,12 +967,12 @@ function afficherPageProduit() {
 
     container.innerHTML = `
         <div class="produit-detail-image">
-            <img src="${produit.image}" alt="${produit.nom}">
+            <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}">
         </div>
         <div class="produit-detail-info">
-            <h1>${produit.nom}</h1>
+            <h1>${escapeHtml(produit.nom)}</h1>
             <p class="produit-detail-price">${produit.prix.toLocaleString()} FCFA</p>
-            <p class="produit-detail-description">${produit.description}</p>
+            <p class="produit-detail-description">${escapeHtml(produit.description)}</p>
 
             <button class="btn-add-cart" data-id="${produit.id}">Ajouter au panier</button>
 
@@ -974,8 +1008,8 @@ function afficherPageProduit() {
                 card.className = "product-card";
                 card.innerHTML = `
                     <a href="produit.html?id=${p.id}" class="product-link">
-                        <img src="${p.image}" alt="${p.nom}">
-                        <h3>${p.nom}</h3>
+                        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.nom)}">
+                        <h3>${escapeHtml(p.nom)}</h3>
                     </a>
                     <p class="price">${p.prix.toLocaleString()} FCFA</p>
                     <button class="btn-add-cart" data-id="${p.id}">Ajouter au panier</button>
@@ -991,6 +1025,8 @@ function afficherPageProduit() {
 
 // Calcule la distance de Levenshtein entre deux chaînes
 // (= nombre de modifications pour passer de l'une à l'autre)
+// Note : la double boucle est la programmation dynamique standard de cet algorithme
+// (remplissage d'une matrice a.length x b.length), pas une recherche indexable via Map/Set.
 function distanceLevenshtein(a, b) {
     const matrice = [];
 
@@ -1096,9 +1132,9 @@ function initRechercheLive() {
                 item.href = `produit.html?id=${produit.id}`;
 
                 item.innerHTML = `
-                    <img src="${produit.image}" alt="${produit.nom}">
+                    <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}">
                     <div class="search-result-info">
-                        <div class="nom">${produit.nom}</div>
+                        <div class="nom">${escapeHtml(produit.nom)}</div>
                         <div class="prix">${produit.prix.toLocaleString()} FCFA</div>
                     </div>
                 `;
@@ -1198,6 +1234,19 @@ function mettreAJourNavCompte() {
     });
 }
 
+// Affiche le résultat d'une action d'authentification (inscription/connexion)
+// et redirige vers le compte en cas de succès. Factorisé pour éviter la duplication.
+function afficherResultatAuth(resultat, messageEl) {
+    messageEl.textContent = resultat.message;
+    messageEl.className = "auth-message " + (resultat.succes ? "success" : "error");
+
+    if (resultat.succes) {
+        setTimeout(() => {
+            window.location.href = "compte.html";
+        }, 800);
+    }
+}
+
 function initFormulairesAuth() {
     const formInscription = document.getElementById("form-inscription");
     const formConnexion = document.getElementById("form-connexion");
@@ -1213,15 +1262,7 @@ function initFormulairesAuth() {
             const motdepasse = document.getElementById("password").value;
 
             const resultat = inscrireUtilisateur(nom, telephone, email, motdepasse);
-
-            message.textContent = resultat.message;
-            message.className = "auth-message " + (resultat.succes ? "success" : "error");
-
-            if (resultat.succes) {
-                setTimeout(() => {
-                    window.location.href = "compte.html";
-                }, 800);
-            }
+            afficherResultatAuth(resultat, message);
         });
     }
 
@@ -1233,15 +1274,7 @@ function initFormulairesAuth() {
             const motdepasse = document.getElementById("password").value;
 
             const resultat = connecterUtilisateur(email, motdepasse);
-
-            message.textContent = resultat.message;
-            message.className = "auth-message " + (resultat.succes ? "success" : "error");
-
-            if (resultat.succes) {
-                setTimeout(() => {
-                    window.location.href = "compte.html";
-                }, 800);
-            }
+            afficherResultatAuth(resultat, message);
         });
     }
 }
@@ -1288,12 +1321,12 @@ function afficherPageCompte() {
         const div = document.createElement("div");
         div.className = "commande-card";
 
-        const itemsHtml = commande.articles.map(a => `${a.nom} x${a.quantite}`).join("<br>");
+        const itemsHtml = commande.articles.map(a => `${escapeHtml(a.nom)} x${a.quantite}`).join("<br>");
 
         div.innerHTML = `
             <div class="commande-header">
-                <span>${commande.date}</span>
-                <span class="commande-statut">${commande.statut}</span>
+                <span>${escapeHtml(commande.date)}</span>
+                <span class="commande-statut">${escapeHtml(commande.statut)}</span>
             </div>
             <div class="commande-items">${itemsHtml}</div>
             <div class="commande-total">${commande.total.toLocaleString()} FCFA</div>
@@ -1309,14 +1342,8 @@ function enregistrerCommande(panier, methode, total) {
 
     const historique = JSON.parse(localStorage.getItem("historiqueCommandes") || "[]");
 
-    const noms = {
-        orange: "Orange Money",
-        wave: "Wave",
-        liquide: "Paiement en liquide à la livraison"
-    };
-
     const articles = panier.map(item => {
-        const produit = produits.find(p => p.id === item.id);
+        const produit = getProduitById(item.id);
         return { nom: produit ? produit.nom : "Produit", quantite: item.quantite };
     });
 
@@ -1325,7 +1352,7 @@ function enregistrerCommande(panier, methode, total) {
         date: new Date().toLocaleDateString("fr-FR"),
         statut: "En attente",
         articles: articles,
-        modePaiement: noms[methode] || methode,
+        modePaiement: MODES_PAIEMENT_LABELS[methode] || methode,
         total: total
     });
 
@@ -1494,7 +1521,7 @@ document.addEventListener("DOMContentLoaded", () => {
         btnPaiement.addEventListener("click", () => {
             const panier = getPanier();
             if (panier.length === 0) {
-                alert("Votre panier est vide.");
+                afficherToast("Votre panier est vide.", "error");
                 return;
             }
 
@@ -1532,6 +1559,8 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.add("selected");
 
             const methode = btn.dataset.method;
+            if (!["orange", "wave", "carte", "liquide"].includes(methode)) return;
+
             const total = getTotalPanier();
 
             paymentDetails.innerHTML = getDetailsPaiement(methode, total);
@@ -1588,10 +1617,10 @@ if (form) {
                 form.reset();
                 document.getElementById("form-success").style.display = "block";
             } else {
-                alert("Erreur lors de l'envoi. Contactez-nous sur WhatsApp.");
+                afficherToast("Erreur lors de l'envoi. Contactez-nous sur WhatsApp.", "error");
             }
         } catch {
-            alert("Erreur réseau. Contactez-nous sur WhatsApp au +223 72 08 09 37.");
+            afficherToast("Erreur réseau. Contactez-nous sur WhatsApp au +223 72 08 09 37.", "error");
         }
     });
 }
