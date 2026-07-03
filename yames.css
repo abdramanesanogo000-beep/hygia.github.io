@@ -442,7 +442,7 @@ nav {
 /* ===== HERO ===== */
 .hero {
     background:
-        linear-gradient(rgba(24, 95, 165, 0.4), rgba(12, 68, 124, 0.5)),
+        linear-gradient(rgba(8, 40, 74, 0.55), rgba(8, 40, 74, 0.65)),
         url("img/cover 3 index.avif") center/cover no-repeat;
     text-align: center;
     padding: 50px 20px;
@@ -454,12 +454,17 @@ nav {
     font-size: 28px;
     margin-bottom: 10px;
     font-weight: bold;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
 }
 
 .hero p {
-    color: #ffffff;
-    font-size: 16px;
+    color: #FFC94A;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
     margin-bottom: 20px;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
 }
 
 .hero a {
