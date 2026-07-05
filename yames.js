@@ -1291,8 +1291,31 @@ function afficherPageCompte() {
     blocNonConnecte.style.display = "none";
     blocConnecte.style.display = "block";
 
+    // Avatar : initiales du nom
+    const avatarEl = document.getElementById("compte-avatar");
+    if (avatarEl && utilisateur.nom) {
+        const parts = utilisateur.nom.trim().split(" ");
+        avatarEl.textContent = parts.length >= 2
+            ? (parts[0][0] + parts[1][0]).toUpperCase()
+            : parts[0].slice(0, 2).toUpperCase();
+    }
+
     document.getElementById("compte-nom").textContent = "Bonjour, " + utilisateur.nom;
     document.getElementById("compte-email").textContent = utilisateur.email;
+
+    // Infos profil
+    const infoNom = document.getElementById("info-nom");
+    const infoEmail = document.getElementById("info-email");
+    const infoTel = document.getElementById("info-telephone");
+    if (infoNom) infoNom.textContent = utilisateur.nom || "—";
+    if (infoEmail) infoEmail.textContent = utilisateur.email || "—";
+
+    // Récupérer le téléphone depuis le profil complet
+    if (infoTel) {
+        const tous = getUtilisateurs();
+        const profil = tous.find(u => u.email.toLowerCase() === utilisateur.email.toLowerCase());
+        infoTel.textContent = profil?.telephone || "—";
+    }
 
     const btnDeco = document.getElementById("btn-deconnexion");
     if (btnDeco) {
@@ -1302,31 +1325,77 @@ function afficherPageCompte() {
         });
     }
 
-    const historiqueContainer = document.getElementById("historique-commandes");
     const historique = JSON.parse(localStorage.getItem("historiqueCommandes") || "[]");
-
     const commandesUtilisateur = historique.filter(cmd => cmd.email === utilisateur.email);
 
+    // Stats
+    const statCmds = document.getElementById("stat-total-cmds");
+    const statDepense = document.getElementById("stat-total-depense");
+    const statDerniere = document.getElementById("stat-derniere");
+    if (statCmds) statCmds.textContent = commandesUtilisateur.length;
+    if (statDepense) {
+        const total = commandesUtilisateur.reduce((s, c) => s + (c.total || 0), 0);
+        statDepense.textContent = total.toLocaleString();
+    }
+    if (statDerniere && commandesUtilisateur.length > 0) {
+        statDerniere.textContent = commandesUtilisateur[commandesUtilisateur.length - 1].date;
+    }
+
+    // Historique
+    const historiqueContainer = document.getElementById("historique-commandes");
+    if (!historiqueContainer) return;
+
     if (commandesUtilisateur.length === 0) {
-        historiqueContainer.innerHTML = "<p class='historique-vide'>Vous n'avez pas encore de commande.</p>";
+        historiqueContainer.innerHTML = `
+            <div class="historique-vide">
+                <div class="vide-icon">📦</div>
+                <p>Vous n'avez pas encore passé de commande.</p>
+                <a href="catalogue.html">Découvrir le catalogue</a>
+            </div>`;
         return;
     }
 
+    const statutClasse = (s) => {
+        if (!s) return "en-attente";
+        const val = s.toLowerCase();
+        if (val.includes("livr")) return "livree";
+        if (val.includes("confirm")) return "confirmee";
+        if (val.includes("annul")) return "annulee";
+        return "en-attente";
+    };
+
+    const iconeMode = (mode) => {
+        if (!mode) return "💳";
+        const m = mode.toLowerCase();
+        if (m.includes("orange")) return "🟠";
+        if (m.includes("wave")) return "🔵";
+        return "💳";
+    };
+
     historiqueContainer.innerHTML = "";
-    commandesUtilisateur.slice().reverse().forEach(commande => {
+    commandesUtilisateur.slice().reverse().forEach((commande, index) => {
         const div = document.createElement("div");
         div.className = "commande-card";
-
-        const itemsHtml = commande.articles.map(a => `${escapeHtml(a.nom)} x${a.quantite}`).join("<br>");
+        const numero = commande.numero || ("#" + String(commandesUtilisateur.length - index).padStart(3, "0"));
+        const itemsHtml = commande.articles.map(a => `
+            <div class="article-ligne">
+                <span class="art-nom">${escapeHtml(a.nom)}</span>
+                <span class="art-qty">x${a.quantite}</span>
+            </div>`).join("");
 
         div.innerHTML = `
-            <div class="commande-header">
-                <span>${escapeHtml(commande.date)}</span>
-                <span class="commande-statut">${escapeHtml(commande.statut)}</span>
+            <div class="commande-card-header">
+                <span class="cmd-num">Commande ${escapeHtml(numero)}</span>
+                <span class="cmd-date">📅 ${escapeHtml(commande.date)}</span>
+                <span class="statut-badge ${statutClasse(commande.statut)}">${escapeHtml(commande.statut || "En attente")}</span>
             </div>
-            <div class="commande-items">${itemsHtml}</div>
-            <div class="commande-total">${commande.total.toLocaleString()} FCFA</div>
-        `;
+            <div class="commande-card-body">
+                <div class="commande-articles">${itemsHtml}</div>
+            </div>
+            <div class="commande-card-footer">
+                <span class="commande-mode-paiement">${iconeMode(commande.modePaiement)} ${escapeHtml(commande.modePaiement || "—")}</span>
+                <span class="commande-total-amount">${(commande.total || 0).toLocaleString()} FCFA</span>
+            </div>`;
 
         historiqueContainer.appendChild(div);
     });
