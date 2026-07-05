@@ -1325,18 +1325,30 @@ function afficherPageCompte() {
         });
     }
 
+    const btnSupprimer = document.getElementById("btn-supprimer-compte");
+    if (btnSupprimer) {
+        btnSupprimer.addEventListener("click", () => {
+            const confirmé = window.confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.");
+            if (!confirmé) return;
+            const tous = getUtilisateurs();
+            const restants = tous.filter(u => u.email.toLowerCase() !== utilisateur.email.toLowerCase());
+            saveUtilisateurs(restants);
+            const historiqueTous = JSON.parse(localStorage.getItem("historiqueCommandes") || "[]");
+            const historiqueRestant = historiqueTous.filter(c => c.email !== utilisateur.email);
+            localStorage.setItem("historiqueCommandes", JSON.stringify(historiqueRestant));
+            deconnecterUtilisateur();
+            afficherToast("Votre compte a été supprimé.", "info");
+            setTimeout(() => { window.location.href = "index.html"; }, 1200);
+        });
+    }
+
     const historique = JSON.parse(localStorage.getItem("historiqueCommandes") || "[]");
     const commandesUtilisateur = historique.filter(cmd => cmd.email === utilisateur.email);
 
     // Stats
     const statCmds = document.getElementById("stat-total-cmds");
-    const statDepense = document.getElementById("stat-total-depense");
     const statDerniere = document.getElementById("stat-derniere");
     if (statCmds) statCmds.textContent = commandesUtilisateur.length;
-    if (statDepense) {
-        const total = commandesUtilisateur.reduce((s, c) => s + (c.total || 0), 0);
-        statDepense.textContent = total.toLocaleString();
-    }
     if (statDerniere && commandesUtilisateur.length > 0) {
         statDerniere.textContent = commandesUtilisateur[commandesUtilisateur.length - 1].date;
     }

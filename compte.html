@@ -380,12 +380,59 @@
 
         .btn-guest-secondary:hover { background: #dde6f0; }
 
+        /* --- DANGER ZONE --- */
+        .compte-danger-zone {
+            margin-top: 40px;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #fad4d4;
+            padding: 22px 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .compte-danger-zone .danger-texte strong {
+            display: block;
+            font-size: 15px;
+            color: #c0392b;
+            margin-bottom: 4px;
+        }
+
+        .compte-danger-zone .danger-texte p {
+            font-size: 13px;
+            color: #999;
+            margin: 0;
+        }
+
+        .btn-supprimer-compte {
+            background: #fff;
+            color: #c0392b;
+            border: 1.5px solid #e74c3c;
+            border-radius: 8px;
+            padding: 10px 22px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .btn-supprimer-compte:hover {
+            background: #e74c3c;
+            color: #fff;
+        }
+
         /* --- RESPONSIVE --- */
         @media (max-width: 640px) {
             .compte-hero { padding: 36px 20px 70px; }
             .compte-hero-inner { flex-direction: column; align-items: flex-start; gap: 16px; }
             .compte-body { padding: 0 14px; }
-            .compte-stats { grid-template-columns: 1fr 1fr; }
+            .compte-stats { grid-template-columns: 1fr; }
+            .compte-danger-zone { flex-direction: column; align-items: flex-start; }
             .compte-guest { padding: 36px 20px; margin: 40px 16px; }
         }
     </style>
@@ -462,10 +509,6 @@
                             <div class="stat-lbl">Commande(s)</div>
                         </div>
                         <div class="stat-card">
-                            <div class="stat-val" id="stat-total-depense">0</div>
-                            <div class="stat-lbl">FCFA dépensés</div>
-                        </div>
-                        <div class="stat-card">
                             <div class="stat-val" id="stat-derniere">—</div>
                             <div class="stat-lbl">Dernière commande</div>
                         </div>
@@ -491,6 +534,15 @@
                     <!-- HISTORIQUE -->
                     <p class="compte-section-titre">Mes commandes</p>
                     <div id="historique-commandes"></div>
+
+                    <!-- ZONE DANGER -->
+                    <div class="compte-danger-zone">
+                        <div class="danger-texte">
+                            <strong>Supprimer mon compte</strong>
+                            <p>Cette action est irréversible. Toutes vos données et votre historique seront supprimés définitivement.</p>
+                        </div>
+                        <button id="btn-supprimer-compte" class="btn-supprimer-compte">Supprimer mon compte</button>
+                    </div>
 
                 </div>
             </div>
