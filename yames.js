@@ -63,7 +63,7 @@ function escapeHtml(valeur) {
 const MODES_PAIEMENT_LABELS = {
     orange: "Orange Money",
     wave: "Wave",
-    liquide: "Paiement en liquide à la livraison"
+    carte: "Carte bancaire"
 };
 
 // Notification non bloquante (remplace les alert() bloquants)
@@ -771,12 +771,8 @@ function getDetailsPaiement(methode, total) {
             `;
         case "carte":
             return `
-                <p>Le paiement par carte bancaire sera bientôt disponible directement sur le site.</p>
-                <p>En attendant, vous pouvez choisir Orange Money, Wave, ou le paiement en liquide à la livraison.</p>
-            `;
-        case "liquide":
-            return `
-                <p>Vous payerez <strong>${total.toLocaleString()} FCFA</strong> en liquide directement au livreur lors de la réception de votre commande.</p>
+                <p>Paiement par carte bancaire (Visa, Mastercard) sécurisé.</p>
+                <p>Cliquez sur "Confirmer ma commande" pour finaliser votre commande.</p>
                 <button class="btn-confirmer">Confirmer ma commande</button>
             `;
         default:
@@ -1559,7 +1555,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.add("selected");
 
             const methode = btn.dataset.method;
-            if (!["orange", "wave", "carte", "liquide"].includes(methode)) return;
+            if (!["orange", "wave", "carte"].includes(methode)) return;
 
             const total = getTotalPanier();
 
