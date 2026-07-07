@@ -1695,6 +1695,14 @@ footer p {
     font-size: 20px;
 }
 
+.payment-icon-img {
+    width: 52px;
+    height: 36px;
+    object-fit: contain;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
 .payment-option-content {
     display: flex;
     flex-direction: column;

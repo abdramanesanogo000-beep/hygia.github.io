@@ -757,11 +757,18 @@ function getDetailsPaiement(methode, total) {
         wave: "Wave",
         carte: "Carte bancaire Visa / Mastercard"
     };
+    const logos = {
+        orange: "img/logo Orange.png",
+        wave: "img/logo wave.png",
+        carte: "img/logo visa-mastercard.png"
+    };
+    const logo = logos[methode] ? `<img src="${logos[methode]}" alt="${libelles[methode]}" style="height:36px;object-fit:contain;margin-bottom:10px;">` : "";
     return `
         <div style="text-align:center; padding: 10px 0;">
+            ${logo}
             <p style="font-size:14px; color:#555; margin-bottom:12px;">
                 Vous allez être redirigé vers la page de paiement sécurisée
-                CinetPay pour régler <strong>${total.toLocaleString()} FCFA</strong>
+                PayTech pour régler <strong>${total.toLocaleString()} FCFA</strong>
                 par <strong>${libelles[methode] || methode}</strong>.
             </p>
             <p style="font-size:12px; color:#888;">
