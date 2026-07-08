@@ -842,125 +842,114 @@ async function confirmerCommande(methode) {
     const panier = getPanier();
     if (panier.length === 0) return;
 
-    const nom = document.getElementById("livraison-nom")?.value.trim() || "";
-    const telephone = document.getElementById("livraison-tel")?.value.trim() || "";
-    const adresse = document.getElementById("livraison-adresse")?.value.trim() || "";
-    const emailLivraison = document.getElementById("livraison-email")?.value.trim() || "";
-
-    if (!nom || !telephone || !adresse || !emailLivraison) {
-        afficherToast("Veuillez remplir vos informations de livraison", "error");
-        return;
-    }
-
-    const totals = getCartTotals();
-    const total = totals.total;
-    const couponApplique = totals.couponApplied;
-    const email = emailLivraison;
+    const nomClient = document.getElementById("livraison-nom")
+        ?.value?.trim() || "";
+    const telClient = document.getElementById("livraison-tel")
+        ?.value?.trim() || "";
+    const adresseClient = document.getElementById("livraison-adresse")
+        ?.value?.trim() || "";
+    const emailClient = document.getElementById("livraison-email")
+        ?.value?.trim() || "";
 
     const articles = panier.map(item => {
-        const produit = getProduitById(item.id);
-        const sousTotal = (produit?.prix || 0) * item.quantite;
+        const produit = produits.find(p => p.id === item.id);
         return {
-            id: item.id,
-            nom: produit?.nom || "Produit",
-            prix: produit?.prix || 0,
+            id: produit.id,
+            nom: produit.nom,
+            prix: produit.prix,
             quantite: item.quantite,
-            sousTotal
+            sousTotal: produit.prix * item.quantite
         };
     });
 
-    const modePaiement = MODES_PAIEMENT_LABELS[methode] || methode;
+    const total = articles.reduce((sum, a) => sum + a.sousTotal, 0);
 
+    const libelles = {
+        orange: "Orange Money",
+        wave: "Wave",
+        carte: "Carte bancaire Visa/Mastercard"
+    };
+
+    // Feedback visuel sur le bouton
     const btnConfirmer = document.querySelector(".btn-confirmer");
     if (btnConfirmer) {
-        btnConfirmer.textContent = "⏳ Traitement en cours...";
+        btnConfirmer.textContent = "⏳ Redirection vers le paiement...";
         btnConfirmer.disabled = true;
     }
 
-    // ── ÉTAPE 1 : Créer la commande dans MongoDB ──
+    // ÉTAPE 1 : Créer la commande dans MongoDB
     let numeroCommande = "";
     try {
-        const response = await fetch(`${BACKEND_URL}/api/commandes`, {
+        const res = await fetch(`${BACKEND_URL}/api/commandes`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 client: {
-                    nom,
-                    telephone,
-                    adresse,
-                    email
+                    nom: nomClient,
+                    telephone: telClient,
+                    adresse: adresseClient,
+                    email: emailClient || getUtilisateurConnecte()?.email || ""
                 },
                 articles,
-                total: total,
-                modePaiement
+                total,
+                modePaiement: libelles[methode] || methode
             })
         });
-
-        const data = await response.json();
-        if (response.ok && data?.numero) {
-            numeroCommande = data.numero;
-        }
-    } catch (error) {
-        console.warn("Commande non envoyée au backend", error);
+        const data = await res.json();
+        numeroCommande = data.numero || "";
+    } catch (err) {
+        console.warn("Impossible de créer la commande:", err);
     }
 
-    // ── ÉTAPE 2 : Initier le paiement PayTech ──
-    // (Orange Money, Wave, Carte bancaire → tous via PayTech)
+    // ÉTAPE 2 : Initier le paiement PayTech
     try {
-        const response = await fetch(`${BACKEND_URL}/api/paiement/initier`, {
+        const res = await fetch(`${BACKEND_URL}/api/paiement/initier`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 commande_id: numeroCommande,
-                montant: total,
+                montant: Math.round(total),
                 client: {
-                    nom,
-                    telephone,
-                    adresse,
-                    email
+                    nom: nomClient,
+                    telephone: telClient,
+                    adresse: adresseClient,
+                    email: emailClient || ""
                 },
-                methode
+                methode: methode
             })
         });
 
-        const data = await response.json();
+        const data = await res.json();
 
-        if (data.succes && data.payment_url) {
-            if (couponApplique) {
-                markCouponAsUsed();
-            }
-
+        if (data.succes && data.redirect_url) {
+            // Sauvegarder dans l'historique local avant redirection
             enregistrerCommande(panier, methode, total);
-
             savePanier([]);
-            clearAppliedCoupon();
-            setCouponFeedback("", "");
             mettreAJourCompteurPanier();
 
-            window.location.href = data.payment_url;
+            // Rediriger vers la page de paiement PayTech
+            window.location.href = data.redirect_url;
             return;
+
+        } else {
+            alert(
+                "Impossible d'initialiser le paiement.\n" +
+                "Veuillez réessayer ou nous contacter sur WhatsApp."
+            );
+            if (btnConfirmer) {
+                btnConfirmer.textContent = "Confirmer ma commande";
+                btnConfirmer.disabled = false;
+            }
         }
 
-        afficherToast(
-            "Erreur lors de l'initialisation du paiement" + (data.erreur ? " : " + data.erreur : ""),
-            "error"
+    } catch (err) {
+        console.error("Erreur PayTech:", err);
+        alert(
+            "Le service de paiement est temporairement indisponible.\n" +
+            "Veuillez réessayer dans quelques instants."
         );
         if (btnConfirmer) {
-            btnConfirmer.textContent = "Procéder au paiement →";
-            btnConfirmer.disabled = false;
-        }
-    } catch (error) {
-        console.error("Erreur lors du paiement CinetPay:", error);
-        afficherToast(
-            "Le service de paiement est temporairement indisponible. Réessayez ou contactez-nous sur WhatsApp.",
-            "error"
-        );
-        if (btnConfirmer) {
-            btnConfirmer.textContent = "Procéder au paiement →";
+            btnConfirmer.textContent = "Confirmer ma commande";
             btnConfirmer.disabled = false;
         }
     }

@@ -28,6 +28,7 @@
 
         .conf-icon.succes { background-color: #d5f5e3; }
         .conf-icon.echec { background-color: #fadbd8; }
+        .conf-icon.annule { background-color: #fdebd0; }
 
         .conf-numero {
             background-color: #E6F1FB;
@@ -70,6 +71,7 @@
 
         .conf-message.succes { background-color: #eafaf1; color: #1e7e45; }
         .conf-message.echec { background-color: #fdecea; color: #a93226; }
+        .conf-message.annule { background-color: #fff3cd; color: #8a6d3b; }
 
         .conf-actions {
             display: flex;
@@ -136,8 +138,8 @@
             <!-- ÉTAT : VÉRIFICATION EN COURS -->
             <div id="etat-verification">
                 <div class="spinner-paiement"></div>
-                <h1>Vérification du paiement...</h1>
-                <p>Nous vérifions votre paiement, veuillez patienter quelques secondes.</p>
+                <h1>Vérification en cours...</h1>
+                <p>Votre paiement est en cours de vérification. Cette page se rafraîchira automatiquement.</p>
             </div>
 
             <!-- ÉTAT : SUCCÈS -->
@@ -185,6 +187,22 @@
                 </div>
             </div>
 
+            <!-- ÉTAT : ANNULÉ -->
+            <div id="etat-annule" style="display:none;">
+                <div class="conf-icon annule">↩️</div>
+                <h1>Paiement annulé</h1>
+                <p>Vous avez annulé le paiement. Votre panier est toujours disponible.</p>
+
+                <div class="conf-message annule">
+                    Vous pouvez réessayer quand vous le souhaitez ou continuer vos achats.
+                </div>
+
+                <div class="conf-actions">
+                    <a href="panier.html" class="btn-paiement">Retour au panier</a>
+                    <a href="catalogue.html" class="btn-continue">Continuer mes achats</a>
+                </div>
+            </div>
+
         </section>
     </main>
 
@@ -205,22 +223,24 @@
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             const params = new URLSearchParams(window.location.search);
-            const transaction = params.get("transaction");
-            const numero = params.get("numero");
+            const ref = params.get("ref");
+            const annule = params.get("annule");
 
             const etatVerification = document.getElementById("etat-verification");
             const etatSucces = document.getElementById("etat-succes");
             const etatEchec = document.getElementById("etat-echec");
+            const etatAnnule = document.getElementById("etat-annule");
 
-            function afficherSucces({ numero, nom, methode, total, paye }) {
+            function afficherSucces({ numero, nom, methode, total }) {
                 etatVerification.style.display = "none";
                 etatEchec.style.display = "none";
+                etatAnnule.style.display = "none";
                 etatSucces.style.display = "block";
 
                 document.getElementById("conf-numero").textContent = numero || "—";
                 document.getElementById("conf-nom").textContent = nom || "—";
                 document.getElementById("conf-methode").textContent = methode || "—";
-                document.getElementById("conf-statut-paiement").textContent = paye ? "✅ Payé" : "En attente";
+                document.getElementById("conf-statut-paiement").textContent = "✅ Payé";
                 document.getElementById("conf-total").textContent = total
                     ? Number(total).toLocaleString() + " FCFA"
                     : "—";
@@ -229,43 +249,56 @@
             function afficherEchec() {
                 etatVerification.style.display = "none";
                 etatSucces.style.display = "none";
+                etatAnnule.style.display = "none";
                 etatEchec.style.display = "block";
             }
 
-            const statut = params.get("statut");
+            function afficherAnnule() {
+                etatVerification.style.display = "none";
+                etatSucces.style.display = "none";
+                etatEchec.style.display = "none";
+                etatAnnule.style.display = "block";
+            }
 
-            // CAS 1 : Annulation directe depuis PayTech
-            if (statut === "annule" || statut === "cancel") {
-                afficherEchec();
+            if (annule === "1") {
+                afficherAnnule();
                 return;
             }
 
-            // CAS 2 : Retour PayTech avec transaction à vérifier
-            if (transaction) {
-                try {
-                    const response = await fetch(`${BACKEND_URL}/api/paiement/verifier?transaction=${encodeURIComponent(transaction)}`);
-                    const data = await response.json();
+            if (!ref) {
+                window.location.href = "index.html";
+                return;
+            }
 
-                    if (data.statut === "ACCEPTED") {
-                        afficherSucces({
-                            numero: data.numero,
-                            nom: data.nom,
-                            methode: data.methode,
-                            total: data.total,
-                            paye: true
-                        });
-                    } else {
-                        afficherEchec();
-                    }
-                } catch (error) {
-                    console.error("Erreur de vérification du paiement :", error);
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/paiement/statut?ref=${encodeURIComponent(ref)}`);
+                const data = await response.json();
+
+                if (response.status === 404 || data?.statut === "Paiement échoué") {
                     afficherEchec();
+                    return;
                 }
-                return;
-            }
 
-            // CAS 3 : Aucun paramètre → redirection
-            window.location.href = "index.html";
+                if (data?.statut === "Confirmée") {
+                    afficherSucces({
+                        numero: data.numero,
+                        nom: data.nom,
+                        methode: data.modePaiement,
+                        total: data.total
+                    });
+                    return;
+                }
+
+                if (data?.statut === "En attente paiement") {
+                    setTimeout(() => window.location.reload(), 5000);
+                    return;
+                }
+
+                afficherEchec();
+            } catch (error) {
+                console.error("Erreur de vérification du paiement :", error);
+                afficherEchec();
+            }
         });
     </script>
 
