@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin — Kality Care</title>
     <link rel="stylesheet" href="yames.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         .admin-login {
             max-width: 380px;
@@ -275,6 +276,23 @@
             background: #1e8449;
         }
 
+        .btn-imprimer {
+            width: 100%;
+            background: #fff;
+            color: #185FA5;
+            border: 2px solid #185FA5;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .btn-imprimer:hover {
+            background: #f0f6ff;
+        }
+
         .total-commande {
             font-size: 15px;
             font-weight: bold;
@@ -333,6 +351,172 @@
             color: #888;
             margin-top: 3px;
         }
+
+        /* ===== ONGLETS PRINCIPAUX ===== */
+        .main-tabs {
+            display: flex;
+            gap: 4px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            padding: 6px;
+            margin-bottom: 20px;
+            max-width: 420px;
+        }
+
+        .main-tab-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            padding: 10px 14px;
+            background: none;
+            border: none;
+            border-radius: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #888;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .main-tab-btn:hover { background: #f0f4f8; color: #185FA5; }
+        .main-tab-btn.active { background: #185FA5; color: #fff; }
+        .main-tab-btn svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+        .main-tab-panel { display: none; }
+        .main-tab-panel.active { display: block; }
+
+        /* ===== PARTENAIRES ===== */
+        .partner-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .partner-header h2 {
+            color: #185FA5;
+            font-size: 18px;
+        }
+
+        .btn-nouveau-partenaire {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #185FA5;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 7px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-nouveau-partenaire:hover { background: #0C447C; }
+        .btn-nouveau-partenaire svg { width: 15px; height: 15px; }
+
+        .code-badge {
+            display: inline-block;
+            background: #eef3fa;
+            color: #0C447C;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 6px 8px;
+            cursor: pointer;
+            color: #555;
+            margin-right: 4px;
+            display: inline-flex;
+            align-items: center;
+            transition: all 0.15s;
+        }
+
+        .btn-icon svg { width: 14px; height: 14px; }
+        .btn-icon.voir:hover { background: #eef3fa; border-color: #185FA5; color: #185FA5; }
+        .btn-icon.suppr:hover { background: #fdecea; border-color: #e74c3c; color: #e74c3c; }
+
+        .partner-detail-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .partner-detail-stats .stat-card { padding: 12px; }
+        .partner-detail-stats .stat-value { font-size: 20px; }
+
+        .chart-wrap {
+            background: #f9fbfd;
+            border: 1px solid #e8eef5;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 18px;
+        }
+
+        .commission-filtres {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .taux-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1.5px solid #dde4ed;
+            border-radius: 7px;
+            background: #fff;
+            font-weight: 700;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .taux-btn.active {
+            background: #185FA5;
+            border-color: #185FA5;
+            color: #fff;
+        }
+
+        .form-group-admin {
+            margin-bottom: 14px;
+        }
+
+        .form-group-admin label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #0C447C;
+            margin-bottom: 6px;
+        }
+
+        .form-group-admin input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #dde4ed;
+            border-radius: 7px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .form-group-admin input:focus {
+            outline: none;
+            border-color: #185FA5;
+        }
     </style>
 </head>
 
@@ -361,6 +545,19 @@
                 <h1>⚙️ Panel Admin — Hygia</h1>
                 <button class="admin-logout" onclick="logout()">Se déconnecter</button>
             </div>
+
+            <div class="main-tabs">
+                <button class="main-tab-btn active" onclick="switchMainTab('dashboard', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+                    Commandes
+                </button>
+                <button class="main-tab-btn" onclick="switchMainTab('partenaires', this)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><circle cx="17" cy="7" r="3"/><path d="M22 21v-2a3 3 0 0 0-2-2.83"/></svg>
+                    Partenaires
+                </button>
+            </div>
+
+            <div id="main-tab-dashboard" class="main-tab-panel active">
 
             <div class="stats-grid">
                 <div class="stat-card">
@@ -464,6 +661,105 @@
                     </div>
                 </div>
             </div>
+
+            </div>
+            <!-- FIN ONGLET DASHBOARD -->
+
+            <!-- ===== ONGLET PARTENAIRES ===== -->
+            <div id="main-tab-partenaires" class="main-tab-panel">
+                <div class="partner-header">
+                    <h2>Gestion des partenaires</h2>
+                    <button class="btn-nouveau-partenaire" onclick="ouvrirModalPartenaire()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Nouveau partenaire
+                    </button>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="commandes-table">
+                        <thead>
+                            <tr>
+                                <th>Partenaire</th>
+                                <th>Code promo</th>
+                                <th>Commandes</th>
+                                <th>CA généré</th>
+                                <th>Commission</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody-partenaires">
+                            <tr>
+                                <td colspan="7" style="text-align:center;padding:30px;color:#888;">Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL NOUVEAU PARTENAIRE -->
+    <div id="modal-partenaire" class="modal-cmd">
+        <div class="modal-cmd-box">
+            <button class="btn-fermer" onclick="fermerModalPartenaire()">✕</button>
+            <h2 id="modal-partenaire-titre">Nouveau partenaire</h2>
+            <div id="partenaire-message" class="auth-message"></div>
+            <form id="form-partenaire">
+                <div class="form-group-admin">
+                    <label for="partenaire-nom">Nom du partenaire</label>
+                    <input type="text" id="partenaire-nom" required placeholder="Ex : Aïcha Diallo">
+                </div>
+                <div class="form-group-admin">
+                    <label for="partenaire-email">Email (optionnel)</label>
+                    <input type="email" id="partenaire-email" placeholder="Ex : aicha@email.com">
+                </div>
+                <div class="form-group-admin">
+                    <label for="partenaire-telephone">Téléphone (optionnel)</label>
+                    <input type="tel" id="partenaire-telephone" placeholder="Ex : +223 70 00 00 00">
+                </div>
+                <div class="form-group-admin">
+                    <label for="partenaire-code">Code promo</label>
+                    <input type="text" id="partenaire-code" required placeholder="Ex : AICHA10" style="text-transform:uppercase;">
+                </div>
+                <button type="submit" class="btn-sauvegarder">Enregistrer le partenaire</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DÉTAIL PARTENAIRE -->
+    <div id="modal-partenaire-detail" class="modal-cmd">
+        <div class="modal-cmd-box" style="max-width:640px;">
+            <button class="btn-fermer" onclick="fermerDetailPartenaire()">✕</button>
+            <h2 id="detail-partenaire-nom">Partenaire</h2>
+            <div style="margin-bottom:14px;"><span class="code-badge" id="detail-partenaire-code">—</span></div>
+
+            <div class="partner-detail-stats">
+                <div class="stat-card">
+                    <div class="stat-value" id="detail-nb-commandes">0</div>
+                    <div class="stat-label">Commandes</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="detail-total-fcfa" style="font-size:16px;">0 F</div>
+                    <div class="stat-label">CA généré</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="detail-palier">—</div>
+                    <div class="stat-label">Palier atteint</div>
+                </div>
+            </div>
+
+            <div class="chart-wrap">
+                <canvas id="chart-partenaire" height="180"></canvas>
+            </div>
+
+            <div style="font-weight:700;color:#0C447C;font-size:13px;margin-bottom:8px;">Simuler la commission</div>
+            <div class="commission-filtres">
+                <button class="taux-btn" data-taux="3" onclick="simulerCommission(3)">3%</button>
+                <button class="taux-btn" data-taux="5" onclick="simulerCommission(5)">5%</button>
+                <button class="taux-btn" data-taux="10" onclick="simulerCommission(10)">10%</button>
+            </div>
+            <div id="commission-resultat"></div>
         </div>
     </div>
 
@@ -482,6 +778,7 @@
             </select>
             <textarea class="textarea-notes" id="modal-notes" placeholder="Notes internes (optionnel)..."></textarea>
             <button class="btn-sauvegarder" onclick="sauvegarder()">✅ Sauvegarder</button>
+            <button class="btn-imprimer" onclick="imprimerRecu()">🖨️ Imprimer le reçu</button>
         </div>
     </div>
 
@@ -490,6 +787,9 @@
         let pwd = "";
         let commandes = [];
         let numeroCourant = "";
+        let partenaires = [];
+        let detailPartenaireActuel = null;
+        let chartPartenaireInstance = null;
 
         // CONNEXION
         document.getElementById("form-login").addEventListener("submit", async (e) => {
@@ -529,6 +829,17 @@
             document.getElementById("login-screen").style.display = "block";
             document.getElementById("admin-panel").style.display = "none";
             document.getElementById("admin-pwd").value = "";
+        }
+
+        // ONGLETS PRINCIPAUX
+        function switchMainTab(tab, btn) {
+            document.querySelectorAll(".main-tab-btn").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".main-tab-panel").forEach(p => p.classList.remove("active"));
+            btn.classList.add("active");
+            document.getElementById("main-tab-" + tab).classList.add("active");
+            if (tab === "partenaires") {
+                chargerPartenaires();
+            }
         }
 
         // STATS
@@ -736,6 +1047,114 @@
             numeroCourant = "";
         }
 
+        function formaterPrix(montant) {
+            return Number(montant).toLocaleString('fr-FR') + ' FCFA';
+        }
+
+        function imprimerRecu() {
+            const cmd = commandes.find(c => c.numero === numeroCourant);
+            if (!cmd) return;
+
+            const dateFormatee = new Date(cmd.date).toLocaleString('fr-FR', {
+                day: '2-digit', month: '2-digit', year: 'numeric',
+                hour: '2-digit', minute: '2-digit'
+            });
+
+            const lignesHtml = cmd.articles.map(a => `
+                <tr>
+                    <td style="padding:9px 12px;border-bottom:1px solid #e8eef5;font-size:13px;">${a.nom}</td>
+                    <td style="padding:9px 12px;border-bottom:1px solid #e8eef5;text-align:center;font-size:13px;">${a.quantite}</td>
+                    <td style="padding:9px 12px;border-bottom:1px solid #e8eef5;text-align:right;font-size:13px;font-weight:600;color:#185FA5;">${formaterPrix(a.sousTotal || a.prix * a.quantite)}</td>
+                </tr>
+            `).join('');
+
+            const statutCouleurs = {
+                'En attente': { bg: '#fff3cd', color: '#856404' },
+                'Payé non livré': { bg: '#d6eaf8', color: '#1a5276' },
+                'Payé livré': { bg: '#e8f8f5', color: '#117864' },
+                'Annulée': { bg: '#fadbd8', color: '#922b21' }
+            };
+            const sc = statutCouleurs[cmd.statut] || { bg: '#eee', color: '#333' };
+
+            const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Reçu ${cmd.numero}</title>
+<style>
+  @page { margin: 15mm; size: A4; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #fff; margin: 0; padding: 0; color: #333; }
+  * { box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div style="max-width:620px;margin:0 auto;border:1px solid #ddd;border-radius:10px;overflow:hidden;">
+  <div style="background:linear-gradient(135deg,#185FA5,#0e3d6e);padding:28px;text-align:center;">
+    <div style="font-size:30px;font-weight:900;color:#fff;letter-spacing:2px;">HYGIA</div>
+    <div style="color:#a8d0f7;font-size:12px;margin-top:2px;">MATÉRIEL MÉDICAL PROFESSIONNEL — BAMAKO</div>
+    <div style="margin-top:16px;display:inline-block;background:rgba(255,255,255,0.15);border-radius:8px;padding:10px 22px;">
+      <div style="color:#ddeeff;font-size:10px;letter-spacing:1px;">REÇU DE COMMANDE</div>
+      <div style="color:#fff;font-size:20px;font-weight:700;letter-spacing:2px;">${cmd.numero}</div>
+    </div>
+  </div>
+  <div style="padding:20px 24px;background:#f8fbff;border-bottom:1px solid #e8eef5;">
+    <table style="width:100%;border-collapse:collapse;">
+      <tr>
+        <td style="padding:5px 0;font-size:12px;color:#666;">Date</td>
+        <td style="padding:5px 0;font-size:12px;text-align:right;font-weight:600;">${dateFormatee}</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 0;font-size:12px;color:#666;">Mode de paiement</td>
+        <td style="padding:5px 0;font-size:12px;text-align:right;font-weight:600;">${cmd.modePaiement}</td>
+      </tr>
+      <tr>
+        <td style="padding:5px 0;font-size:12px;color:#666;">Statut</td>
+        <td style="padding:5px 0;text-align:right;">
+          <span style="background:${sc.bg};color:${sc.color};font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;">${cmd.statut}</span>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div style="padding:24px;">
+    <p style="margin:0 0 20px;font-size:14px;">Bonjour <strong>${cmd.client.nom}</strong>, voici votre reçu de commande Hygia.</p>
+    <div style="font-size:11px;font-weight:700;color:#185FA5;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;">Articles commandés</div>
+    <table style="width:100%;border-collapse:collapse;border:1px solid #e8eef5;">
+      <thead>
+        <tr style="background:#185FA5;">
+          <th style="padding:9px 12px;text-align:left;font-size:11px;color:#fff;">Produit</th>
+          <th style="padding:9px 12px;text-align:center;font-size:11px;color:#fff;">Qté</th>
+          <th style="padding:9px 12px;text-align:right;font-size:11px;color:#fff;">Montant</th>
+        </tr>
+      </thead>
+      <tbody>${lignesHtml}</tbody>
+    </table>
+    <div style="margin-top:12px;background:#185FA5;border-radius:6px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;">
+      <span style="color:#a8d0f7;font-size:13px;font-weight:600;">TOTAL</span>
+      <span style="color:#fff;font-size:20px;font-weight:800;">${formaterPrix(cmd.total)}</span>
+    </div>
+    <div style="margin-top:20px;border:1px solid #e8eef5;border-radius:8px;padding:14px;">
+      <div style="font-size:11px;font-weight:700;color:#185FA5;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;">Livraison</div>
+      <p style="margin:3px 0;font-size:13px;"><strong>${cmd.client.nom}</strong></p>
+      <p style="margin:3px 0;font-size:13px;color:#555;">${cmd.client.adresse}</p>
+      <p style="margin:3px 0;font-size:13px;color:#555;">Tél : ${cmd.client.telephone}</p>
+      ${cmd.client.email ? `<p style="margin:3px 0;font-size:13px;color:#555;">Email : ${cmd.client.email}</p>` : ''}
+    </div>
+  </div>
+  <div style="background:#f0f4f8;padding:16px;text-align:center;border-top:1px solid #e8eef5;">
+    <p style="margin:0;font-size:11px;color:#888;">Reçu généré par Hygia — Matériel médical professionnel à Bamako, Mali</p>
+    <p style="margin:4px 0 0;font-size:11px;color:#aaa;">© ${new Date().getFullYear()} Hygia</p>
+  </div>
+</div>
+</body>
+</html>`;
+
+            const fenetre = window.open('', '_blank', 'width=700,height=900');
+            fenetre.document.write(html);
+            fenetre.document.close();
+            fenetre.focus();
+            setTimeout(() => { fenetre.print(); }, 400);
+        }
+
         // SAUVEGARDER STATUT
         async function sauvegarder() {
             const statut = document.getElementById("modal-statut").value;
@@ -762,6 +1181,248 @@
             } catch {
                 alert("Impossible de joindre le serveur.");
             }
+        }
+
+        // =========================================================
+        // PARTENAIRES
+        // =========================================================
+
+        function palierAtteint(total) {
+            if (total >= 1000000) return { taux: 10, label: "10%" };
+            if (total >= 500000) return { taux: 5, label: "5%" };
+            return { taux: 3, label: "3%" };
+        }
+
+        function showMsgPartenaire(message, type) {
+            const el = document.getElementById("partenaire-message");
+            if (!el) return;
+            el.textContent = message;
+            el.className = "auth-message " + (type || "");
+            el.style.display = message ? "block" : "none";
+        }
+
+        async function chargerPartenaires() {
+            try {
+                const res = await fetch(`${API}/api/admin/partenaires`, {
+                    headers: { "x-admin-password": pwd }
+                });
+                if (!res.ok) throw new Error("Erreur auth");
+                partenaires = await res.json();
+                afficherPartenaires();
+            } catch {
+                document.getElementById("tbody-partenaires").innerHTML =
+                    `<tr><td colspan="7" style="text-align:center;color:#c0392b;padding:20px;">Erreur de chargement.</td></tr>`;
+            }
+        }
+
+        function afficherPartenaires() {
+            const tbody = document.getElementById("tbody-partenaires");
+            if (!partenaires.length) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:30px;color:#888;">Aucun partenaire. Créez-en un pour commencer.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = "";
+            partenaires.forEach(p => {
+                const date = new Date(p.dateCreation).toLocaleDateString("fr-FR");
+                const statutBadge = p.actif
+                    ? `<span class="statut-badge paye-livre">Actif</span>`
+                    : `<span class="statut-badge annulee">Inactif</span>`;
+                const palier = palierAtteint(p.totalFCFA);
+
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td><strong>${p.nom}</strong>${p.email ? `<br><span style="font-size:12px;color:#888;">${p.email}</span>` : ""}${p.telephone ? `<br><span style="font-size:12px;color:#888;">${p.telephone}</span>` : ""}</td>
+                    <td><span class="code-badge">${p.codePromo}</span></td>
+                    <td>${p.nbCommandes}</td>
+                    <td><strong>${p.totalFCFA.toLocaleString()} F</strong></td>
+                    <td><strong style="color:#185FA5;">${palier.label}</strong><br><span style="font-size:11px;color:#888;">${p.commission.montant.toLocaleString()} F</span></td>
+                    <td>${statutBadge}</td>
+                    <td>
+                        <button class="btn-icon voir" title="Voir le détail" onclick="voirDetailPartenaire('${p._id}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </button>
+                        <button class="btn-icon suppr" title="Supprimer" onclick="supprimerPartenaire('${p._id}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function ouvrirModalPartenaire() {
+            document.getElementById("form-partenaire").reset();
+            showMsgPartenaire("", "");
+            document.getElementById("modal-partenaire").classList.add("active");
+        }
+
+        function fermerModalPartenaire() {
+            document.getElementById("modal-partenaire").classList.remove("active");
+        }
+
+        document.getElementById("form-partenaire").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            showMsgPartenaire("", "");
+
+            const nom = document.getElementById("partenaire-nom").value.trim();
+            const email = document.getElementById("partenaire-email").value.trim();
+            const telephone = document.getElementById("partenaire-telephone").value.trim();
+            const codePromo = document.getElementById("partenaire-code").value.trim().toUpperCase();
+
+            if (!nom || !codePromo) {
+                showMsgPartenaire("Nom et code promo sont obligatoires.", "error");
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API}/api/admin/partenaires`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-admin-password": pwd
+                    },
+                    body: JSON.stringify({ nom, email, telephone, codePromo })
+                });
+
+                const data = await res.json();
+                if (res.ok && data.succes) {
+                    fermerModalPartenaire();
+                    await chargerPartenaires();
+                } else {
+                    showMsgPartenaire(data.erreur || "Erreur lors de la création.", "error");
+                }
+            } catch {
+                showMsgPartenaire("Impossible de joindre le serveur.", "error");
+            }
+        });
+
+        async function supprimerPartenaire(id) {
+            if (!confirm("Supprimer ce partenaire ? Le code promo ne sera plus utilisable.")) return;
+            try {
+                const res = await fetch(`${API}/api/admin/partenaires/${id}`, {
+                    method: "DELETE",
+                    headers: { "x-admin-password": pwd }
+                });
+                if (res.ok) await chargerPartenaires();
+                else alert("Erreur lors de la suppression.");
+            } catch {
+                alert("Impossible de joindre le serveur.");
+            }
+        }
+
+        async function voirDetailPartenaire(id) {
+            try {
+                const res = await fetch(`${API}/api/admin/partenaires/${id}`, {
+                    headers: { "x-admin-password": pwd }
+                });
+                if (!res.ok) throw new Error("Erreur");
+                const data = await res.json();
+                if (!data.succes) throw new Error(data.erreur);
+
+                detailPartenaireActuel = data.partenaire;
+                const p = detailPartenaireActuel;
+                const palier = palierAtteint(p.totalFCFA);
+
+                document.getElementById("detail-partenaire-nom").textContent = p.nom;
+                document.getElementById("detail-partenaire-code").textContent = p.codePromo;
+                document.getElementById("detail-nb-commandes").textContent = p.nbCommandes;
+                document.getElementById("detail-total-fcfa").textContent = p.totalFCFA.toLocaleString() + " F";
+                document.getElementById("detail-palier").innerHTML = `
+                    <span style="color:${palier.taux === 3 ? '#e67e22' : palier.taux === 5 ? '#185FA5' : '#27ae60'};">${palier.label}</span>
+                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;margin-left:4px;vertical-align:middle;color:#27ae60;" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                `;
+
+                document.getElementById("modal-partenaire-detail").classList.add("active");
+                renderChartPartenaire(p.evolutionMensuelle);
+                simulerCommission(palier.taux, true);
+            } catch {
+                alert("Impossible de charger le détail du partenaire.");
+            }
+        }
+
+        function fermerDetailPartenaire() {
+            document.getElementById("modal-partenaire-detail").classList.remove("active");
+            detailPartenaireActuel = null;
+        }
+
+        function simulerCommission(taux, auto = false) {
+            document.querySelectorAll(".taux-btn").forEach(b => b.classList.remove("active"));
+            const btn = document.querySelector(`.taux-btn[data-taux="${taux}"]`);
+            if (btn) btn.classList.add("active");
+
+            if (!detailPartenaireActuel) return;
+            const total = detailPartenaireActuel.totalFCFA;
+            const montant = Math.round(total * taux / 100);
+            const palier = palierAtteint(total);
+            const estPalierActuel = palier.taux === taux;
+
+            document.getElementById("commission-resultat").innerHTML = `
+                <div style="margin-top:10px;background:#fff;border:1px solid #e8eef5;border-radius:8px;padding:12px;">
+                    <div style="font-size:13px;color:#555;">Commission à <strong>${taux}%</strong> sur <strong>${total.toLocaleString()} F</strong></div>
+                    <div style="font-size:22px;font-weight:800;color:#185FA5;margin-top:4px;">${montant.toLocaleString()} FCFA</div>
+                    ${estPalierActuel ? `<div style="font-size:12px;color:#27ae60;margin-top:4px;">
+                        <svg viewBox="0 0 24 24" style="width:13px;height:13px;vertical-align:middle;" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        Palier actuellement atteint
+                    </div>` : ""}
+                </div>
+            `;
+        }
+
+        function renderChartPartenaire(evolution) {
+            const ctx = document.getElementById("chart-partenaire").getContext("2d");
+            if (chartPartenaireInstance) chartPartenaireInstance.destroy();
+
+            const labels = evolution.length ? evolution.map(e => e.mois) : ["Aucune donnée"];
+            const dataTotal = evolution.length ? evolution.map(e => e.total) : [0];
+            const dataNb = evolution.length ? evolution.map(e => e.nb) : [0];
+
+            chartPartenaireInstance = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: "CA mensuel (FCFA)",
+                            data: dataTotal,
+                            backgroundColor: "#185FA5",
+                            borderRadius: 5,
+                            yAxisID: "y"
+                        },
+                        {
+                            label: "Commandes",
+                            data: dataNb,
+                            type: "line",
+                            borderColor: "#27ae60",
+                            backgroundColor: "#27ae60",
+                            borderWidth: 2,
+                            pointRadius: 3,
+                            yAxisID: "y1",
+                            tension: 0.3
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: "top", labels: { font: { size: 11 } } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            position: "left",
+                            title: { display: true, text: "FCFA" }
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: "right",
+                            grid: { drawOnChartArea: false },
+                            title: { display: true, text: "Commandes" }
+                        }
+                    }
+                }
+            });
         }
     </script>
 

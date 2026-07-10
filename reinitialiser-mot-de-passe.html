@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="yames.css">
+    <script src="yames.js" defer></script>
+    <title>Nouveau mot de passe — Hygia</title>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-left">
+            <a href="index.html">
+                <img src="img/hygia_logo_transparent.png" alt="Hygia">
+            </a>
+        </div>
+        <div class="nav-center">
+            <a href="index.html">Accueil</a>
+            <a href="catalogue.html">Catalogue</a>
+            <a href="apropos.html">À propos</a>
+            <a href="professionnels.html">Professionnels</a>
+            <a href="contact.html">Contact</a>
+        </div>
+        <div class="nav-right">
+            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="panier.html">Panier <span id="cart-count">0</span></a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="auth-page">
+            <div class="auth-box">
+                <div style="text-align:center;margin-bottom:16px;font-size:40px;">🔑</div>
+                <h1>Nouveau mot de passe</h1>
+                <p class="auth-subtitle">Choisissez un nouveau mot de passe pour votre compte Hygia.</p>
+
+                <div id="auth-message" class="auth-message"></div>
+
+                <form id="form-reset" class="auth-form">
+                    <label for="password">Nouveau mot de passe</label>
+                    <input type="password" id="password" placeholder="Au moins 6 caractères" required minlength="6">
+
+                    <label for="password2">Confirmer le mot de passe</label>
+                    <input type="password" id="password2" placeholder="Répétez le mot de passe" required minlength="6">
+
+                    <button type="submit" id="btn-reset">Enregistrer le nouveau mot de passe</button>
+                </form>
+
+                <div id="lien-expire" style="display:none;text-align:center;">
+                    <p style="color:#c0392b;margin-bottom:12px;">Ce lien est invalide ou a expiré.</p>
+                    <a href="mot-de-passe-oublie.html" class="auth-switch">Faire une nouvelle demande →</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-legal">
+            <a href="politique-confidentialite.html">Politique de confidentialité</a>
+            <a href="mentions-legales.html">Mentions légales</a>
+        </div>
+        <p>&copy; 2026 Hygia. Tous droits réservés.</p>
+    </footer>
+
+    <script>
+        const BACKEND_URL_LOCAL = "https://nslookup-cluster1-bydepfo-mongodb-net-1.onrender.com";
+
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+
+        if (!token) {
+            document.getElementById("form-reset").style.display = "none";
+            document.getElementById("lien-expire").style.display = "block";
+        }
+
+        document.getElementById("form-reset").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const password = document.getElementById("password").value;
+            const password2 = document.getElementById("password2").value;
+            const msg = document.getElementById("auth-message");
+            const btn = document.getElementById("btn-reset");
+
+            if (password !== password2) {
+                msg.textContent = "Les mots de passe ne correspondent pas.";
+                msg.className = "auth-message error";
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Enregistrement...";
+            msg.textContent = "";
+            msg.className = "auth-message";
+
+            try {
+                const res = await fetch(`${BACKEND_URL_LOCAL}/api/auth/reinitialiser-mot-de-passe`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token, nouveauMotDePasse: password })
+                });
+                const data = await res.json();
+
+                if (data.succes) {
+                    msg.textContent = "Mot de passe mis à jour ! Vous allez être redirigé...";
+                    msg.className = "auth-message success";
+                    document.getElementById("form-reset").style.display = "none";
+                    setTimeout(() => { window.location.href = "connexion.html"; }, 2000);
+                } else {
+                    msg.textContent = data.erreur || "Lien invalide ou expiré.";
+                    msg.className = "auth-message error";
+                    if (data.erreur && data.erreur.includes("expiré")) {
+                        document.getElementById("form-reset").style.display = "none";
+                        document.getElementById("lien-expire").style.display = "block";
+                    }
+                    btn.disabled = false;
+                    btn.textContent = "Enregistrer le nouveau mot de passe";
+                }
+            } catch {
+                msg.textContent = "Impossible de joindre le serveur. Réessayez.";
+                msg.className = "auth-message error";
+                btn.disabled = false;
+                btn.textContent = "Enregistrer le nouveau mot de passe";
+            }
+        });
+    </script>
+
+</body>
+</html>

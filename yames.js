@@ -151,6 +151,37 @@ function clearAppliedCoupon() {
     localStorage.removeItem(PROMO_APPLIED_KEY);
 }
 
+const PARTNER_COUPON_KEY = "partenaireCoupon";
+
+function getPartnerCoupon() {
+    const raw = localStorage.getItem(PARTNER_COUPON_KEY);
+    if (!raw) return null;
+    try { return JSON.parse(raw); } catch { return null; }
+}
+
+function setPartnerCoupon(code, reduction) {
+    localStorage.setItem(PARTNER_COUPON_KEY, JSON.stringify({ code: code.toUpperCase(), reduction }));
+}
+
+function clearPartnerCoupon() {
+    localStorage.removeItem(PARTNER_COUPON_KEY);
+}
+
+async function validerCodePartenaire(code) {
+    try {
+        const res = await fetch(`${BACKEND_URL}/api/verifier-code-promo`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code })
+        });
+        const data = await res.json();
+        return data;
+    } catch (err) {
+        console.error("Erreur validation code partenaire :", err);
+        return { valide: false };
+    }
+}
+
 function setCouponFeedback(message, type = "info") {
     lastCouponFeedback = { message, type };
 }
@@ -207,6 +238,21 @@ function getPanierSubtotal() {
 
 function getCartTotals() {
     const subtotal = getPanierSubtotal();
+
+    const partnerCoupon = getPartnerCoupon();
+    if (partnerCoupon) {
+        const discount = Math.floor(subtotal * partnerCoupon.reduction / 100);
+        const total = Math.max(0, subtotal - discount);
+        return {
+            subtotal,
+            discount,
+            shipping: 0,
+            total,
+            couponApplied: true,
+            partnerCoupon
+        };
+    }
+
     const couponApplied = getAppliedCoupon() === PROMO_CODE && isPromoActive();
     const discount = couponApplied ? Math.floor(subtotal * PROMO_PERCENT / 100) : 0;
     const total = Math.max(0, subtotal - discount);
@@ -216,7 +262,8 @@ function getCartTotals() {
         discount,
         shipping: couponApplied ? 0 : "À calculer",
         total,
-        couponApplied
+        couponApplied,
+        partnerCoupon: null
     };
 }
 
@@ -670,6 +717,9 @@ function mettreAJourResumePanier() {
         if (lastCouponFeedback.message) {
             couponMessage.textContent = lastCouponFeedback.message;
             couponMessage.className = "coupon-message " + (lastCouponFeedback.type === "success" ? "success" : "error");
+        } else if (totals.partnerCoupon) {
+            couponMessage.textContent = `Code partenaire ${totals.partnerCoupon.code} appliqué : ${totals.partnerCoupon.reduction}% de réduction + livraison gratuite.`;
+            couponMessage.className = "coupon-message success";
         } else if (totals.couponApplied) {
             couponMessage.textContent = `Code ${PROMO_CODE} appliqué : ${PROMO_PERCENT}% de réduction + livraison gratuite.`;
             couponMessage.className = "coupon-message success";
@@ -862,7 +912,9 @@ async function confirmerCommande(methode) {
         };
     });
 
-    const total = articles.reduce((sum, a) => sum + a.sousTotal, 0);
+    const sousTotalArticles = articles.reduce((sum, a) => sum + a.sousTotal, 0);
+    const totals = getCartTotals();
+    const partnerCoupon = getPartnerCoupon();
 
     const libelles = {
         orange: "Orange Money",
@@ -880,20 +932,26 @@ async function confirmerCommande(methode) {
     // ÉTAPE 1 : Créer la commande dans MongoDB
     let numeroCommande = "";
     try {
+        const payload = {
+            client: {
+                nom: nomClient,
+                telephone: telClient,
+                adresse: adresseClient,
+                email: emailClient || getUtilisateurConnecte()?.email || ""
+            },
+            articles,
+            total: totals.total,
+            sousTotal: sousTotalArticles,
+            modePaiement: libelles[methode] || methode
+        };
+        if (partnerCoupon) {
+            payload.codePromoPartenaire = partnerCoupon.code;
+        }
+
         const res = await fetch(`${BACKEND_URL}/api/commandes`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                client: {
-                    nom: nomClient,
-                    telephone: telClient,
-                    adresse: adresseClient,
-                    email: emailClient || getUtilisateurConnecte()?.email || ""
-                },
-                articles,
-                total,
-                modePaiement: libelles[methode] || methode
-            })
+            body: JSON.stringify(payload)
         });
         const data = await res.json();
         numeroCommande = data.numero || "";
@@ -1464,7 +1522,15 @@ function initFormulairesCompte(utilisateur) {
     }
 }
 
-function afficherPageCompte() {
+function afficherOnglet(onglet, btnClique) {
+    document.querySelectorAll(".compte-tab-panel").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".compte-tab-btn").forEach(b => b.classList.remove("active"));
+    const panel = document.getElementById("tab-" + onglet);
+    if (panel) panel.classList.add("active");
+    if (btnClique) btnClique.classList.add("active");
+}
+
+async function afficherPageCompte() {
     const blocConnecte = document.getElementById("compte-connecte");
     const blocNonConnecte = document.getElementById("compte-non-connecte");
     if (!blocConnecte || !blocNonConnecte) return;
@@ -1544,36 +1610,16 @@ function afficherPageCompte() {
         });
     }
 
-    const historique = JSON.parse(localStorage.getItem("historiqueCommandes") || "[]");
-    const commandesUtilisateur = historique.filter(cmd => cmd.email === utilisateur.email);
-
-    // Stats
-    const statCmds = document.getElementById("stat-total-cmds");
-    const statDerniere = document.getElementById("stat-derniere");
-    if (statCmds) statCmds.textContent = commandesUtilisateur.length;
-    if (statDerniere && commandesUtilisateur.length > 0) {
-        statDerniere.textContent = commandesUtilisateur[commandesUtilisateur.length - 1].date;
-    }
-
-    // Historique
     const historiqueContainer = document.getElementById("historique-commandes");
     if (!historiqueContainer) return;
 
-    if (commandesUtilisateur.length === 0) {
-        historiqueContainer.innerHTML = `
-            <div class="historique-vide">
-                <div class="vide-icon">📦</div>
-                <p>Vous n'avez pas encore passé de commande.</p>
-                <a href="catalogue.html">Découvrir le catalogue</a>
-            </div>`;
-        return;
-    }
+    historiqueContainer.innerHTML = `<div style="text-align:center;padding:30px;color:#888;font-size:14px;">Chargement de vos commandes...</div>`;
 
     const statutClasse = (s) => {
         if (!s) return "en-attente";
         const val = s.toLowerCase();
         if (val.includes("livr")) return "livree";
-        if (val.includes("confirm")) return "confirmee";
+        if (val.includes("pay")) return "confirmee";
         if (val.includes("annul")) return "annulee";
         return "en-attente";
     };
@@ -1586,33 +1632,62 @@ function afficherPageCompte() {
         return "💳";
     };
 
-    historiqueContainer.innerHTML = "";
-    commandesUtilisateur.slice().reverse().forEach((commande, index) => {
-        const div = document.createElement("div");
-        div.className = "commande-card";
-        const numero = commande.numero || ("#" + String(commandesUtilisateur.length - index).padStart(3, "0"));
-        const itemsHtml = commande.articles.map(a => `
-            <div class="article-ligne">
-                <span class="art-nom">${escapeHtml(a.nom)}</span>
-                <span class="art-qty">x${a.quantite}</span>
-            </div>`).join("");
+    try {
+        const res = await fetch(`${BACKEND_URL}/api/mes-commandes?email=${encodeURIComponent(utilisateur.email)}`);
+        const data = await res.json();
 
-        div.innerHTML = `
-            <div class="commande-card-header">
-                <span class="cmd-num">Commande ${escapeHtml(numero)}</span>
-                <span class="cmd-date">📅 ${escapeHtml(commande.date)}</span>
-                <span class="statut-badge ${statutClasse(commande.statut)}">${escapeHtml(commande.statut || "En attente")}</span>
-            </div>
-            <div class="commande-card-body">
-                <div class="commande-articles">${itemsHtml}</div>
-            </div>
-            <div class="commande-card-footer">
-                <span class="commande-mode-paiement">${iconeMode(commande.modePaiement)} ${escapeHtml(commande.modePaiement || "—")}</span>
-                <span class="commande-total-amount">${(commande.total || 0).toLocaleString()} FCFA</span>
-            </div>`;
+        const commandes = (data.succes && data.commandes) ? data.commandes : [];
 
-        historiqueContainer.appendChild(div);
-    });
+        // Stats
+        const statCmds = document.getElementById("stat-total-cmds");
+        const statDerniere = document.getElementById("stat-derniere");
+        if (statCmds) statCmds.textContent = commandes.length;
+        if (statDerniere && commandes.length > 0) {
+            const d = new Date(commandes[0].date);
+            statDerniere.textContent = d.toLocaleDateString("fr-FR");
+        }
+
+        if (commandes.length === 0) {
+            historiqueContainer.innerHTML = `
+                <div class="historique-vide">
+                    <div class="vide-icon">📦</div>
+                    <p>Vous n'avez pas encore passé de commande.</p>
+                    <a href="catalogue.html">Découvrir le catalogue</a>
+                </div>`;
+            return;
+        }
+
+        historiqueContainer.innerHTML = "";
+        commandes.forEach((commande) => {
+            const div = document.createElement("div");
+            div.className = "commande-card";
+            const date = new Date(commande.date).toLocaleDateString("fr-FR");
+            const itemsHtml = commande.articles.map(a => `
+                <div class="article-ligne">
+                    <span class="art-nom">${escapeHtml(a.nom)}</span>
+                    <span class="art-qty">x${a.quantite}</span>
+                </div>`).join("");
+
+            div.innerHTML = `
+                <div class="commande-card-header">
+                    <span class="cmd-num">Commande ${escapeHtml(commande.numero)}</span>
+                    <span class="cmd-date">📅 ${date}</span>
+                    <span class="statut-badge ${statutClasse(commande.statut)}">${escapeHtml(commande.statut || "En attente")}</span>
+                </div>
+                <div class="commande-card-body">
+                    <div class="commande-articles">${itemsHtml}</div>
+                </div>
+                <div class="commande-card-footer">
+                    <span class="commande-mode-paiement">${iconeMode(commande.modePaiement)} ${escapeHtml(commande.modePaiement || "—")}</span>
+                    <span class="commande-total-amount">${(commande.total || 0).toLocaleString()} FCFA</span>
+                </div>`;
+
+            historiqueContainer.appendChild(div);
+        });
+    } catch (err) {
+        console.error("Erreur chargement commandes :", err);
+        historiqueContainer.innerHTML = `<div style="text-align:center;padding:30px;color:#c0392b;font-size:14px;">Impossible de charger vos commandes.</div>`;
+    }
 }
 
 function enregistrerCommande(panier, methode, total) {
@@ -1857,8 +1932,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const couponMessage = document.getElementById("coupon-message");
 
     if (couponButton && couponInput) {
-        couponButton.addEventListener("click", () => {
-            const resultat = applyCoupon(couponInput.value);
+        couponButton.addEventListener("click", async () => {
+            const code = couponInput.value.trim();
+            const normalise = code.toUpperCase();
+
+            // On efface d'abord tout ancien code partenaire
+            clearPartnerCoupon();
+            clearAppliedCoupon();
+
+            // Vérifier si c'est un code partenaire actif
+            const validationPartenaire = await validerCodePartenaire(code);
+            if (validationPartenaire.valide) {
+                setPartnerCoupon(code, validationPartenaire.reduction);
+                lastCouponFeedback = {
+                    message: `Code partenaire ${normalise} appliqué : ${validationPartenaire.reduction}% de réduction + livraison gratuite.`,
+                    type: "success"
+                };
+                afficherPanier();
+                return;
+            }
+
+            // Sinon fallback sur le code promo interne YAMES9
+            const resultat = applyCoupon(code);
             lastCouponFeedback = {
                 message: resultat.message,
                 type: resultat.success ? "success" : "error"
