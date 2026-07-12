@@ -795,6 +795,7 @@
         document.getElementById("form-login").addEventListener("submit", async (e) => {
             e.preventDefault();
             pwd = document.getElementById("admin-pwd").value;
+            showSyphaLoader("Connexion admin...");
 
             try {
                 const res = await fetch(`${API}/api/admin/stats`, {
@@ -802,6 +803,7 @@
                 });
 
                 if (res.status === 401) {
+                    hideSyphaLoader();
                     showMsg("Mot de passe incorrect.", "error");
                     return;
                 }
@@ -814,6 +816,8 @@
                 chargerCommandes();
             } catch {
                 showMsg("Impossible de joindre le serveur. Vérifiez que le backend tourne sur le port 3000.", "error");
+            } finally {
+                hideSyphaLoader();
             }
         });
 
@@ -821,6 +825,29 @@
             const el = document.getElementById("login-msg");
             el.textContent = txt;
             el.className = "auth-message " + type;
+        }
+
+        // Loader Sypha
+        function showSyphaLoader(text = "Chargement...") {
+            let overlay = document.getElementById("sypha-overlay");
+            if (!overlay) {
+                overlay = document.createElement("div");
+                overlay.id = "sypha-overlay";
+                overlay.className = "sypha-overlay";
+                overlay.innerHTML = `
+                    <div class="sypha-loader"></div>
+                    <div class="sypha-text">${text}</div>
+                `;
+                document.body.appendChild(overlay);
+            } else {
+                overlay.querySelector(".sypha-text").textContent = text;
+                overlay.classList.remove("hidden");
+            }
+        }
+
+        function hideSyphaLoader() {
+            const overlay = document.getElementById("sypha-overlay");
+            if (overlay) overlay.classList.add("hidden");
         }
 
         function logout() {
@@ -854,6 +881,7 @@
 
         // CHARGER COMMANDES
         async function chargerCommandes() {
+            showSyphaLoader("Chargement des commandes...");
             try {
                 const res = await fetch(`${API}/api/admin/commandes`, {
                     headers: { "x-admin-password": pwd }
@@ -864,6 +892,8 @@
             } catch {
                 document.getElementById("tbody-commandes").innerHTML =
                     `<tr><td colspan="8" style="text-align:center;color:#c0392b;padding:20px;">Erreur de chargement.</td></tr>`;
+            } finally {
+                hideSyphaLoader();
             }
         }
 
@@ -1160,6 +1190,7 @@
             const statut = document.getElementById("modal-statut").value;
             const notes = document.getElementById("modal-notes").value;
 
+            showSyphaLoader("Sauvegarde du statut...");
             try {
                 const res = await fetch(`${API}/api/admin/commandes/${numeroCourant}/statut`, {
                     method: "PATCH",
@@ -1180,6 +1211,8 @@
                 }
             } catch {
                 alert("Impossible de joindre le serveur.");
+            } finally {
+                hideSyphaLoader();
             }
         }
 
@@ -1203,6 +1236,7 @@
 
         async function chargerPartenaires() {
             const tbody = document.getElementById("tbody-partenaires");
+            showSyphaLoader("Chargement des partenaires...");
             try {
                 const res = await fetch(`${API}/api/admin/partenaires`, {
                     headers: { "x-admin-password": pwd }
@@ -1219,6 +1253,8 @@
             } catch (err) {
                 console.error("chargerPartenaires:", err);
                 tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:#c0392b;padding:20px;">${err.message || "Erreur de chargement."}</td></tr>`;
+            } finally {
+                hideSyphaLoader();
             }
         }
 
@@ -1282,6 +1318,7 @@
                 return;
             }
 
+            showSyphaLoader("Création du partenaire...");
             try {
                 const res = await fetch(`${API}/api/admin/partenaires`, {
                     method: "POST",
@@ -1304,11 +1341,14 @@
             } catch (err) {
                 console.error("enregistrerPartenaire:", err);
                 showMsgPartenaire("Impossible de joindre le serveur.", "error");
+            } finally {
+                hideSyphaLoader();
             }
         });
 
         async function supprimerPartenaire(id) {
             if (!confirm("Supprimer ce partenaire ? Le code promo ne sera plus utilisable.")) return;
+            showSyphaLoader("Suppression du partenaire...");
             try {
                 const res = await fetch(`${API}/api/admin/partenaires/${id}`, {
                     method: "DELETE",
@@ -1318,10 +1358,13 @@
                 else alert("Erreur lors de la suppression.");
             } catch {
                 alert("Impossible de joindre le serveur.");
+            } finally {
+                hideSyphaLoader();
             }
         }
 
         async function voirDetailPartenaire(id) {
+            showSyphaLoader("Chargement du détail...");
             try {
                 const res = await fetch(`${API}/api/admin/partenaires/${id}`, {
                     headers: { "x-admin-password": pwd }
@@ -1348,6 +1391,8 @@
                 simulerCommission(palier.taux, true);
             } catch {
                 alert("Impossible de charger le détail du partenaire.");
+            } finally {
+                hideSyphaLoader();
             }
         }
 

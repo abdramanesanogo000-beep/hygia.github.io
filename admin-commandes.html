@@ -381,8 +381,32 @@
             window.location.href = "admin.html";
         }
 
+        // Loader Sypha
+        function showSyphaLoader(text = "Chargement...") {
+            let overlay = document.getElementById("sypha-overlay");
+            if (!overlay) {
+                overlay = document.createElement("div");
+                overlay.id = "sypha-overlay";
+                overlay.className = "sypha-overlay";
+                overlay.innerHTML = `
+                    <div class="sypha-loader"></div>
+                    <div class="sypha-text">${text}</div>
+                `;
+                document.body.appendChild(overlay);
+            } else {
+                overlay.querySelector(".sypha-text").textContent = text;
+                overlay.classList.remove("hidden");
+            }
+        }
+
+        function hideSyphaLoader() {
+            const overlay = document.getElementById("sypha-overlay");
+            if (overlay) overlay.classList.add("hidden");
+        }
+
         // CHARGER COMMANDES
         async function chargerCommandes() {
+            showSyphaLoader("Chargement des commandes...");
             try {
                 const res = await fetch(`${API}/api/admin/commandes`, {
                     headers: { "x-admin-password": pwd }
@@ -392,6 +416,8 @@
             } catch {
                 document.getElementById("tbody-commandes").innerHTML =
                     `<tr><td colspan="8" style="text-align:center;color:#c0392b;padding:20px;">Erreur de chargement.</td></tr>`;
+            } finally {
+                hideSyphaLoader();
             }
         }
 
@@ -637,6 +663,7 @@
             const statut = document.getElementById("modal-statut").value;
             const notes = document.getElementById("modal-notes").value;
 
+            showSyphaLoader("Sauvegarde du statut...");
             try {
                 const res = await fetch(`${API}/api/admin/commandes/${numeroCourant}/statut`, {
                     method: "PATCH",
@@ -655,6 +682,8 @@
                 }
             } catch {
                 alert("Impossible de joindre le serveur.");
+            } finally {
+                hideSyphaLoader();
             }
         }
 

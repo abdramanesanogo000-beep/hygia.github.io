@@ -63,7 +63,8 @@ function escapeHtml(valeur) {
 const MODES_PAIEMENT_LABELS = {
     orange: "Orange Money",
     wave: "Wave",
-    carte: "Carte bancaire"
+    carte: "Carte bancaire",
+    livraison: "À la livraison"
 };
 
 // Notification non bloquante (remplace les alert() bloquants)
@@ -157,6 +158,29 @@ function getPartnerCoupon() {
     const raw = localStorage.getItem(PARTNER_COUPON_KEY);
     if (!raw) return null;
     try { return JSON.parse(raw); } catch { return null; }
+}
+
+// Animation de chargement Sypha (overlay global)
+function showSyphaLoader(text = "Chargement...") {
+    let overlay = document.getElementById("sypha-overlay");
+    if (!overlay) {
+        overlay = document.createElement("div");
+        overlay.id = "sypha-overlay";
+        overlay.className = "sypha-overlay";
+        overlay.innerHTML = `
+            <div class="sypha-loader"></div>
+            <div class="sypha-text">${text}</div>
+        `;
+        document.body.appendChild(overlay);
+    } else {
+        overlay.querySelector(".sypha-text").textContent = text;
+        overlay.classList.remove("hidden");
+    }
+}
+
+function hideSyphaLoader() {
+    const overlay = document.getElementById("sypha-overlay");
+    if (overlay) overlay.classList.add("hidden");
 }
 
 function setPartnerCoupon(code, reduction) {
@@ -805,13 +829,34 @@ function getDetailsPaiement(methode, total) {
     const libelles = {
         orange: "Orange Money",
         wave: "Wave",
-        carte: "Carte bancaire Visa / Mastercard"
+        carte: "Carte bancaire Visa / Mastercard",
+        livraison: "À la livraison"
     };
     const logos = {
         orange: "img/logo Orange.png",
         wave: "img/logo wave.png",
-        carte: "img/logo visa-mastercard.png"
+        carte: "img/logo visa-mastercard.png",
+        livraison: "img/delivery-truck.png"
     };
+
+    if (methode === "livraison") {
+        return `
+            <div style="text-align:center; padding: 10px 0;">
+                <div style="font-size:42px; margin-bottom:10px;">🚚</div>
+                <p style="font-size:14px; color:#555; margin-bottom:12px;">
+                    Vous avez choisi de payer <strong>${total.toLocaleString()} FCFA</strong>
+                    à la livraison de votre commande.
+                </p>
+                <p style="font-size:12px; color:#888;">
+                    Préparez le montant exact. Notre livreur vous contactera avant l'envoi.
+                </p>
+                <button class="btn-confirmer" style="margin-top:14px;">
+                    Confirmer ma commande
+                </button>
+            </div>
+        `;
+    }
+
     const logo = logos[methode] ? `<img src="${logos[methode]}" alt="${libelles[methode]}" style="height:36px;object-fit:contain;margin-bottom:10px;">` : "";
     return `
         <div style="text-align:center; padding: 10px 0;">
@@ -915,19 +960,17 @@ async function confirmerCommande(methode) {
     const sousTotalArticles = articles.reduce((sum, a) => sum + a.sousTotal, 0);
     const totals = getCartTotals();
     const partnerCoupon = getPartnerCoupon();
+    const isLivraison = methode === "livraison";
 
-    const libelles = {
-        orange: "Orange Money",
-        wave: "Wave",
-        carte: "Carte bancaire Visa/Mastercard"
-    };
-
-    // Feedback visuel sur le bouton
+    // Feedback visuel sur le bouton + loader Sypha
     const btnConfirmer = document.querySelector(".btn-confirmer");
     if (btnConfirmer) {
-        btnConfirmer.textContent = "⏳ Redirection vers le paiement...";
+        btnConfirmer.textContent = isLivraison
+            ? "⏳ Validation de votre commande..."
+            : "⏳ Redirection vers le paiement...";
         btnConfirmer.disabled = true;
     }
+    showSyphaLoader(isLivraison ? "Validation de votre commande..." : "Redirection vers le paiement...");
 
     // ÉTAPE 1 : Créer la commande dans MongoDB
     let numeroCommande = "";
@@ -942,7 +985,7 @@ async function confirmerCommande(methode) {
             articles,
             total: totals.total,
             sousTotal: sousTotalArticles,
-            modePaiement: libelles[methode] || methode
+            modePaiement: MODES_PAIEMENT_LABELS[methode] || methode
         };
         if (partnerCoupon) {
             payload.codePromoPartenaire = partnerCoupon.code;
@@ -955,8 +998,28 @@ async function confirmerCommande(methode) {
         });
         const data = await res.json();
         numeroCommande = data.numero || "";
+
+        if (!numeroCommande) {
+            throw new Error("Numéro de commande non reçu");
+        }
     } catch (err) {
         console.warn("Impossible de créer la commande:", err);
+        hideSyphaLoader();
+        alert("Impossible d'enregistrer la commande. Veuillez réessayer.");
+        if (btnConfirmer) {
+            btnConfirmer.textContent = "Confirmer ma commande";
+            btnConfirmer.disabled = false;
+        }
+        return;
+    }
+
+    // Paiement à la livraison : pas d'appel PayTech, on confirme directement
+    if (isLivraison) {
+        enregistrerCommande(panier, methode, totals.total);
+        savePanier([]);
+        mettreAJourCompteurPanier();
+        window.location.href = `commande-confirmee.html?numero=${numeroCommande}`;
+        return;
     }
 
     // ÉTAPE 2 : Initier le paiement PayTech
@@ -966,7 +1029,7 @@ async function confirmerCommande(methode) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 commande_id: numeroCommande,
-                montant: Math.round(total),
+                montant: Math.round(totals.total),
                 client: {
                     nom: nomClient,
                     telephone: telClient,
@@ -981,7 +1044,7 @@ async function confirmerCommande(methode) {
 
         if (data.succes && data.redirect_url) {
             // Sauvegarder dans l'historique local avant redirection
-            enregistrerCommande(panier, methode, total);
+            enregistrerCommande(panier, methode, totals.total);
             savePanier([]);
             mettreAJourCompteurPanier();
 
@@ -990,6 +1053,7 @@ async function confirmerCommande(methode) {
             return;
 
         } else {
+            hideSyphaLoader();
             alert(
                 "Impossible d'initialiser le paiement.\n" +
                 "Veuillez réessayer ou nous contacter sur WhatsApp."
@@ -1001,6 +1065,7 @@ async function confirmerCommande(methode) {
         }
 
     } catch (err) {
+        hideSyphaLoader();
         console.error("Erreur PayTech:", err);
         alert(
             "Le service de paiement est temporairement indisponible.\n" +
@@ -1245,6 +1310,7 @@ function deconnecterUtilisateur() {
 }
 
 async function inscrireUtilisateur(nom, telephone, email, motdepasse) {
+    showSyphaLoader("Création de votre compte...");
     try {
         const response = await fetch(`${BACKEND_URL}/api/auth/inscription`, {
             method: "POST",
@@ -1267,10 +1333,13 @@ async function inscrireUtilisateur(nom, telephone, email, motdepasse) {
     } catch (error) {
         console.error("Erreur inscription :", error);
         return { succes: false, message: "Impossible de créer le compte. Vérifiez votre connexion." };
+    } finally {
+        hideSyphaLoader();
     }
 }
 
 async function connecterUtilisateur(email, motdepasse) {
+    showSyphaLoader("Connexion en cours...");
     try {
         const response = await fetch(`${BACKEND_URL}/api/auth/connexion`, {
             method: "POST",
@@ -1293,6 +1362,8 @@ async function connecterUtilisateur(email, motdepasse) {
     } catch (error) {
         console.error("Erreur connexion :", error);
         return { succes: false, message: "Impossible de se connecter. Vérifiez votre connexion." };
+    } finally {
+        hideSyphaLoader();
     }
 }
 
@@ -1429,6 +1500,7 @@ function initFormulairesCompte(utilisateur) {
         formProfil.addEventListener("submit", async (e) => {
             e.preventDefault();
             cacherMessageCompte("profil-message");
+            showSyphaLoader("Mise à jour du profil...");
 
             const nom = document.getElementById("profil-nom").value.trim();
             const telephone = document.getElementById("profil-telephone").value.trim();
@@ -1471,6 +1543,8 @@ function initFormulairesCompte(utilisateur) {
             } catch (error) {
                 console.error("Erreur mise à jour profil :", error);
                 afficherMessageCompte("profil-message", "Erreur réseau. Vérifiez votre connexion.", "error");
+            } finally {
+                hideSyphaLoader();
             }
         });
     }
@@ -1494,6 +1568,7 @@ function initFormulairesCompte(utilisateur) {
                 return;
             }
 
+            showSyphaLoader("Modification du mot de passe...");
             try {
                 const response = await fetch(`${BACKEND_URL}/api/auth/motdepasse`, {
                     method: "PATCH",
@@ -1517,6 +1592,8 @@ function initFormulairesCompte(utilisateur) {
             } catch (error) {
                 console.error("Erreur changement mot de passe :", error);
                 afficherMessageCompte("password-message", "Erreur réseau. Vérifiez votre connexion.", "error");
+            } finally {
+                hideSyphaLoader();
             }
         });
     }
@@ -1587,6 +1664,7 @@ async function afficherPageCompte() {
             const motdepasse = window.prompt("Veuillez entrer votre mot de passe pour confirmer la suppression :");
             if (!motdepasse) return;
 
+            showSyphaLoader("Suppression du compte...");
             try {
                 const response = await fetch(`${BACKEND_URL}/api/auth/supprimer`, {
                     method: "DELETE",
@@ -1606,6 +1684,8 @@ async function afficherPageCompte() {
             } catch (error) {
                 console.error("Erreur suppression compte :", error);
                 afficherToast("Erreur réseau lors de la suppression.", "error");
+            } finally {
+                hideSyphaLoader();
             }
         });
     }
@@ -1629,9 +1709,11 @@ async function afficherPageCompte() {
         const m = mode.toLowerCase();
         if (m.includes("orange")) return "🟠";
         if (m.includes("wave")) return "🔵";
-        return "💳";
+        if (m.includes("livraison")) return "�";
+        return "�";
     };
 
+    showSyphaLoader("Chargement de vos commandes...");
     try {
         const res = await fetch(`${BACKEND_URL}/api/mes-commandes?email=${encodeURIComponent(utilisateur.email)}`);
         const data = await res.json();
@@ -1687,6 +1769,8 @@ async function afficherPageCompte() {
     } catch (err) {
         console.error("Erreur chargement commandes :", err);
         historiqueContainer.innerHTML = `<div style="text-align:center;padding:30px;color:#c0392b;font-size:14px;">Impossible de charger vos commandes.</div>`;
+    } finally {
+        hideSyphaLoader();
     }
 }
 
@@ -1913,7 +1997,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.add("selected");
 
             const methode = btn.dataset.method;
-            if (!["orange", "wave", "carte"].includes(methode)) return;
+            if (!["orange", "wave", "carte", "livraison"].includes(methode)) return;
 
             const total = getTotalPanier();
 
@@ -1980,6 +2064,7 @@ const form = document.getElementById("contact-form");
 if (form) {
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        showSyphaLoader("Envoi de votre message...");
         const data = new FormData(form);
         try {
             const res = await fetch(form.action, {
@@ -1995,6 +2080,8 @@ if (form) {
             }
         } catch {
             afficherToast("Erreur réseau. Contactez-nous sur WhatsApp au +223 72 08 09 37.", "error");
+        } finally {
+            hideSyphaLoader();
         }
     });
 }
