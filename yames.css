@@ -47,6 +47,62 @@
     border-color: #27ae60;
 }
 
+.password-field {
+    position: relative;
+    width: 100%;
+}
+
+.password-field > input {
+    width: 100%;
+    padding-right: 48px !important;
+}
+
+.password-field .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 36px;
+    height: 36px;
+    padding: 7px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: transparent !important;
+    color: #185FA5 !important;
+    cursor: pointer;
+    box-shadow: none !important;
+    z-index: 2;
+}
+
+.password-field .password-toggle:hover,
+.password-field .password-toggle:focus-visible {
+    background: #E6F1FB !important;
+    outline: none;
+}
+
+.password-field .password-toggle svg {
+    width: 21px;
+    height: 21px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.password-toggle .eye-closed,
+.password-visible .password-toggle .eye-open {
+    display: none;
+}
+
+.password-visible .password-toggle .eye-closed {
+    display: block;
+}
+
 .confirmation-page {
     text-align: center;
     padding: 60px 30px;

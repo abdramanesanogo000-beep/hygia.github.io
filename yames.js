@@ -271,16 +271,18 @@ function getPanierSubtotal() {
 
 function getCartTotals() {
     const subtotal = getPanierSubtotal();
+    const zoneSelected = Boolean(document.getElementById("livraison-zone")?.value?.trim());
 
     const partnerCoupon = getPartnerCoupon();
     if (partnerCoupon) {
         const discount = Math.floor(subtotal * partnerCoupon.reduction / 100);
         const shipping = 0;
-        const total = Math.max(0, subtotal - discount + shipping);
+        const total = Math.max(0, subtotal - discount);
         return {
             subtotal,
             discount,
             shipping,
+            shippingPending: false,
             total,
             couponApplied: true,
             partnerCoupon
@@ -289,13 +291,14 @@ function getCartTotals() {
 
     const couponApplied = getAppliedCoupon() === PROMO_CODE && isPromoActive();
     const discount = couponApplied ? Math.floor(subtotal * PROMO_PERCENT / 100) : 0;
-    const shipping = couponApplied ? 0 : BAMAKO_SHIPPING;
+    const shipping = zoneSelected && !couponApplied ? BAMAKO_SHIPPING : 0;
     const total = Math.max(0, subtotal - discount + shipping);
 
     return {
         subtotal,
         discount,
         shipping,
+        shippingPending: !zoneSelected && !couponApplied,
         total,
         couponApplied,
         partnerCoupon: null
@@ -744,7 +747,11 @@ function mettreAJourResumePanier() {
         discountAmount.textContent = totals.discount > 0 ? `-${totals.discount.toLocaleString()} FCFA` : "0 FCFA";
     }
     if (shippingAmount) {
-        shippingAmount.textContent = totals.shipping === 0 ? "Gratuite" : `${totals.shipping.toLocaleString()} FCFA`;
+        shippingAmount.textContent = totals.shippingPending
+            ? "À calculer"
+            : totals.shipping === 0
+                ? "Gratuite"
+                : `${totals.shipping.toLocaleString()} FCFA`;
     }
     if (totalAmount) totalAmount.textContent = totals.total.toLocaleString() + " FCFA";
 
@@ -1828,6 +1835,34 @@ function enregistrerCommande(panier, methode, total) {
 // ===========================================
 // 5. INITIALISATION AU CHARGEMENT DE LA PAGE
 // ===========================================
+function initPasswordToggles() {
+    document.querySelectorAll('input[type="password"]').forEach(input => {
+        if (input.parentElement?.classList.contains("password-field")) return;
+
+        const wrapper = document.createElement("div");
+        wrapper.className = "password-field";
+        input.parentNode.insertBefore(wrapper, input);
+        wrapper.appendChild(input);
+
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "password-toggle";
+        button.setAttribute("aria-label", "Afficher le mot de passe");
+        button.setAttribute("aria-pressed", "false");
+        button.innerHTML = '<svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 6.2A11 11 0 0 1 12 6c6.5 0 10 6 10 6a18 18 0 0 1-2.1 2.8M6.5 6.5C3.6 8.4 2 12 2 12s3.5 6 10 6c1.8 0 3.3-.5 4.6-1.2M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+        wrapper.appendChild(button);
+
+        button.addEventListener("click", () => {
+            const visible = input.type === "text";
+            input.type = visible ? "password" : "text";
+            button.setAttribute("aria-label", visible ? "Afficher le mot de passe" : "Masquer le mot de passe");
+            button.setAttribute("aria-pressed", String(!visible));
+            wrapper.classList.toggle("password-visible", !visible);
+            input.focus();
+        });
+    });
+}
+
 function initMobileMenu() {
     const nav = document.querySelector("nav");
     const navCenter = document.querySelector(".nav-center");
@@ -1933,8 +1968,13 @@ function initScrollReveal() {
 document.addEventListener("DOMContentLoaded", () => {
 
     initPromoSystem();
+    initPasswordToggles();
     initMobileMenu();
     initScrollReveal();
+
+    if (document.getElementById("coupon-input")) {
+        resetCouponUI();
+    }
 
     const container = document.getElementById("product-container");
 
@@ -2049,6 +2089,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("modal-paiement");
     const closeModal = document.getElementById("close-modal");
     const paymentDetails = document.getElementById("payment-details");
+    const zoneLivraison = document.getElementById("livraison-zone");
+
+    if (zoneLivraison) {
+        zoneLivraison.addEventListener("change", mettreAJourResumePanier);
+    }
 
     if (btnPaiement) {
         const livraisonForm = document.getElementById("livraison-form");
@@ -2177,6 +2222,14 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.key === "Enter") {
                 e.preventDefault();
                 couponButton?.click();
+            }
+        });
+
+        window.addEventListener("pagehide", resetCouponUI);
+        window.addEventListener("pageshow", (event) => {
+            if (event.persisted) {
+                resetCouponUI();
+                afficherPanier();
             }
         });
     }
