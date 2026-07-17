@@ -433,9 +433,10 @@ nav {
     background-color: #042C53;
 }
 
-/* Icon SVG (monochrome) for panier & connexion links */
+/* Icon SVG (monochrome) for panier, connexion & compte links */
 .nav-right a[href="panier.html"]::before,
-.nav-right a[href="connexion.html"]::before {
+.nav-right a[href="connexion.html"]::before,
+.nav-right a[href="compte.html"]::before {
     content: "";
     display: inline-block;
     width: 18px;
@@ -457,8 +458,13 @@ nav {
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>");
 }
 
+.nav-right a[href="compte.html"]::before {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.5'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>");
+}
+
 .nav-right a[href="panier.html"],
-.nav-right a[href="connexion.html"] {
+.nav-right a[href="connexion.html"],
+.nav-right a[href="compte.html"] {
     display: inline-flex;
     align-items: center;
     gap: 6px;

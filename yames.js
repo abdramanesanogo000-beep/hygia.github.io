@@ -87,9 +87,10 @@ function afficherToast(message, type = "info") {
 // 2. AFFICHAGE DES PRODUITS (accueil / catalogue)
 // ===========================================
 const PRODUITS_PAR_PAGE = 12;
-const PROMO_CODE = "YAMES9";
+const PROMO_CODE = "HYGIA";
 const PROMO_PERCENT = 5;
-const PROMO_VALID_DAYS = 300;
+const PROMO_VALID_DAYS = 14;
+const BAMAKO_SHIPPING = 1000;
 const PROMO_APPLIED_KEY = "couponApplique";
 const PROMO_USAGE_KEY = "couponUsage";
 const PROMO_POPUP_KEY = "promoPopupSeen";
@@ -274,11 +275,12 @@ function getCartTotals() {
     const partnerCoupon = getPartnerCoupon();
     if (partnerCoupon) {
         const discount = Math.floor(subtotal * partnerCoupon.reduction / 100);
-        const total = Math.max(0, subtotal - discount);
+        const shipping = 0;
+        const total = Math.max(0, subtotal - discount + shipping);
         return {
             subtotal,
             discount,
-            shipping: 0,
+            shipping,
             total,
             couponApplied: true,
             partnerCoupon
@@ -287,12 +289,13 @@ function getCartTotals() {
 
     const couponApplied = getAppliedCoupon() === PROMO_CODE && isPromoActive();
     const discount = couponApplied ? Math.floor(subtotal * PROMO_PERCENT / 100) : 0;
-    const total = Math.max(0, subtotal - discount);
+    const shipping = couponApplied ? 0 : BAMAKO_SHIPPING;
+    const total = Math.max(0, subtotal - discount + shipping);
 
     return {
         subtotal,
         discount,
-        shipping: couponApplied ? 0 : "À calculer",
+        shipping,
         total,
         couponApplied,
         partnerCoupon: null
@@ -741,7 +744,7 @@ function mettreAJourResumePanier() {
         discountAmount.textContent = totals.discount > 0 ? `-${totals.discount.toLocaleString()} FCFA` : "0 FCFA";
     }
     if (shippingAmount) {
-        shippingAmount.textContent = totals.couponApplied ? "Gratuite" : "À calculer";
+        shippingAmount.textContent = totals.shipping === 0 ? "Gratuite" : `${totals.shipping.toLocaleString()} FCFA`;
     }
     if (totalAmount) totalAmount.textContent = totals.total.toLocaleString() + " FCFA";
 
@@ -896,6 +899,7 @@ function validerFormulaireLivraison() {
     const tel = document.getElementById("livraison-tel");
     const adresse = document.getElementById("livraison-adresse");
     const email = document.getElementById("livraison-email");
+    const zone = document.getElementById("livraison-zone");
 
     function setError(input, errorId, message) {
         input.classList.add("input-error");
@@ -938,6 +942,12 @@ function validerFormulaireLivraison() {
         setOk(email, "error-email");
     }
 
+    if (!zone || !zone.value.trim()) {
+        setError(zone, "error-zone", "Veuillez sélectionner votre commune / zone à Bamako.");
+    } else {
+        setOk(zone, "error-zone");
+    }
+
     return valide;
 }
 
@@ -952,6 +962,8 @@ async function confirmerCommande(methode) {
     const adresseClient = document.getElementById("livraison-adresse")
         ?.value?.trim() || "";
     const emailClient = document.getElementById("livraison-email")
+        ?.value?.trim() || "";
+    const zoneClient = document.getElementById("livraison-zone")
         ?.value?.trim() || "";
 
     const articles = panier.map(item => {
@@ -988,11 +1000,13 @@ async function confirmerCommande(methode) {
                 nom: nomClient,
                 telephone: telClient,
                 adresse: adresseClient,
+                commune: zoneClient,
                 email: emailClient || getUtilisateurConnecte()?.email || ""
             },
             articles,
             total: totals.total,
             sousTotal: sousTotalArticles,
+            shipping: totals.shipping,
             modePaiement: MODES_PAIEMENT_LABELS[methode] || methode
         };
         if (partnerCoupon) {
@@ -2125,7 +2139,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Sinon fallback sur le code promo interne YAMES9
+            // Sinon fallback sur le code promo interne HYGIA
             const resultat = applyCoupon(code);
             lastCouponFeedback = {
                 message: resultat.message,
