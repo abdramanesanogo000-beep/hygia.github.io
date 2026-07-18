@@ -1973,8 +1973,167 @@ function initScrollReveal() {
     elements.forEach(el => observer.observe(el));
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function initTheme() {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'dark-mode.css';
+    document.head.appendChild(link);
 
+    const saved = localStorage.getItem('hygia-theme') || 'light';
+    if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    const btn = document.createElement('button');
+    btn.id = 'theme-toggle';
+    btn.setAttribute('aria-label', 'Basculer le mode sombre');
+    btn.innerHTML = saved === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', () => {
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const next = isDark ? 'light' : 'dark';
+        if (next === 'dark') {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+        }
+        localStorage.setItem('hygia-theme', next);
+        btn.innerHTML = next === 'dark' ? '☀️' : '🌙';
+    });
+    document.documentElement.insertBefore(btn, document.body);
+}
+
+function initWhatsApp() {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = 'whatsapp-widget.css';
+    document.head.appendChild(link);
+
+    const number = document.body.dataset.whatsapp || '22300000000';
+    const text = encodeURIComponent(document.body.dataset.whatsappMessage || `Bonjour Hygia, j'aimerais avoir plus d'informations.`);
+    const a = document.createElement('a');
+    a.id = 'whatsapp-widget';
+    a.href = `https://wa.me/${number}?text=${text}`;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.setAttribute('aria-label', 'Discuter sur WhatsApp');
+    a.innerHTML = `<svg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M17.5 14.33c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.66.15-.19.3-.74.97-.91 1.17-.17.2-.34.22-.63.07-.3-.15-1.26-.46-2.4-1.47-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.34.45-.5.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.66-1.59-.9-2.18-.24-.57-.48-.49-.66-.5h-.56c-.2 0-.5.07-.77.37-.26.3-1.03 1.01-1.03 2.46s1.06 2.85 1.2 3.05c.15.2 2.08 3.18 5.04 4.46 2.03.87 2.83.95 3.38.79.52-.14 1.12-.73 1.28-1.34.16-.61.16-1.14.11-1.25-.05-.1-.22-.16-.51-.3zM12.03 2C6.51 2 2.03 6.48 2.03 12c0 1.94.52 3.8 1.46 5.43l-.93 3.4 3.49-.92A9.95 9.95 0 0012.03 22c5.52 0 10-4.48 10-10S17.55 2 12.03 2z'/></svg>`;
+    document.documentElement.insertBefore(a, document.body);
+}
+
+function initABTest() {
+    const cta = document.querySelector('.hero a');
+    if (!cta) return;
+
+    const variants = [
+        { variant: 'A', text: 'Voir le catalogue' },
+        { variant: 'B', text: 'Découvrir les produits' }
+    ];
+    const chosen = variants[Math.floor(Math.random() * variants.length)];
+    cta.textContent = chosen.text;
+
+    fetch(`${BACKEND_URL}/api/ab/event`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ experiment: 'hero-cta', variant: chosen.variant, type: 'impression' }),
+        keepalive: true
+    }).catch(() => {});
+
+    cta.addEventListener('click', () => {
+        fetch(`${BACKEND_URL}/api/ab/event`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ experiment: 'hero-cta', variant: chosen.variant, type: 'click' }),
+            keepalive: true
+        }).catch(() => {});
+    });
+}
+
+const translations = {
+    fr: {
+        nav_home: 'Accueil',
+        nav_catalog: 'Catalogue',
+        nav_about: 'À propos',
+        nav_prof: 'Professionnels',
+        nav_contact: 'Contact',
+        hero_title: 'Matériel médical de qualité au Mali',
+        hero_subtitle: 'Mieux équiper pour — Plus sauver',
+        hero_cta: 'Voir le catalogue',
+        categories_label: 'NOS CATÉGORIES',
+        categories_title: 'Explorez notre catalogue',
+        categories_subtitle: 'Découvrez notre gamme complète de produits médicaux certifiés',
+        featured_title: 'Produits populaires',
+        about_label: 'À PROPOS DE NOUS',
+        about_title: 'Qui sommes-nous ?',
+        about_link: 'En savoir plus',
+        why_label: 'POURQUOI CHOISIR Hygia',
+        why_title: 'Ce qui nous différencie',
+        why_subtitle: 'Des avantages concrets pour vos achats de matériel médical',
+        footer_rights: '© 2026 Hygia. Tous droits réservés.'
+    },
+    en: {
+        nav_home: 'Home',
+        nav_catalog: 'Catalog',
+        nav_about: 'About',
+        nav_prof: 'Professionals',
+        nav_contact: 'Contact',
+        hero_title: 'Quality medical equipment in Mali',
+        hero_subtitle: 'Better equipped — Save more',
+        hero_cta: 'View catalog',
+        categories_label: 'OUR CATEGORIES',
+        categories_title: 'Explore our catalog',
+        categories_subtitle: 'Discover our full range of certified medical products',
+        featured_title: 'Popular products',
+        about_label: 'ABOUT US',
+        about_title: 'Who we are?',
+        about_link: 'Learn more',
+        why_label: 'WHY CHOOSE Hygia',
+        why_title: 'What sets us apart',
+        why_subtitle: 'Concrete advantages for your medical equipment purchases',
+        footer_rights: '© 2026 Hygia. All rights reserved.'
+    }
+};
+
+function t(key) {
+    const lang = localStorage.getItem('hygia-lang') || 'fr';
+    return translations[lang]?.[key] || translations.fr[key] || key;
+}
+
+function initI18n() {
+    const saved = localStorage.getItem('hygia-lang') || 'fr';
+    document.documentElement.lang = saved;
+
+    const select = document.createElement('select');
+    select.id = 'lang-select';
+    select.setAttribute('aria-label', 'Choisir la langue');
+    select.innerHTML = `<option value='fr' ${saved === 'fr' ? 'selected' : ''}>FR</option><option value='en' ${saved === 'en' ? 'selected' : ''}>EN</option>`;
+    select.style.cssText = `position:fixed;bottom:84px;right:20px;z-index:10000;padding:6px 10px;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer;`;
+    select.addEventListener('change', (e) => {
+        localStorage.setItem('hygia-lang', e.target.value);
+        window.location.reload();
+    });
+    document.documentElement.insertBefore(select, document.body);
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[saved][key]) {
+            el.textContent = translations[saved][key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (translations[saved][key]) {
+            el.innerHTML = translations[saved][key];
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    initI18n();
+    initTheme();
+    initWhatsApp();
+    initABTest();
     initPromoSystem();
     initPasswordToggles();
     initMobileMenu();
