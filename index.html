@@ -41,11 +41,11 @@
         <div class="nav-right">
             <form action="/recherche" method="GET">
                 <label for="search-input">Rechercher</label>
-                <input type="search" id="search-input" name="q" placeholder="Rechercher sur le site...">
+                <input type="search" id="search-input" name="q" data-i18n-placeholder="nav.recherche" placeholder="Rechercher sur le site...">
                 <button type="submit" aria-label="Rechercher">🔍</button>
             </form>
 
-            <a href="connexion.html" class="nav-compte-link">Connexion</a>
+            <a href="connexion.html" class="nav-compte-link" data-i18n="nav.connexion">Connexion</a>
             <a href="panier.html">Panier <span id="cart-count">0</span></a>
         </div>
     </nav>
@@ -77,9 +77,9 @@
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                     <div class="category-img-placeholder" style="display:none;">🏥</div>
                     <div class="category-body">
-                        <h3>Équipement médical</h3>
-                        <p>Microscopes, centrifugeuses, tensiomètres, oxymètres et plus encore.</p>
-                        <span class="category-link">Explorer →</span>
+                        <h3 data-i18n="cat.equipement">Équipement médical</h3>
+                        <p data-i18n="cat.equipement.desc">Microscopes, centrifugeuses, tensiomètres, oxymètres et plus encore.</p>
+                        <span class="category-link" data-i18n="cat.explorer">Explorer →</span>
                     </div>
                 </a>
 
@@ -89,9 +89,9 @@
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                     <div class="category-img-placeholder" style="display:none;">🩺</div>
                     <div class="category-body">
-                        <h3>Consommables médicaux</h3>
-                        <p>Tests rapides, coton, bandelettes, abaisse-langues, lames de bistouri.</p>
-                        <span class="category-link">Explorer →</span>
+                        <h3 data-i18n="cat.consommable">Consommables médicaux</h3>
+                        <p data-i18n="cat.consommable.desc">Tests rapides, coton, bandelettes, abaisse-langues, lames de bistouri.</p>
+                        <span class="category-link" data-i18n="cat.explorer">Explorer →</span>
                     </div>
                 </a>
 
@@ -120,15 +120,8 @@
                 <div class="apropos-preview-texte">
                     <div class='section-label' data-i18n='about_label'>À PROPOS DE NOUS</div>
                     <h2 data-i18n='about_title'>Qui sommes-nous ?</h2>
-                    <p>
-                        <strong>Hygia</strong> est une entreprise malienne spécialisée dans la
-                        distribution de matériel médical certifié. Grâce à des partenariats directs avec des fabricants
-                        internationaux, nous rendons l'équipement médical de qualité <strong>accessible à tous au
-                            Mali</strong> — particuliers, pharmacies et cliniques.
-                    </p>
-                    <p>
-                        Notre engagement : <strong>Mieux équiper pour — Plus sauver</strong>.
-                    </p>
+                    <p data-i18n="apropos.texte1">Hygia est une entreprise malienne spécialisée dans la distribution de matériel médical certifié. Grâce à des partenariats directs avec des fabricants internationaux, nous rendons l'équipement médical de qualité accessible à tous au Mali.</p>
+                    <p data-i18n="apropos.texte2">Notre engagement : mieux équiper pour plus sauver.</p>
                     <a href='apropos.html' class='btn-en-savoir' data-i18n='about_link'>En savoir plus</a>
                 </div>
 
@@ -153,9 +146,8 @@
                         </svg>
                         <div class="badge-check">✓</div>
                     </div>
-                    <h3>Produits certifiés</h3>
-                    <p>Tout notre matériel est importé de fabricants certifiés et respecte les normes médicales
-                        internationales.</p>
+                    <h3 data-i18n="why.1.titre">Produits certifiés</h3>
+                    <p data-i18n="why.1.desc">Tout notre matériel est importé de fabricants certifiés et respecte les normes médicales internationales.</p>
                 </div>
 
                 <div class="why-item">
@@ -169,8 +161,8 @@
                         </svg>
                         <div class="badge-check">✓</div>
                     </div>
-                    <h3>Paiement flexible</h3>
-                    <p>Orange Money, Wave, carte bancaire — vous choisissez.</p>
+                    <h3 data-i18n="why.3.titre">Paiement flexible</h3>
+                    <p data-i18n="why.3.desc">Orange Money, Wave, carte bancaire — vous choisissez.</p>
                 </div>
 
                 <div class="why-item">
@@ -184,8 +176,8 @@
                         </svg>
                         <div class="badge-check">✓</div>
                     </div>
-                    <h3>Support WhatsApp</h3>
-                    <p>Notre équipe vous répond rapidement sur WhatsApp pour toute question ou devis.</p>
+                    <h3 data-i18n="why.4.titre">Support WhatsApp</h3>
+                    <p data-i18n="why.4.desc">Notre équipe vous répond rapidement sur WhatsApp pour toute question ou devis.</p>
                 </div>
 
 
@@ -199,9 +191,8 @@
                         </svg>
                         <div class="badge-check">✓</div>
                     </div>
-                    <h3>Tarifs compétitifs</h3>
-                    <p>Import direct = moins d'intermédiaires = prix bas. Remises spéciales pour commandes en volume.
-                    </p>
+                    <h3 data-i18n="why.6.titre">Tarifs compétitifs</h3>
+                    <p data-i18n="why.6.desc">Import direct = moins d'intermédiaires = prix bas. Remises pour commandes en volume.</p>
                 </div>
 
             </div>
@@ -223,10 +214,10 @@
             <a href="https://www.instagram.com/hygiamali" target="_blank" rel="noopener noreferrer">instagram</a>
         </div>
         <div class="footer-legal">
-            <a href="politique-confidentialite.html">Politique de confidentialité</a>
-            <a href="mentions-legales.html">Mentions légales</a>
-            <a href="cgv.html">CGV</a>
-            <a href="cookies.html">Cookies</a>
+            <a href="politique-confidentialite.html" data-i18n="footer.confidentialite">Politique de confidentialité</a>
+            <a href="mentions-legales.html" data-i18n="footer.mentions">Mentions légales</a>
+            <a href="cgv.html" data-i18n="footer.cgv">CGV</a>
+            <a href="cookies.html" data-i18n="footer.cookies">Cookies</a>
         </div>
         <p data-i18n='footer_rights'>&copy; 2026 Hygia. Tous droits réservés.</p>
     </footer>

@@ -1,3 +1,523 @@
+/* i18n Hygia — vanilla JS, aucune librairie externe */
+const i18n = {
+  fr: {
+    "nav.accueil"        : "Accueil",
+    "nav.catalogue"      : "Catalogue",
+    "nav.apropos"        : "À propos",
+    "nav.professionnels" : "Professionnels",
+    "nav.contact"        : "Contact",
+    "nav.connexion"      : "Connexion",
+    "nav.moncompte"      : "Mon compte",
+    "nav.panier"         : "Panier",
+    "nav.recherche"      : "Rechercher sur le site...",
+
+    "hero.titre"         : "Matériel médical de qualité au Mali",
+    "hero.slogan"        : "Mieux équiper — Plus sauver",
+    "hero.cta"           : "Voir le catalogue",
+
+    "categories.titre"   : "Nos catégories",
+    "categories.sous"    : "Découvrez notre gamme complète de produits médicaux certifiés",
+    "cat.equipement"     : "Équipement médical",
+    "cat.equipement.desc": "Microscopes, centrifugeuses, tensiomètres, oxymètres et plus encore.",
+    "cat.consommable"    : "Consommables médicaux",
+    "cat.consommable.desc": "Tests rapides, coton, bandelettes, abaisse-langues, lames de bistouri.",
+    "cat.explorer"       : "Explorer →",
+
+    "popular.titre"      : "Produits populaires",
+    "btn.add.cart"       : "Ajouter au panier",
+    "btn.added"          : "✓ Ajouté !",
+
+    "apropos.label"      : "À PROPOS DE NOUS",
+    "apropos.titre"      : "Qui sommes-nous ?",
+    "apropos.texte1"     : "Hygia est une entreprise malienne spécialisée dans la distribution de matériel médical certifié. Grâce à des partenariats directs avec des fabricants internationaux, nous rendons l'équipement médical de qualité accessible à tous au Mali.",
+    "apropos.texte2"     : "Notre engagement : mieux équiper pour plus sauver.",
+    "apropos.cta"        : "En savoir plus",
+
+    "why.label"          : "POURQUOI NOUS CHOISIR",
+    "why.titre"          : "Ce qui nous différencie",
+    "why.sous"           : "Des avantages concrets pour vos achats de matériel médical",
+    "why.1.titre"        : "Produits certifiés",
+    "why.1.desc"         : "Tout notre matériel est importé de fabricants certifiés et respecte les normes médicales internationales.",
+    "why.2.titre"        : "Livraison rapide",
+    "why.2.desc"         : "Livraison rapide partout à Bamako. Parce que dans le domaine médical, chaque heure compte.",
+    "why.3.titre"        : "Paiement flexible",
+    "why.3.desc"         : "Orange Money, Wave, carte bancaire — vous choisissez.",
+    "why.4.titre"        : "Support WhatsApp",
+    "why.4.desc"         : "Notre équipe vous répond rapidement sur WhatsApp pour toute question ou devis.",
+    "why.5.titre"        : "Expertise médicale",
+    "why.5.desc"         : "Une vraie connaissance du marché malien et des besoins des professionnels de santé.",
+    "why.6.titre"        : "Tarifs compétitifs",
+    "why.6.desc"         : "Import direct = moins d'intermédiaires = prix bas. Remises pour commandes en volume.",
+
+    "catalogue.titre"    : "Notre catalogue",
+    "filter.titre"       : "Filtres",
+    "filter.categorie"   : "Catégorie",
+    "filter.produit"     : "Produit",
+    "filter.prix"        : "Prix (FCFA)",
+    "filter.trier"       : "Trier par",
+    "filter.defaut"      : "Par défaut",
+    "filter.prix.asc"    : "Prix croissant",
+    "filter.prix.desc"   : "Prix décroissant",
+    "filter.nom.asc"     : "Nom (A-Z)",
+    "filter.tous"        : "Tous les produits",
+    "filter.promo"       : "En promo",
+    "filter.stock"       : "En stock",
+    "filter.reset"       : "Réinitialiser",
+    "filter.search"      : "Nom du produit...",
+    "filter.min"         : "Min :",
+    "filter.max"         : "Max :",
+    "no.result"          : "Aucun produit ne correspond à votre recherche.",
+
+    "panier.titre"       : "Mon panier",
+    "panier.vide"        : "Votre panier est vide pour le moment.",
+    "panier.total"       : "Total :",
+    "panier.continuer"   : "Continuer mes achats",
+    "panier.paiement"    : "Passer au paiement",
+    "livraison.titre"    : "Informations de livraison",
+    "livraison.nom"      : "Nom complet",
+    "livraison.tel"      : "Téléphone",
+    "livraison.adresse"  : "Adresse",
+    "livraison.email"    : "Email",
+    "coupon.label"       : "Code promo",
+    "coupon.placeholder" : "Saisissez votre code",
+    "coupon.btn"         : "Appliquer",
+    "unit.price"         : "/ unité",
+
+    "paiement.titre"     : "Choisissez votre mode de paiement",
+    "paiement.orange"    : "Orange Money",
+    "paiement.wave"      : "Wave",
+    "paiement.carte"     : "Carte bancaire",
+    "paiement.secure"    : "🔒 Paiements sécurisés par PayTech — vos données bancaires ne transitent jamais par nos serveurs.",
+    "paiement.redirect"  : "Vous allez être redirigé vers la page de paiement sécurisée.",
+    "paiement.confirmer" : "Procéder au paiement →",
+
+    "confirm.titre"      : "Commande confirmée !",
+    "confirm.sous"       : "Merci pour votre confiance.",
+    "confirm.message"    : "Nous vous contacterons pour organiser la livraison sous 24 à 48h à Bamako.",
+    "confirm.voir"       : "Voir mes commandes",
+    "confirm.continuer"  : "Continuer mes achats",
+    "confirm.echec"      : "Paiement non complété",
+    "confirm.echec.msg"  : "Votre paiement n'a pas abouti. Vous n'avez pas été débité.",
+    "confirm.reessayer"  : "Réessayer",
+
+    "compte.titre"       : "Mon compte",
+    "compte.historique"  : "Historique de mes commandes",
+    "compte.deconnexion" : "Se déconnecter",
+    "compte.vide"        : "Vous n'avez pas encore de commande.",
+    "compte.statut.attente"   : "En attente",
+    "compte.statut.confirmee" : "Confirmée",
+    "compte.statut.livraison" : "En livraison",
+    "compte.statut.livree"    : "Livrée",
+    "compte.statut.annulee"   : "Annulée",
+
+    "connexion.titre"    : "Connexion",
+    "connexion.email"    : "Email",
+    "connexion.mdp"      : "Mot de passe",
+    "connexion.btn"      : "Se connecter",
+    "connexion.switch"   : "Pas encore de compte ?",
+    "connexion.creer"    : "Créer un compte",
+    "inscription.titre"  : "Créer un compte",
+    "inscription.nom"    : "Nom complet",
+    "inscription.tel"    : "Téléphone",
+    "inscription.btn"    : "Créer mon compte",
+    "inscription.switch" : "Vous avez déjà un compte ?",
+
+    "contact.titre"      : "Notre équipe est à votre disposition",
+    "contact.sous"       : "Une question sur un produit, un besoin de devis ou une commande spéciale ?",
+    "contact.adresse"    : "Adresse",
+    "contact.horaires"   : "Horaires",
+    "contact.horaires.val": "Lun–Ven 8h–18h / Sam 9h–16h",
+    "contact.form.titre" : "Envoyez-nous un message",
+    "contact.form.nom"   : "Nom complet",
+    "contact.form.tel"   : "Téléphone",
+    "contact.form.email" : "Email",
+    "contact.form.sujet" : "Sujet",
+    "contact.form.msg"   : "Message",
+    "contact.form.btn"   : "Envoyer le message →",
+    "contact.form.succes": "✅ Message envoyé ! Nous vous répondrons dans les plus brefs délais.",
+
+    "footer.droits"      : "© 2026 Hygia. Tous droits réservés.",
+    "footer.confidentialite": "Politique de confidentialité",
+    "footer.mentions"    : "Mentions légales",
+    "footer.cgv"         : "CGV",
+    "footer.cookies"     : "Cookies",
+  },
+
+  en: {
+    "nav.accueil"        : "Home",
+    "nav.catalogue"      : "Catalogue",
+    "nav.apropos"        : "About",
+    "nav.professionnels" : "Professionals",
+    "nav.contact"        : "Contact",
+    "nav.connexion"      : "Login",
+    "nav.moncompte"      : "My account",
+    "nav.panier"         : "Cart",
+    "nav.recherche"      : "Search products...",
+
+    "hero.titre"         : "Quality medical equipment in Mali",
+    "hero.slogan"        : "Better equipped — More lives saved",
+    "hero.cta"           : "View catalogue",
+
+    "categories.titre"   : "Our categories",
+    "categories.sous"    : "Discover our full range of certified medical products",
+    "cat.equipement"     : "Medical equipment",
+    "cat.equipement.desc": "Microscopes, centrifuges, blood pressure monitors, pulse oximeters and more.",
+    "cat.consommable"    : "Medical consumables",
+    "cat.consommable.desc": "Rapid tests, cotton, test strips, tongue depressors, scalpel blades.",
+    "cat.explorer"       : "Explore →",
+
+    "popular.titre"      : "Popular products",
+    "btn.add.cart"       : "Add to cart",
+    "btn.added"          : "✓ Added!",
+
+    "apropos.label"      : "ABOUT US",
+    "apropos.titre"      : "Who are we?",
+    "apropos.texte1"     : "Hygia is a Malian company specializing in the distribution of certified medical equipment. Through direct partnerships with international manufacturers, we make quality medical equipment accessible to everyone in Mali.",
+    "apropos.texte2"     : "Our commitment: better equipped to save more lives.",
+    "apropos.cta"        : "Learn more",
+
+    "why.label"          : "WHY CHOOSE US",
+    "why.titre"          : "What sets us apart",
+    "why.sous"           : "Concrete advantages for your medical equipment purchases",
+    "why.1.titre"        : "Certified products",
+    "why.1.desc"         : "All our equipment is imported from certified manufacturers and meets international medical standards.",
+    "why.2.titre"        : "Fast delivery",
+    "why.2.desc"         : "Fast delivery throughout Bamako. Because in the medical field, every hour counts.",
+    "why.3.titre"        : "Flexible payment",
+    "why.3.desc"         : "Orange Money, Wave, bank card — you choose.",
+    "why.4.titre"        : "WhatsApp support",
+    "why.4.desc"         : "Our team responds quickly on WhatsApp for any questions or quotes.",
+    "why.5.titre"        : "Medical expertise",
+    "why.5.desc"         : "Real knowledge of the Malian market and the needs of healthcare professionals.",
+    "why.6.titre"        : "Competitive prices",
+    "why.6.desc"         : "Direct import = fewer middlemen = lower prices. Discounts for bulk orders.",
+
+    "catalogue.titre"    : "Our catalogue",
+    "filter.titre"       : "Filters",
+    "filter.categorie"   : "Category",
+    "filter.produit"     : "Product",
+    "filter.prix"        : "Price (FCFA)",
+    "filter.trier"       : "Sort by",
+    "filter.defaut"      : "Default",
+    "filter.prix.asc"    : "Price: low to high",
+    "filter.prix.desc"   : "Price: high to low",
+    "filter.nom.asc"     : "Name (A-Z)",
+    "filter.tous"        : "All products",
+    "filter.promo"       : "On sale",
+    "filter.stock"       : "In stock",
+    "filter.reset"       : "Reset",
+    "filter.search"      : "Product name...",
+    "filter.min"         : "Min:",
+    "filter.max"         : "Max:",
+    "no.result"          : "No products match your search.",
+
+    "panier.titre"       : "My cart",
+    "panier.vide"        : "Your cart is currently empty.",
+    "panier.total"       : "Total:",
+    "panier.continuer"   : "Continue shopping",
+    "panier.paiement"    : "Proceed to payment",
+    "livraison.titre"    : "Delivery information",
+    "livraison.nom"      : "Full name",
+    "livraison.tel"      : "Phone number",
+    "livraison.adresse"  : "Address",
+    "livraison.email"    : "Email",
+    "coupon.label"       : "Promo code",
+    "coupon.placeholder" : "Enter your code",
+    "coupon.btn"         : "Apply",
+    "unit.price"         : "/ unit",
+
+    "paiement.titre"     : "Choose your payment method",
+    "paiement.orange"    : "Orange Money",
+    "paiement.wave"      : "Wave",
+    "paiement.carte"     : "Bank card",
+    "paiement.secure"    : "🔒 Secure payments by PayTech — your banking data never passes through our servers.",
+    "paiement.redirect"  : "You will be redirected to the secure payment page.",
+    "paiement.confirmer" : "Proceed to payment →",
+
+    "confirm.titre"      : "Order confirmed!",
+    "confirm.sous"       : "Thank you for your trust.",
+    "confirm.message"    : "We will contact you to arrange delivery within 24 to 48 hours in Bamako.",
+    "confirm.voir"       : "View my orders",
+    "confirm.continuer"  : "Continue shopping",
+    "confirm.echec"      : "Payment not completed",
+    "confirm.echec.msg"  : "Your payment could not be processed. You have not been charged.",
+    "confirm.reessayer"  : "Try again",
+
+    "compte.titre"       : "My account",
+    "compte.historique"  : "Order history",
+    "compte.deconnexion" : "Log out",
+    "compte.vide"        : "You have no orders yet.",
+    "compte.statut.attente"   : "Pending",
+    "compte.statut.confirmee" : "Confirmed",
+    "compte.statut.livraison" : "Out for delivery",
+    "compte.statut.livree"    : "Delivered",
+    "compte.statut.annulee"   : "Cancelled",
+
+    "connexion.titre"    : "Login",
+    "connexion.email"    : "Email",
+    "connexion.mdp"      : "Password",
+    "connexion.btn"      : "Log in",
+    "connexion.switch"   : "Don't have an account?",
+    "connexion.creer"    : "Create an account",
+    "inscription.titre"  : "Create an account",
+    "inscription.nom"    : "Full name",
+    "inscription.tel"    : "Phone number",
+    "inscription.btn"    : "Create my account",
+    "inscription.switch" : "Already have an account?",
+
+    "contact.titre"      : "Our team is at your service",
+    "contact.sous"       : "A question about a product, need a quote or a special order?",
+    "contact.adresse"    : "Address",
+    "contact.horaires"   : "Opening hours",
+    "contact.horaires.val": "Mon–Fri 8am–6pm / Sat 9am–4pm",
+    "contact.form.titre" : "Send us a message",
+    "contact.form.nom"   : "Full name",
+    "contact.form.tel"   : "Phone",
+    "contact.form.email" : "Email",
+    "contact.form.sujet" : "Subject",
+    "contact.form.msg"   : "Message",
+    "contact.form.btn"   : "Send message →",
+    "contact.form.succes": "✅ Message sent! We will get back to you as soon as possible.",
+
+    "footer.droits"      : "© 2026 Hygia. All rights reserved.",
+    "footer.confidentialite": "Privacy policy",
+    "footer.mentions"    : "Legal notice",
+    "footer.cgv"         : "Terms of sale",
+    "footer.cookies"     : "Cookies",
+  }
+};
+
+Object.assign(i18n.fr, {
+  nav_home: i18n.fr["nav.accueil"], nav_catalog: i18n.fr["nav.catalogue"], nav_about: i18n.fr["nav.apropos"], nav_prof: i18n.fr["nav.professionnels"], nav_contact: i18n.fr["nav.contact"],
+  hero_title: i18n.fr["hero.titre"], hero_subtitle: i18n.fr["hero.slogan"], hero_cta: i18n.fr["hero.cta"], categories_label: i18n.fr["categories.titre"], categories_title: i18n.fr["categories.titre"], categories_subtitle: i18n.fr["categories.sous"],
+  featured_title: i18n.fr["popular.titre"], about_label: i18n.fr["apropos.label"], about_title: i18n.fr["apropos.titre"], about_link: i18n.fr["apropos.cta"], why_label: i18n.fr["why.label"], why_title: i18n.fr["why.titre"], why_subtitle: i18n.fr["why.sous"], footer_rights: i18n.fr["footer.droits"]
+});
+Object.assign(i18n.en, {
+  nav_home: i18n.en["nav.accueil"], nav_catalog: i18n.en["nav.catalogue"], nav_about: i18n.en["nav.apropos"], nav_prof: i18n.en["nav.professionnels"], nav_contact: i18n.en["nav.contact"],
+  hero_title: i18n.en["hero.titre"], hero_subtitle: i18n.en["hero.slogan"], hero_cta: i18n.en["hero.cta"], categories_label: i18n.en["categories.titre"], categories_title: i18n.en["categories.titre"], categories_subtitle: i18n.en["categories.sous"],
+  featured_title: i18n.en["popular.titre"], about_label: i18n.en["apropos.label"], about_title: i18n.en["apropos.titre"], about_link: i18n.en["apropos.cta"], why_label: i18n.en["why.label"], why_title: i18n.en["why.titre"], why_subtitle: i18n.en["why.sous"], footer_rights: i18n.en["footer.droits"]
+});
+
+function getLang() {
+  return localStorage.getItem("hygia-lang") || "fr";
+}
+
+function t(key) {
+  const lang = getLang();
+  return i18n[lang]?.[key] || i18n["fr"]?.[key] || key;
+}
+
+const originalTextNodes = new WeakMap();
+const originalPlaceholders = new WeakMap();
+const staticTextEn = {
+  "Rechercher": "Search",
+  "Consommables": "Consumables",
+  "Sous-total": "Subtotal",
+  "Réduction": "Discount",
+  "Livraison": "Delivery",
+  "À calculer": "To be calculated",
+  "Payer": "Pay",
+  "Payer à la livraison": "Pay on delivery",
+  "Commune / Zone (Bamako uniquement)": "District / Area (Bamako only)",
+  "Sélectionnez votre zone à Bamako": "Select your area in Bamako",
+  "Votre nom complet": "Your full name",
+  "Votre adresse email": "Your email address",
+  "Quartier, commune, point de repère...": "Neighbourhood, district, landmark...",
+  "Retirer": "Remove",
+  "Précédent": "Previous",
+  "Suivant": "Next",
+  "Les avantages de Hygia": "Why choose Hygia",
+  "Garantie fiable": "Reliable warranty",
+  "Produit introuvable.": "Product not found.",
+  "Contacter sur WhatsApp": "Contact us on WhatsApp",
+  "J'ai compris": "I understand",
+  "Espace professionnel": "Professional services",
+  "Une offre dédiée aux professionnels de santé, en cours de préparation.": "A dedicated offer for healthcare professionals is coming soon.",
+  "Pharmacies, cliniques, cabinets médicaux, centres de santé communautaire — Hygia prépare pour vous un espace d'achat pensé pour les volumes professionnels : tarifs dégressifs, devis sur mesure, livraison prioritaire à Bamako et périphérie.": "Pharmacies, clinics, medical practices and community health centres — Hygia is preparing a purchasing space designed for professional volumes, with tiered pricing, tailored quotes and priority delivery in Bamako and surrounding areas.",
+  "En attendant l'ouverture de cet espace, contactez-nous directement pour tout besoin professionnel.": "Until this service opens, contact us directly for any professional requirement.",
+  "Nous contacter": "Contact us",
+  "CONTACTEZ-NOUS": "CONTACT US",
+  "NOS INFORMATIONS": "OUR INFORMATION",
+  "Nous contacter directement": "Contact us directly",
+  "Lundi–Vendredi : 8h–18h": "Monday–Friday: 8am–6pm",
+  "Samedi : 9h–16h": "Saturday: 9am–4pm",
+  "Téléphone": "Phone",
+  "📍 Nous trouver": "📍 Find us",
+  "Choisissez un sujet...": "Choose a subject...",
+  "Demande de commande": "Order request",
+  "Demande de devis (clinique / pharmacie)": "Quote request (clinic / pharmacy)",
+  "Information sur un produit": "Product information",
+  "Problème avec une commande": "Order issue",
+  "Proposition de partenariat": "Partnership proposal",
+  "Autre": "Other",
+  "Votre nom": "Your name",
+  "Décrivez votre demande en détail...": "Describe your request in detail...",
+  "Connectez-vous pour suivre vos commandes et accéder à votre historique.": "Log in to track your orders and access your order history.",
+  "Votre email": "Your email",
+  "Votre mot de passe": "Your password",
+  "Mot de passe oublié ?": "Forgot your password?",
+  "Ce site utilise le stockage local de votre navigateur pour gérer votre panier et votre compte. Aucun cookie publicitaire.": "This site uses your browser's local storage to manage your cart and account. No advertising cookies are used.",
+
+  "Mon espace personnel": "My personal space",
+  "Connectez-vous pour accéder à votre compte, suivre vos commandes et gérer vos informations.": "Log in to access your account, track your orders and manage your information.",
+  "Créez votre compte Hygia pour suivre vos commandes et gagner du temps lors de vos prochains achats.": "Create your Hygia account to track your orders and save time on future purchases.",
+  "Choisissez un mot de passe": "Choose a password",
+  "Bonjour": "Hello",
+  "Client Hygia": "Hygia customer",
+  "Se déconnecter": "Log out",
+  "Commande(s)": "Order(s)",
+  "Dernière commande": "Last order",
+  "Points fidélité": "Loyalty points",
+  "👤 Mes infos": "👤 My info",
+  "&#128230; Mes commandes": "&#128230; My orders",
+  "🔒 Sécurité": "🔒 Security",
+  "Mes informations": "My information",
+  "Modifier": "Edit",
+  "Adresse e-mail": "Email address",
+  "Modifier mes informations": "Edit my information",
+  "Mot de passe actuel (obligatoire)": "Current password (required)",
+  "Entrez votre mot de passe pour confirmer": "Enter your password to confirm",
+  "Enregistrer les modifications": "Save changes",
+  "Annuler": "Cancel",
+  "Changez votre mot de passe régulièrement pour plus de sécurité.": "Change your password regularly for more security.",
+  "Changer": "Change",
+  "Changer mon mot de passe": "Change my password",
+  "Nouveau mot de passe": "New password",
+  "Confirmer le nouveau mot de passe": "Confirm new password",
+  "Supprimer mon compte": "Delete my account",
+  "Cette action est irréversible. Toutes vos données seront supprimées définitivement.": "This action is irreversible. All your data will be permanently deleted.",
+  "Vérification en cours...": "Verification in progress...",
+  "Votre paiement est en cours de vérification. Cette page se rafraîchira automatiquement.": "Your payment is being verified. This page will refresh automatically.",
+  "Commande confirmée !": "Order confirmed!",
+  "Payé": "Paid",
+  "Client": "Customer",
+  "Mode de paiement": "Payment method",
+  "Statut du paiement": "Payment status",
+  "Montant total": "Total amount",
+  "Votre commande a été enregistrée. Nous vous contacterons pour organiser la livraison sous 24 à 48h à Bamako.": "Your order has been recorded. We will contact you to arrange delivery within 24 to 48 hours in Bamako.",
+  "Votre paiement n'a pas pu être traité. Vous n'avez pas été débité.": "Your payment could not be processed. You have not been charged.",
+  "Veuillez réessayer votre paiement depuis votre panier. Si le problème persiste, contactez-nous et nous vous aiderons à finaliser votre commande.": "Please retry your payment from your cart. If the issue persists, contact us and we will help you finalize your order.",
+  "Réessayer": "Try again",
+  "Retour au panier": "Back to cart",
+  "Paiement annulé": "Payment cancelled",
+  "Vous avez annulé le paiement. Votre panier est toujours disponible.": "You cancelled the payment. Your cart is still available.",
+  "Vous pouvez réessayer quand vous le souhaitez ou continuer vos achats.": "You can try again whenever you want or continue your purchases.",
+  "Mot de passe oublié": "Forgot your password",
+  "Entrez votre email, nous vous enverrons un lien pour réinitialiser votre mot de passe.": "Enter your email, we will send you a link to reset your password.",
+  "Envoyer le lien": "Send the link",
+  "Envoi en cours...": "Sending...",
+  "Lien envoyé si l'email est enregistré.": "Link sent if the email is registered.",
+  "Impossible de joindre le serveur. Réessayez.": "Unable to reach the server. Please try again.",
+  "← Retour à la connexion": "← Back to login",
+  "En savoir plus": "Learn more",
+  "Vous n'avez pas encore passé de commande.": "You haven't placed an order yet.",
+  "Découvrir le catalogue": "Discover the catalogue"
+};
+
+function annoterStructureCommune() {
+  const navKeys = {
+    "index.html": "nav.accueil", "catalogue.html": "nav.catalogue", "apropos.html": "nav.apropos",
+    "professionnels.html": "nav.professionnels", "contact.html": "nav.contact", "connexion.html": "nav.connexion"
+  };
+  document.querySelectorAll(".nav-center a, .nav-right a").forEach(link => {
+    const file = (link.getAttribute("href") || "").split("?")[0];
+    if (navKeys[file] && !link.dataset.i18n) link.dataset.i18n = navKeys[file];
+  });
+  document.querySelectorAll(".footer-legal a").forEach(link => {
+    const map = { "politique-confidentialite.html": "footer.confidentialite", "mentions-legales.html": "footer.mentions", "cgv.html": "footer.cgv", "cookies.html": "footer.cookies" };
+    const key = map[link.getAttribute("href")];
+    if (key) link.dataset.i18n = key;
+  });
+  document.querySelectorAll("footer > p").forEach(el => el.dataset.i18n = "footer.droits");
+  document.querySelectorAll("input[type='search']").forEach(el => el.dataset.i18nPlaceholder = "nav.recherche");
+}
+
+function appliquerTraductions() {
+  const lang = getLang();
+  document.documentElement.setAttribute("lang", lang);
+
+  annoterStructureCommune();
+
+  // Éléments avec data-i18n
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    const traduction = i18n[lang]?.[key] || i18n["fr"]?.[key];
+    if (!traduction) return;
+    if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+      el.placeholder = traduction;
+    } else {
+      el.textContent = traduction;
+    }
+  });
+
+  // Placeholders annotés
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    const traduction = i18n[lang]?.[key] || i18n["fr"]?.[key];
+    if (traduction) el.placeholder = traduction;
+  });
+
+  const phraseTranslations = { ...staticTextEn };
+  Object.keys(i18n.fr).forEach(key => {
+    if (i18n.en[key]) phraseTranslations[i18n.fr[key].replace(/\s+/g, " ").trim()] = i18n.en[key];
+  });
+
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+  let node;
+  while ((node = walker.nextNode())) {
+    const parent = node.parentElement;
+    if (!parent || parent.closest("script, style, [data-i18n]")) continue;
+    if (!originalTextNodes.has(node)) originalTextNodes.set(node, node.nodeValue);
+    const original = originalTextNodes.get(node);
+    const normalized = original.replace(/\s+/g, " ").trim();
+    const translated = phraseTranslations[normalized];
+    node.nodeValue = lang === "en" && translated ? original.replace(original.trim(), translated) : original;
+  }
+
+  document.querySelectorAll("input[placeholder], textarea[placeholder]").forEach(el => {
+    if (el.dataset.i18nPlaceholder) return;
+    if (!originalPlaceholders.has(el)) originalPlaceholders.set(el, el.placeholder);
+    const original = originalPlaceholders.get(el);
+    el.placeholder = lang === "en" && phraseTranslations[original] ? phraseTranslations[original] : original;
+  });
+
+  // Sélecteur de langue
+  const langSelect = document.getElementById("lang-select");
+  if (langSelect) {
+    langSelect.value = lang;
+  }
+}
+
+async function setLang(lang) {
+  localStorage.setItem("hygia-lang", lang);
+  appliquerTraductions();
+
+  const productContainer = document.getElementById("product-container");
+  if (productContainer) {
+    const isHome = Boolean(productContainer.closest(".featured-products"));
+    afficherProduits(produits, isHome ? 4 : null, isHome ? 1 : pageActuelleCatalogue);
+  }
+  await afficherPageCompte();
+  afficherPanier();
+  afficherPageProduit();
+  mettreAJourNavCompte();
+  appliquerTraductions();
+}
+
+function initLang() {
+  if (document.getElementById("lang-select")) return;
+
+  const select = document.createElement("select");
+  select.id = "lang-select";
+  select.setAttribute("aria-label", "Choisir la langue");
+  select.innerHTML = `<option value="fr">🇫🇷 FR</option><option value="en">🇬🇧 EN</option>`;
+  select.value = getLang();
+  select.style.cssText = "position:fixed;bottom:88px;right:20px;z-index:10001;padding:8px 32px 8px 12px;border:none;border-radius:50px;background:#185FA5;color:#fff;font-size:13px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.3);outline:none;appearance:none;-webkit-appearance:none;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E\");background-repeat:no-repeat;background-position:right 12px center;background-size:12px;";
+  select.addEventListener("change", (e) => setLang(e.target.value));
+  document.documentElement.insertBefore(select, document.body);
+  appliquerTraductions();
+}
+
 // ===========================================
 // 1. DONNÉES PRODUITS (source unique pour tout le site)
 // ===========================================
@@ -41,6 +561,52 @@ const produits = [
     { id: 35, nom: "Trousse portable d'injection intramusculaire",     prix: 25000,  image: "img/Trousse de pratique d'injection intramusculaire portable.webp",         categorie: "clinique",    promo: false, stock: true, description: "Trousse portable pour la pratique de l'injection intramusculaire. Outil de formation pratique destiné aux étudiants en santé et au personnel infirmier en apprentissage." },
 
 ];
+
+const productDescriptionsEn = {
+    1: "Manual cuff blood pressure monitor supplied with a single-head stethoscope. Reliable blood pressure measurement without batteries. Ideal for medical practices and pharmacies.",
+    2: "Automatic digital upper-arm blood pressure monitor with a 22–36 cm cuff. One press measures blood pressure and pulse. Large display for easy use at home or in clinics.",
+    3: "Fingertip pulse oximeter measuring oxygen saturation (SpO2) and pulse within seconds. Compact, painless and essential for respiratory monitoring.",
+    4: "Swivel medical stool with adjustable height from 44 to 56 cm and a 33 cm seat. Comfortable for extended use in medical practices and laboratories.",
+    5: "Square 304 stainless-steel tray, 31 × 24 × 3.1 cm. Designed for presenting and sterilising medical instruments in practices and clinics.",
+    6: "Professional optical microscope with 40× to 1600× magnification (4×, 10×, 40×S and 100×S objectives). Supplied in a case for laboratories, clinics and medical training.",
+    7: "Laboratory centrifuge with timer and capacity for six 20 ml tubes. Provides fast separation of blood and biological samples.",
+    8: "High-speed electric centrifuge for twelve 20 ml tubes, up to 4000 rpm with digital display. Suitable for high-volume laboratories and compatible with 110V/220V.",
+    9: "Orbital laboratory shaker with adjustable speed from 0 to 210 rpm and a 0–15 minute timer or continuous mode. Ensures homogeneous mixing of biological samples.",
+    10: "Portable haemoglobin meter delivering results in 15 seconds from only 10 µl of blood, with no liquid reagent. Ideal for rapid anaemia screening.",
+    11: "Box of 50 test strips for the Mission HB haemoglobin analyser. Designed for fast and reliable haemoglobin screening in clinics and laboratories.",
+    12: "Accurate and reliable URIT H12 haemoglobin meter designed for regular use in clinics and medical analysis laboratories.",
+    13: "Box of 100 test strips compatible with the URIT H12 analyser for rapid haemoglobin measurement in clinics and laboratories.",
+    14: "Urinalysis reagent strips covering 10 parameters including glucose, protein, pH, blood and leukocytes. Fast screening results for clinics and pharmacies.",
+    15: "Urinalysis reagent strips covering three essential parameters. An economical solution for rapid screening in medical practices and pharmacies.",
+    16: "Robust and accurate mechanical medical scale measuring 28.5 × 42.5 × 8.5 cm, requiring no batteries. Sold in packs of three.",
+    17: "Infant scale with integrated height gauge, 20 kg capacity and 10 g accuracy. Essential for growth monitoring in paediatrics, maternity wards and health centres.",
+    18: "Flexible PVC measuring mat for infants from 20 to 99 cm. Lightweight, easy to disinfect and ideal for paediatric monitoring.",
+    19: "Night orthosis available in S, M and L sizes. Supports and immobilises the foot during rest for comfortable rehabilitation.",
+    20: "Box of 50 disposable wooden tongue depressors measuring 150 × 18 × 1.6 mm, for consultations in practices, clinics and pharmacies.",
+    21: "Set of 10 surgical forceps for care and procedures in clinics. Essential instruments for treatment rooms and operating theatres.",
+    22: "Box of 100 sterile, single-use no. 23 carbon-steel scalpel blades for surgical procedures and clinical care.",
+    23: "Self-inflating paediatric PVC resuscitation bag supplied in a case. Emergency equipment for manual ventilation of children in respiratory distress.",
+    24: "Self-inflating adult PVC resuscitation bag supplied in a case. Essential for manual ventilation during resuscitation and first aid.",
+    25: "170 mm metal sterilisation drum for the sterile storage of dressings and medical consumables in clinics and operating theatres.",
+    26: "200 mm metal sterilisation drum offering larger-volume sterile storage for clinics and operating theatres.",
+    27: "Test-tube rack with 50 slots for 12–13 mm tubes, enabling fast and safe organisation of samples in analysis laboratories.",
+    28: "100 g roll of absorbent cotton. An essential consumable for care, dressings and disinfection in clinics, pharmacies and at home.",
+    29: "Rapid toxoplasmosis screening test for whole blood, serum or plasma. Delivers results within minutes without special equipment.",
+    30: "Rapid rubella IgG/IgM screening test for serum or plasma. An essential diagnostic tool for prenatal monitoring and clinics.",
+    31: "Rapid malaria test for Plasmodium falciparum and vivax using whole blood. Reliable results within minutes and well suited to Mali.",
+    32: "Anatomical childbirth simulation model for practical delivery training, designed for health schools, midwifery training centres and medical facilities.",
+    33: "Detailed sectional model of the male urogenital system. Ideal teaching aid for medical education, health schools and urology practices.",
+    34: "Anatomical model of the larynx, heart and lungs for medical practice and training in health schools and teaching clinics.",
+    35: "Portable intramuscular injection practice kit for hands-on training of healthcare students and nursing staff.",
+};
+
+function tr(fr, en) {
+    return getLang() === "en" ? en : fr;
+}
+
+function getProductDescription(produit) {
+    return getLang() === "en" ? (productDescriptionsEn[produit.id] || produit.description) : produit.description;
+}
 
 // Index id -> produit pour des recherches en O(1) (évite les .find() en boucle)
 const produitsById = new Map(produits.map(p => [p.id, p]));
@@ -385,7 +951,7 @@ function afficherProduits(listeProduits, limite = null, page = 1) {
     }
 
     if (liste.length === 0) {
-        container.innerHTML = "<p class='no-result'>Aucun produit ne correspond à votre recherche.</p>";
+        container.innerHTML = `<p class="no-result">${t("no.result")}</p>`;
     } else {
         liste.forEach(produit => {
             const card = document.createElement("div");
@@ -397,12 +963,14 @@ function afficherProduits(listeProduits, limite = null, page = 1) {
             <h3>${escapeHtml(produit.nom)}</h3>
           </a>
           <p class="price">${produit.prix.toLocaleString()} FCFA</p>
-          <button class="btn-add-cart" data-id="${produit.id}">Ajouter au panier</button>
+          <button class="btn-add-cart" data-id="${produit.id}">${t("btn.add.cart")}</button>
         `;
 
             container.appendChild(card);
         });
     }
+
+    appliquerTraductions();
 
     // affiche les boutons de pagination uniquement si pas de limite (catalogue)
     if (!limite) {
@@ -430,7 +998,7 @@ function afficherPagination(_totalProduits, pageActuelle, totalPages) {
 
     // bouton "Précédent"
     const btnPrev = document.createElement("button");
-    btnPrev.textContent = "← Précédent";
+    btnPrev.textContent = tr("← Précédent", "← Previous");
     btnPrev.className = "pagination-btn";
     btnPrev.disabled = pageActuelle === 1;
     btnPrev.addEventListener("click", () => changerPage(pageActuelle - 1));
@@ -447,7 +1015,7 @@ function afficherPagination(_totalProduits, pageActuelle, totalPages) {
 
     // bouton "Suivant"
     const btnNext = document.createElement("button");
-    btnNext.textContent = "Suivant →";
+    btnNext.textContent = tr("Suivant →", "Next →");
     btnNext.className = "pagination-btn";
     btnNext.disabled = pageActuelle === totalPages;
     btnNext.addEventListener("click", () => changerPage(pageActuelle + 1));
@@ -788,7 +1356,7 @@ function afficherPanier() {
     container.innerHTML = "";
 
     if (panier.length === 0) {
-        container.innerHTML = "<p class='panier-vide'>Votre panier est vide pour le moment.</p>";
+        container.innerHTML = `<p class="panier-vide">${t("panier.vide")}</p>`;
         mettreAJourResumePanier();
         return;
     }
@@ -809,7 +1377,7 @@ function afficherPanier() {
             <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}" loading="lazy" decoding="async">
             <div class="panier-item-info">
                 <h3>${escapeHtml(produit.nom)}</h3>
-                <p class="price-unit">${produit.prix.toLocaleString()} FCFA / unité</p>
+                <p class="price-unit">${produit.prix.toLocaleString()} FCFA ${t("unit.price")}</p>
             </div>
             <div class="panier-qty">
                 <button class="btn-moins" data-id="${produit.id}">-</button>
@@ -851,8 +1419,8 @@ function getDetailsPaiement(methode, total) {
     const libelles = {
         orange: "Orange Money",
         wave: "Wave",
-        carte: "Carte bancaire Visa / Mastercard",
-        livraison: "À la livraison"
+        carte: tr("Carte bancaire Visa / Mastercard", "Visa / Mastercard bank card"),
+        livraison: tr("À la livraison", "Cash on delivery")
     };
     const logos = {
         orange: "img/logo Orange.png",
@@ -866,14 +1434,14 @@ function getDetailsPaiement(methode, total) {
             <div style="text-align:center; padding: 10px 0;">
                 <div style="font-size:42px; margin-bottom:10px;">🚚</div>
                 <p style="font-size:14px; color:#555; margin-bottom:12px;">
-                    Vous avez choisi de payer <strong>${total.toLocaleString()} FCFA</strong>
-                    à la livraison de votre commande.
+                    ${tr("Vous avez choisi de payer", "You chose to pay")} <strong>${total.toLocaleString()} FCFA</strong>
+                    ${tr("à la livraison de votre commande.", "when your order is delivered.")}
                 </p>
                 <p style="font-size:12px; color:#888;">
-                    Préparez le montant exact. Notre livreur vous contactera avant l'envoi.
+                    ${tr("Préparez le montant exact. Notre livreur vous contactera avant l'envoi.", "Please prepare the exact amount. Our courier will contact you before delivery.")}
                 </p>
                 <button class="btn-confirmer" style="margin-top:14px;">
-                    Confirmer ma commande
+                    ${tr("Confirmer ma commande", "Confirm my order")}
                 </button>
             </div>
         `;
@@ -884,16 +1452,15 @@ function getDetailsPaiement(methode, total) {
         <div style="text-align:center; padding: 10px 0;">
             ${logo}
             <p style="font-size:14px; color:#555; margin-bottom:12px;">
-                Vous allez être redirigé vers la page de paiement sécurisée
-                PayTech pour régler <strong>${total.toLocaleString()} FCFA</strong>
-                par <strong>${libelles[methode] || methode}</strong>.
+                ${t("paiement.redirect")}
+                PayTech — <strong>${total.toLocaleString()} FCFA</strong>
+                ${tr("par", "via")} <strong>${libelles[methode] || methode}</strong>.
             </p>
             <p style="font-size:12px; color:#888;">
-                🔒 Paiement 100% sécurisé — vos données bancaires ne
-                transitent jamais par nos serveurs.
+                ${t("paiement.secure")}
             </p>
             <button class="btn-confirmer" style="margin-top:14px;">
-                Procéder au paiement →
+                ${t("paiement.confirmer")}
             </button>
         </div>
     `;
@@ -1035,7 +1602,7 @@ async function confirmerCommande(methode) {
         hideSyphaLoader();
         alert("Impossible d'enregistrer la commande. Veuillez réessayer.");
         if (btnConfirmer) {
-            btnConfirmer.textContent = "Confirmer ma commande";
+            btnConfirmer.textContent = tr("Confirmer ma commande", "Confirm my order");
             btnConfirmer.disabled = false;
         }
         return;
@@ -1122,24 +1689,24 @@ function afficherPageProduit() {
         <div class="produit-detail-info">
             <h1>${escapeHtml(produit.nom)}</h1>
             <p class="produit-detail-price">${produit.prix.toLocaleString()} FCFA</p>
-            <p class="produit-detail-description">${escapeHtml(produit.description)}</p>
+            <p class="produit-detail-description">${escapeHtml(getProductDescription(produit))}</p>
 
-            <button class="btn-add-cart" data-id="${produit.id}">Ajouter au panier</button>
+            <button class="btn-add-cart" data-id="${produit.id}">${t("btn.add.cart")}</button>
 
             <section class="avantages-yames">
-                <h3>Les Avantages de Hygia</h3>
+                <h3>${tr("Les avantages de Hygia", "Why choose Hygia")}</h3>
                 <div class="avantages-yames-list">
                     <div class="avantage-item">
                         <span class="avantage-icon icon-truck"></span>
-                        <span>Livraison rapide</span>
+                        <span>${tr("Livraison rapide", "Fast delivery")}</span>
                     </div>
                     <div class="avantage-item">
                         <span class="avantage-icon icon-shield"></span>
-                        <span>Garantie fiable</span>
+                        <span>${tr("Garantie fiable", "Reliable warranty")}</span>
                     </div>
                     <div class="avantage-item">
                         <span class="avantage-icon icon-check"></span>
-                        <span>Produits certifiés</span>
+                        <span>${tr("Produits certifiés", "Certified products")}</span>
                     </div>
                 </div>
             </section>
@@ -1162,7 +1729,7 @@ function afficherPageProduit() {
                         <h3>${escapeHtml(p.nom)}</h3>
                     </a>
                     <p class="price">${p.prix.toLocaleString()} FCFA</p>
-                    <button class="btn-add-cart" data-id="${p.id}">Ajouter au panier</button>
+                    <button class="btn-add-cart" data-id="${p.id}">${t("btn.add.cart")}</button>
                 `;
                 similairesContainer.appendChild(card);
             });
@@ -1407,10 +1974,10 @@ function mettreAJourNavCompte() {
 
     liens.forEach(lien => {
         if (utilisateur) {
-            lien.textContent = "Mon compte";
+            lien.textContent = t("nav.moncompte");
             lien.href = "compte.html";
         } else {
-            lien.textContent = "Connexion";
+            lien.textContent = t("nav.connexion");
             lien.href = "connexion.html";
         }
     });
@@ -1564,7 +2131,7 @@ function initFormulairesCompte(utilisateur) {
                     setUtilisateurConnecte(misAJour);
 
                     // Mettre à jour l'affichage
-                    document.getElementById("compte-nom").textContent = "Bonjour, " + misAJour.nom;
+                    document.getElementById("compte-nom").textContent = tr("Bonjour, ", "Hello, ") + misAJour.nom;
                     document.getElementById("compte-avatar").textContent = getInitials(misAJour.nom);
                     document.getElementById("info-nom").textContent = misAJour.nom || "—";
                     document.getElementById("info-telephone").textContent = misAJour.telephone || "—";
@@ -1688,7 +2255,7 @@ async function afficherPageCompte() {
         avatarEl.textContent = getInitials(utilisateur.nom);
     }
 
-    document.getElementById("compte-nom").textContent = "Bonjour, " + utilisateur.nom;
+    document.getElementById("compte-nom").textContent = tr("Bonjour, ", "Hello, ") + utilisateur.nom;
     document.getElementById("compte-email").textContent = utilisateur.email;
 
     // Infos profil
@@ -1801,8 +2368,8 @@ async function afficherPageCompte() {
             historiqueContainer.innerHTML = `
                 <div class="historique-vide">
                     <div class="vide-icon">📦</div>
-                    <p>Vous n'avez pas encore passé de commande.</p>
-                    <a href="catalogue.html">Découvrir le catalogue</a>
+                    <p>${tr("Vous n'avez pas encore passé de commande.", "You haven't placed an order yet.")}</p>
+                    <a href="catalogue.html">${tr("Découvrir le catalogue", "Discover the catalogue")}</a>
                 </div>`;
             return;
         }
@@ -2000,6 +2567,7 @@ function initScrollReveal() {
 
 function toggleTheme() {
     const html = document.documentElement;
+    html.classList.add('theme-transition');
     const isDark = html.getAttribute('data-theme') === 'dark';
     const newTheme = isDark ? 'light' : 'dark';
 
@@ -2015,14 +2583,11 @@ function toggleTheme() {
         btn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
         btn.setAttribute('title', newTheme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre');
     }
+
+    window.setTimeout(() => html.classList.remove('theme-transition'), 500);
 }
 
 function initTheme() {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'dark-mode.css';
-    document.head.appendChild(link);
-
     const saved = localStorage.getItem('hygia-theme') || 'light';
     const html = document.documentElement;
     if (saved === 'dark') {
@@ -2063,8 +2628,8 @@ function initABTest() {
     if (!cta) return;
 
     const variants = [
-        { variant: 'A', text: 'Voir le catalogue' },
-        { variant: 'B', text: 'Découvrir les produits' }
+        { variant: 'A', text: t('hero.cta') },
+        { variant: 'B', text: tr('Découvrir les produits', 'Discover our products') }
     ];
     const chosen = variants[Math.floor(Math.random() * variants.length)];
     cta.textContent = chosen.text;
@@ -2086,90 +2651,10 @@ function initABTest() {
     });
 }
 
-const translations = {
-    fr: {
-        nav_home: 'Accueil',
-        nav_catalog: 'Catalogue',
-        nav_about: 'À propos',
-        nav_prof: 'Professionnels',
-        nav_contact: 'Contact',
-        hero_title: 'Matériel médical de qualité au Mali',
-        hero_subtitle: 'Mieux équiper pour — Plus sauver',
-        hero_cta: 'Voir le catalogue',
-        categories_label: 'NOS CATÉGORIES',
-        categories_title: 'Explorez notre catalogue',
-        categories_subtitle: 'Découvrez notre gamme complète de produits médicaux certifiés',
-        featured_title: 'Produits populaires',
-        about_label: 'À PROPOS DE NOUS',
-        about_title: 'Qui sommes-nous ?',
-        about_link: 'En savoir plus',
-        why_label: 'POURQUOI CHOISIR Hygia',
-        why_title: 'Ce qui nous différencie',
-        why_subtitle: 'Des avantages concrets pour vos achats de matériel médical',
-        footer_rights: '© 2026 Hygia. Tous droits réservés.'
-    },
-    en: {
-        nav_home: 'Home',
-        nav_catalog: 'Catalog',
-        nav_about: 'About',
-        nav_prof: 'Professionals',
-        nav_contact: 'Contact',
-        hero_title: 'Quality medical equipment in Mali',
-        hero_subtitle: 'Better equipped — Save more',
-        hero_cta: 'View catalog',
-        categories_label: 'OUR CATEGORIES',
-        categories_title: 'Explore our catalog',
-        categories_subtitle: 'Discover our full range of certified medical products',
-        featured_title: 'Popular products',
-        about_label: 'ABOUT US',
-        about_title: 'Who we are?',
-        about_link: 'Learn more',
-        why_label: 'WHY CHOOSE Hygia',
-        why_title: 'What sets us apart',
-        why_subtitle: 'Concrete advantages for your medical equipment purchases',
-        footer_rights: '© 2026 Hygia. All rights reserved.'
-    }
-};
 
-function t(key) {
-    const lang = localStorage.getItem('hygia-lang') || 'fr';
-    return translations[lang]?.[key] || translations.fr[key] || key;
-}
+document.addEventListener('DOMContentLoaded', async () => {
 
-function initI18n() {
-    const saved = localStorage.getItem('hygia-lang') || 'fr';
-    document.documentElement.lang = saved;
-
-    const select = document.createElement('select');
-    select.id = 'lang-select';
-    select.setAttribute('aria-label', 'Choisir la langue');
-    select.innerHTML = `<option value='fr' ${saved === 'fr' ? 'selected' : ''}>FR</option><option value='en' ${saved === 'en' ? 'selected' : ''}>EN</option>`;
-    select.style.cssText = `position:fixed;bottom:84px;right:20px;z-index:10000;padding:6px 10px;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer;`;
-    select.addEventListener('change', (e) => {
-        localStorage.setItem('hygia-lang', e.target.value);
-        window.location.reload();
-    });
-    document.documentElement.insertBefore(select, document.body);
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[saved][key]) {
-            el.textContent = translations[saved][key];
-        }
-    });
-
-    document.querySelectorAll('[data-i18n-html]').forEach(el => {
-        const key = el.getAttribute('data-i18n-html');
-        if (translations[saved][key]) {
-            el.innerHTML = translations[saved][key];
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    initTheme();
-    initI18n();
+    initLang();
     initWhatsApp();
     initABTest();
     initPromoSystem();
@@ -2193,7 +2678,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initRechercheLive();
     mettreAJourNavCompte();
     initFormulairesAuth();
-    afficherPageCompte();
+    await afficherPageCompte();
 
     const confNumero = document.getElementById("conf-numero");
     if (confNumero) {
@@ -2262,12 +2747,12 @@ document.addEventListener('DOMContentLoaded', () => {
             ajouterAuPanier(id);
 
             const btn = e.target;
-            btn.textContent = "✓ Ajouté !";
+            btn.textContent = t("btn.added");
             btn.classList.add("added");
             btn.disabled = true;
 
             setTimeout(() => {
-                btn.textContent = "Ajouter au panier";
+                btn.textContent = t("btn.add.cart");
                 btn.classList.remove("added");
                 btn.disabled = false;
             }, 2000);
@@ -2314,7 +2799,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (livraisonForm && livraisonForm.style.display === "none") {
                 livraisonForm.style.display = "block";
                 livraisonForm.scrollIntoView({ behavior: "smooth" });
-                btnPaiement.textContent = "Payer";
+                btnPaiement.textContent = tr("Payer", "Pay");
                 btnPaiement.dataset.etape = "payer";
                 return;
             }
@@ -2421,6 +2906,8 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => discountAmount.classList.remove("discount-anim"), 520);
         }
     }
+
+    appliquerTraductions();
 
     if (couponInput) {
         couponInput.addEventListener("keydown", (e) => {

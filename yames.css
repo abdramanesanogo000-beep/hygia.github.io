@@ -2996,7 +2996,7 @@ footer p {
     height: 100%;
     background: #ffffff;
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
-    z-index: 2000;
+    z-index: 11000;
     transition: right 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -3010,7 +3010,7 @@ footer p {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 1999;
+    z-index: 10999;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;

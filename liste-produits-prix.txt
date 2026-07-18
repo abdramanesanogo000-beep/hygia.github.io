@@ -34,3 +34,10 @@ ID | NOM DU PRODUIT | PRIX ACTUEL (FCFA)
 33 | Modèle anatomique du système urogénital masculin | 28 000
 34 | Modèle anatomique larynx, cœur et poumons | 90 000
 35 | Trousse portable d'injection intramusculaire | 15000
+
+part4
+Mode sombre	UX moderne	Faible	1-2 j
+Multilingue	Expansion	Élevée	2-3 sem.
+Programme fidélité / parrainage	Conversion	Moyenne	1-2 sem.
+Chat WhatsApp / chatbot	Support	Moyenne	2-3 j
+A/B testing CTA	Conversion	Élevée	1 sem.

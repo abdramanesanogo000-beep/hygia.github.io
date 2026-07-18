@@ -44,19 +44,19 @@
     <main>
 
         <section class="catalogue-page">
-            <h1>Notre catalogue</h1>
+            <h1 data-i18n="catalogue.titre">Notre catalogue</h1>
 
             <div class="catalogue-layout">
 
                 <aside class="filters">
-                    <h2>Filtres</h2>
+                    <h2 data-i18n="filter.titre">Filtres</h2>
 
                     <div class="filter-group">
-                        <h3>Catégorie</h3>
+                        <h3 data-i18n="filter.categorie">Catégorie</h3>
                         <div class="filter-boxes">
                             <label class="filter-box">
                                 <input type="checkbox" class="filter-categorie" value="clinique">
-                                <span>Équipement médical</span>
+                                <span data-i18n="cat.equipement">Équipement médical</span>
                             </label>
                             <label class="filter-box">
                                 <input type="checkbox" class="filter-categorie" value="consommable">
@@ -66,17 +66,16 @@
                     </div>
 
                     <div class="filter-group">
-                        <h3>Produit</h3>
+                        <h3 data-i18n="filter.produit">Produit</h3>
                         <div class="filter-boxes filter-product-boxes">
-                            <button type="button" class="filter-box-btn active" data-produit-filter="tous">Tous les
-                                produits</button>
-                            <button type="button" class="filter-box-btn" data-produit-filter="promo">En promo</button>
-                            <button type="button" class="filter-box-btn" data-produit-filter="stock">En stock</button>
+                            <button type="button" class="filter-box-btn active" data-produit-filter="tous" data-i18n="filter.tous">Tous les produits</button>
+                            <button type="button" class="filter-box-btn" data-produit-filter="promo" data-i18n="filter.promo">En promo</button>
+                            <button type="button" class="filter-box-btn" data-produit-filter="stock" data-i18n="filter.stock">En stock</button>
                         </div>
                     </div>
 
                     <div class="filter-group">
-                        <h3>Prix (FCFA)</h3>
+                        <h3 data-i18n="filter.prix">Prix (FCFA)</h3>
                         <label>Min : <input type="number" id="prix-min" placeholder="0" min="0" step="any"
                                 style="-moz-appearance: textfield;"></label>
                         <label>Max : <input type="number" id="prix-max" placeholder="300000" min="0" step="any"
@@ -84,16 +83,16 @@
                     </div>
 
                     <div class="filter-group">
-                        <h3>Trier par</h3>
+                        <h3 data-i18n="filter.trier">Trier par</h3>
                         <select id="tri-select">
-                            <option value="defaut">Par défaut</option>
-                            <option value="prix-asc">Prix croissant</option>
-                            <option value="prix-desc">Prix décroissant</option>
-                            <option value="nom-asc">Nom (A-Z)</option>
+                            <option value="defaut" data-i18n="filter.defaut">Par défaut</option>
+                            <option value="prix-asc" data-i18n="filter.prix.asc">Prix croissant</option>
+                            <option value="prix-desc" data-i18n="filter.prix.desc">Prix décroissant</option>
+                            <option value="nom-asc" data-i18n="filter.nom.asc">Nom (A-Z)</option>
                         </select>
                     </div>
 
-                    <button id="reset-filtres" class="btn-reset">Réinitialiser</button>
+                    <button id="reset-filtres" class="btn-reset" data-i18n="filter.reset">Réinitialiser</button>
                 </aside>
 
                 <div class="product-grid" id="product-container">
