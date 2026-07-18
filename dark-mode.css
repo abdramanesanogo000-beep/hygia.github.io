@@ -325,6 +325,155 @@ html[data-theme='dark'] #bandeau-cookies a {
     color: var(--text-primary) !important;
 }
 
+/* Pages spécifiques : Professionnels, À propos, Détail produit, Contact */
+
+html[data-theme='dark'] .bientot-container {
+    background: var(--bg-page);
+}
+
+html[data-theme='dark'] .bientot-content {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+html[data-theme='dark'] .bientot-content h1 {
+    color: var(--accent-violet);
+}
+
+html[data-theme='dark'] .bientot-content p {
+    color: var(--text-secondary);
+}
+
+html[data-theme='dark'] .bientot-content a {
+    background: linear-gradient(135deg, var(--accent-rose), var(--accent-violet)) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+}
+
+html[data-theme='dark'] .apropos-preview,
+html[data-theme='dark'] .qui-section,
+html[data-theme='dark'] .valeurs-section,
+html[data-theme='dark'] .why-section,
+html[data-theme='dark'] .mission-section,
+html[data-theme='dark'] .contact-infos-section {
+    background: var(--bg-section);
+}
+
+html[data-theme='dark'] .apropos-preview-texte h2,
+html[data-theme='dark'] .qui-texte h2,
+html[data-theme='dark'] .valeurs-section h2,
+html[data-theme='dark'] .why-section h2,
+html[data-theme='dark'] .mission-section h2,
+html[data-theme='dark'] .contact-infos-inner h2 {
+    color: var(--text-primary);
+}
+
+html[data-theme='dark'] .apropos-preview-texte p,
+html[data-theme='dark'] .qui-texte p,
+html[data-theme='dark'] .valeurs-section .sous-titre,
+html[data-theme='dark'] .why-section .sous-titre,
+html[data-theme='dark'] .mission-section p {
+    color: var(--text-secondary);
+}
+
+html[data-theme='dark'] .apropos-preview-texte p strong,
+html[data-theme='dark'] .qui-texte p strong,
+html[data-theme='dark'] .mission-section p strong {
+    color: var(--accent-violet);
+}
+
+html[data-theme='dark'] .apropos-preview-img .img-box,
+html[data-theme='dark'] .qui-image .img-placeholder,
+html[data-theme='dark'] .info-bloc-icon {
+    background: var(--bg-card-hover);
+}
+
+html[data-theme='dark'] .stat-bloc,
+html[data-theme='dark'] .valeur-card,
+html[data-theme='dark'] .why-card,
+html[data-theme='dark'] .info-bloc {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+}
+
+html[data-theme='dark'] .stat-nb,
+html[data-theme='dark'] .why-num {
+    color: var(--accent-violet);
+}
+
+html[data-theme='dark'] .stat-txt,
+html[data-theme='dark'] .valeur-card p,
+html[data-theme='dark'] .why-card p,
+html[data-theme='dark'] .info-bloc-content p,
+html[data-theme='dark'] .info-bloc-content a {
+    color: var(--text-secondary);
+}
+
+html[data-theme='dark'] .valeur-card h3,
+html[data-theme='dark'] .why-card h3,
+html[data-theme='dark'] .info-bloc-content h3 {
+    color: var(--text-primary);
+}
+
+html[data-theme='dark'] .valeur-icon svg path,
+html[data-theme='dark'] .valeur-icon svg circle,
+html[data-theme='dark'] .info-bloc-icon svg path {
+    stroke: var(--accent-violet) !important;
+}
+
+html[data-theme='dark'] .mission-section a,
+html[data-theme='dark'] .qui-texte a {
+    background: linear-gradient(135deg, var(--accent-rose), var(--accent-violet));
+    color: #FFFFFF;
+    padding: 11px 26px;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+html[data-theme='dark'] .produit-detail {
+    background: var(--bg-card);
+    border-color: var(--border);
+}
+
+html[data-theme='dark'] .produit-detail-image img {
+    background: var(--bg-card-hover);
+}
+
+html[data-theme='dark'] .produit-detail-info h1 {
+    color: var(--text-primary);
+}
+
+html[data-theme='dark'] .produit-detail-price {
+    background: linear-gradient(135deg, var(--accent-rose), var(--accent-violet));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+html[data-theme='dark'] .produit-detail-description {
+    color: var(--text-secondary);
+}
+
+html[data-theme='dark'] .avantages-yames h3 {
+    color: var(--accent-violet);
+}
+
+html[data-theme='dark'] .avantage-item {
+    background: var(--bg-card-hover);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+html[data-theme='dark'] .produit-detail-info .btn-add-cart {
+    background: linear-gradient(135deg, var(--accent-rose), var(--accent-violet)) !important;
+    color: #FFFFFF !important;
+    border-color: transparent !important;
+}
+
 #theme-toggle {
     position: fixed;
     top: 12px;
