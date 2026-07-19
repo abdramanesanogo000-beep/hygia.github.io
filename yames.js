@@ -1930,8 +1930,23 @@ function setAccessToken(token) {
 }
 
 function getUtilisateurConnecte() {
-    const data = localStorage.getItem("utilisateurConnecte");
-    return data ? JSON.parse(data) : null;
+    try {
+        const data = localStorage.getItem("utilisateurConnecte");
+        if (data) return JSON.parse(data);
+    } catch (e) { console.error("getUtilisateurConnecte:", e); }
+
+    const token = getAccessToken();
+    if (!token) return null;
+    try {
+        const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const payload = JSON.parse(atob(base64));
+        if (payload && payload.exp && payload.exp * 1000 < Date.now()) return null;
+        return {
+            nom: payload.nom || payload.name || '',
+            email: payload.email || '',
+            telephone: payload.telephone || ''
+        };
+    } catch (e) { return null; }
 }
 
 function setUtilisateurConnecte(utilisateur, token) {
@@ -2411,9 +2426,9 @@ async function afficherPageCompte() {
         }
 
         historiqueContainer.innerHTML = "";
-        commandes.forEach((commande) => {
+        commandes.forEach((commande, index) => {
             const div = document.createElement("div");
-            div.className = "commande-card";
+            div.className = 'commande-card' + (index >= 3 ? ' commande-card-plus commande-card-cache' : '');
             const date = new Date(commande.date).toLocaleDateString("fr-FR");
             const itemsHtml = commande.articles.map(a => `
                 <div class="article-ligne">
@@ -2437,6 +2452,19 @@ async function afficherPageCompte() {
 
             historiqueContainer.appendChild(div);
         });
+
+        if (commandes.length > 3) {
+            const btn = document.createElement('button');
+            btn.className = 'btn-toggle-commandes';
+            btn.textContent = 'Voir les ' + (commandes.length - 3) + ' commandes precedentes';
+            btn.addEventListener('click', () => {
+                const plus = historiqueContainer.querySelectorAll('.commande-card-plus');
+                const montrer = btn.textContent.includes('Voir');
+                plus.forEach(c => c.classList.toggle('commande-card-cache', !montrer));
+                btn.textContent = montrer ? 'Reduire' : 'Voir les ' + (commandes.length - 3) + ' commandes precedentes';
+            });
+            historiqueContainer.appendChild(btn);
+        }
     } catch (err) {
         console.error("Erreur chargement commandes :", err);
         historiqueContainer.innerHTML = `<div style="text-align:center;padding:30px;color:#c0392b;font-size:14px;">Impossible de charger vos commandes.</div>`;
