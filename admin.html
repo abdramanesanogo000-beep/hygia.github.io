@@ -555,6 +555,10 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v2"/><circle cx="17" cy="7" r="3"/><path d="M22 21v-2a3 3 0 0 0-2-2.83"/></svg>
                     Partenaires
                 </button>
+                <button class='main-tab-btn' onclick='switchMainTab("produits", this)'>
+                    <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z'/><polyline points='3.27 6.96 12 12.01 20.73 6.96'/><line x1='12' y1='22.08' x2='12' y2='12'/></svg>
+                    Produits
+                </button>
             </div>
 
             <div id="main-tab-dashboard" class="main-tab-panel active">
@@ -696,6 +700,38 @@
                     </table>
                 </div>
             </div>
+            <!-- ===== ONGLET PRODUITS ===== -->
+            <div id='main-tab-produits' class='main-tab-panel'>
+                <div class='partner-header'>
+                    <h2>Gestion des produits</h2>
+                    <button class='btn-nouveau-partenaire' onclick='ouvrirModalProduit()'>
+                        <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>
+                        Nouveau produit
+                    </button>
+                </div>
+
+                <div class='table-scroll'>
+                    <table class='commandes-table'>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Image</th>
+                                <th>Nom</th>
+                                <th>Prix</th>
+                                <th>Stock</th>
+                                <th>Catégorie</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id='tbody-produits'>
+                            <tr>
+                                <td colspan='8' style='text-align:center;padding:30px;color:#888;'>Chargement...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -723,6 +759,63 @@
                     <input type="text" id="partenaire-code" required placeholder="Ex : AICHA10" style="text-transform:uppercase;">
                 </div>
                 <button type="submit" class="btn-sauvegarder">Enregistrer le partenaire</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL NOUVEAU PRODUIT -->
+    <div id='modal-produit' class='modal-cmd'>
+        <div class='modal-cmd-box' style='max-width:520px;'>
+            <button class='btn-fermer' onclick='fermerModalProduit()'>✕</button>
+            <h2 id='modal-produit-titre'>Nouveau produit</h2>
+            <div id='produit-message' class='auth-message'></div>
+            <form id='form-produit'>
+                <input type='hidden' id='produit-id'>
+                <div class='form-group-admin'>
+                    <label for='produit-nom'>Nom du produit *</label>
+                    <input type='text' id='produit-nom' required placeholder='Ex : Tensiomètre automatique'>
+                </div>
+                <div style='display:grid;grid-template-columns:1fr 1fr;gap:15px;'>
+                    <div class='form-group-admin'>
+                        <label for='produit-prix'>Prix (FCFA) *</label>
+                        <input type='number' id='produit-prix' required min='0' placeholder='Ex : 25000'>
+                    </div>
+                    <div class='form-group-admin'>
+                        <label for='produit-stock'>Quantité en stock *</label>
+                        <input type='number' id='produit-stock' required min='0' placeholder='Ex : 10'>
+                    </div>
+                </div>
+                <div style='display:grid;grid-template-columns:1fr 1fr;gap:15px;'>
+                    <div class='form-group-admin'>
+                        <label for='produit-categorie'>Catégorie</label>
+                        <input type='text' id='produit-categorie' placeholder='Ex : tensiometre'>
+                    </div>
+                    <div class='form-group-admin'>
+                        <label for='produit-reference'>Référence</label>
+                        <input type='text' id='produit-reference' placeholder='Ex : REF-001'>
+                    </div>
+                </div>
+                <div class='form-group-admin'>
+                    <label for='produit-marque'>Marque</label>
+                    <input type='text' id='produit-marque' placeholder='Ex : Omron'>
+                </div>
+                <div class='form-group-admin'>
+                    <label for='produit-image'>URL de l image</label>
+                    <input type='text' id='produit-image' placeholder='Ex : img/tension.jpg'>
+                </div>
+                <div class='form-group-admin'>
+                    <label for='produit-description'>Description</label>
+                    <textarea id='produit-description' rows='3' placeholder='Description du produit...'></textarea>
+                </div>
+                <div class='form-group-admin'>
+                    <label for='produit-notice'>Notice / fiche technique</label>
+                    <input type='text' id='produit-notice' placeholder='URL ou texte'>
+                </div>
+                <label style='display:flex;align-items:center;gap:8px;font-size:13px;margin:10px 0;'>
+                    <input type='checkbox' id='produit-actif' checked>
+                    Produit actif
+                </label>
+                <button type='submit' class='btn-sauvegarder'>Enregistrer le produit</button>
             </form>
         </div>
     </div>
@@ -788,6 +881,7 @@
         let commandes = [];
         let numeroCourant = "";
         let partenaires = [];
+        let produits = [];
         let detailPartenaireActuel = null;
         let chartPartenaireInstance = null;
 
@@ -851,6 +945,7 @@
                 });
                 afficherStats(await statsRes.json());
                 chargerCommandes();
+                chargerProduits();
             } catch {
                 showMsg("Impossible de joindre le serveur. Vérifiez que le backend tourne sur le port 3000.", "error");
             } finally {
@@ -1516,6 +1611,166 @@
                 }
             });
         }
+        // =========================================================
+        // PRODUITS
+        // =========================================================
+
+        function showMsgProduit(message, type) {
+            const el = document.getElementById('produit-message');
+            if (!el) return;
+            el.textContent = message;
+            el.className = 'auth-message ' + (type || '');
+            el.style.display = message ? 'block' : 'none';
+        }
+
+        async function chargerProduits() {
+            const tbody = document.getElementById('tbody-produits');
+            try {
+                const res = await fetch(`${API}/api/admin/produits`, {
+                    headers: { Authorization: `Bearer ${adminToken}` }
+                });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const data = await res.json();
+                produits = data.produits || [];
+                afficherProduits();
+            } catch (err) {
+                console.error('chargerProduits:', err);
+                tbody.innerHTML = `<tr><td colspan='8' style='text-align:center;color:#c0392b;padding:20px;'>Erreur de chargement.</td></tr>`;
+            }
+        }
+
+        function afficherProduits() {
+            const tbody = document.getElementById('tbody-produits');
+            if (!produits.length) {
+                tbody.innerHTML = `<tr><td colspan='8' style='text-align:center;padding:30px;color:#888;'>Aucun produit.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = '';
+            produits.forEach(p => {
+                const img = p.image ? `<img src='${p.image}' alt='' style='width:40px;height:40px;object-fit:cover;border-radius:6px;'>` : `<span style='color:#aaa;'>—</span>`;
+                const statut = p.actif !== false
+                    ? `<span class='statut-badge paye-livre'>Actif</span>`
+                    : `<span class='statut-badge annulee'>Inactif</span>`;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${p.id}</td>
+                    <td>${img}</td>
+                    <td><strong>${p.nom}</strong></td>
+                    <td>${Number(p.prix).toLocaleString()} F</td>
+                    <td>${p.quantiteEnStock ?? 0}</td>
+                    <td>${p.categorie || '—'}</td>
+                    <td>${statut}</td>
+                    <td>
+                        <button class='btn-icon voir' title='Modifier' onclick='editerProduit(${p.id})'>
+                            <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/><path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/></svg>
+                        </button>
+                        <button class='btn-icon suppr' title='Supprimer' onclick='supprimerProduit(${p.id})'>
+                            <svg viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='3 6 5 6 21 6'/><path d='M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'/></svg>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function ouvrirModalProduit(id = null) {
+            document.getElementById('form-produit').reset();
+            showMsgProduit('', '');
+            document.getElementById('produit-id').value = id || '';
+            document.getElementById('modal-produit-titre').textContent = id ? 'Modifier le produit' : 'Nouveau produit';
+            if (id) {
+                const p = produits.find(x => x.id === id);
+                if (p) {
+                    document.getElementById('produit-nom').value = p.nom || '';
+                    document.getElementById('produit-prix').value = p.prix || 0;
+                    document.getElementById('produit-stock').value = p.quantiteEnStock ?? 0;
+                    document.getElementById('produit-categorie').value = p.categorie || '';
+                    document.getElementById('produit-reference').value = p.reference || '';
+                    document.getElementById('produit-marque').value = p.marque || '';
+                    document.getElementById('produit-image').value = p.image || '';
+                    document.getElementById('produit-description').value = p.description || '';
+                    document.getElementById('produit-notice').value = p.notice || '';
+                    document.getElementById('produit-actif').checked = p.actif !== false;
+                }
+            }
+            document.getElementById('modal-produit').classList.add('active');
+        }
+
+        function fermerModalProduit() {
+            document.getElementById('modal-produit').classList.remove('active');
+        }
+
+        document.getElementById('form-produit').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            showMsgProduit('', '');
+
+            const id = document.getElementById('produit-id').value;
+            const body = {
+                nom: document.getElementById('produit-nom').value.trim(),
+                prix: Number(document.getElementById('produit-prix').value),
+                quantiteEnStock: Number(document.getElementById('produit-stock').value),
+                categorie: document.getElementById('produit-categorie').value.trim().toLowerCase(),
+                reference: document.getElementById('produit-reference').value.trim(),
+                marque: document.getElementById('produit-marque').value.trim(),
+                image: document.getElementById('produit-image').value.trim(),
+                description: document.getElementById('produit-description').value.trim(),
+                notice: document.getElementById('produit-notice').value.trim(),
+                actif: document.getElementById('produit-actif').checked
+            };
+
+            if (!body.nom || isNaN(body.prix) || body.prix < 0) {
+                showMsgProduit('Nom et prix valides obligatoires.', 'error');
+                return;
+            }
+
+            showSyphaLoader(id ? 'Modification du produit...' : 'Création du produit...');
+            try {
+                const url = id ? `${API}/api/admin/produits/${id}` : `${API}/api/admin/produits`;
+                const method = id ? 'PATCH' : 'POST';
+                const res = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${adminToken}`
+                    },
+                    body: JSON.stringify(body)
+                });
+                const data = await res.json();
+                if (res.ok && data.succes) {
+                    fermerModalProduit();
+                    await chargerProduits();
+                } else {
+                    showMsgProduit(data.erreur || 'Erreur ' + res.status + ' lors de l enregistrement.', 'error');
+                }
+            } catch (err) {
+                console.error('sauvegarderProduit:', err);
+                showMsgProduit('Impossible de joindre le serveur.', 'error');
+            } finally {
+                hideSyphaLoader();
+            }
+        });
+
+        async function editerProduit(id) {
+            ouvrirModalProduit(id);
+        }
+
+        async function supprimerProduit(id) {
+            if (!confirm('Supprimer ce produit ?')) return;
+            showSyphaLoader('Suppression du produit...');
+            try {
+                const res = await fetch(`${API}/api/admin/produits/${id}`, {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${adminToken}` }
+                });
+                if (res.ok) await chargerProduits();
+                else alert('Erreur lors de la suppression.');
+            } catch {
+                alert('Impossible de joindre le serveur.');
+            } finally {
+                hideSyphaLoader();
+            }
+        }
+
     </script>
 
 </body>
