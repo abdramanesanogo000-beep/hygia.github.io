@@ -523,7 +523,7 @@ function initLang() {
 // ===========================================
 const BACKEND_URL = "https://nslookup-cluster1-bydepfo-mongodb-net-1.onrender.com";
 
-const produits = [
+const PRODUITS_HARDCODES = [
     { id: 1,  nom: "Tensiomètre manuel avec stéthoscope",              prix: 15000,  image: "img/tension metre manuel.jpg",                                              categorie: "tensiometre", promo: false, stock: true, description: "Tensiomètre à brassard manuel livré avec stéthoscope monopavillon. Mesure fiable de la pression artérielle sans pile. Idéal pour les cabinets médicaux et pharmacies." },
     { id: 2,  nom: "Tensiomètre électronique automatique",             prix: 25000,  image: "img/tension metre electrique.webp",                                         categorie: "tensiometre", promo: false, stock: true, description: "Tensiomètre numérique automatique pour bras, brassard 22-36 cm. Un appui suffit pour obtenir tension et pouls. Écran large, facile à utiliser à domicile ou en clinique." },
     { id: 3,  nom: "Oxymètre de pouls",                                prix: 10000,  image: "img/oxymetre de puls.webp",                                               categorie: "clinique",    promo: false, stock: true, description: "Pince oxymètre à poser sur le doigt. Mesure la saturation en oxygène (SpO2) et le pouls en quelques secondes. Compact, sans douleur, indispensable pour le suivi respiratoire." },
@@ -561,6 +561,8 @@ const produits = [
     { id: 35, nom: "Trousse portable d'injection intramusculaire",     prix: 25000,  image: "img/Trousse de pratique d'injection intramusculaire portable.webp",         categorie: "clinique",    promo: false, stock: true, description: "Trousse portable pour la pratique de l'injection intramusculaire. Outil de formation pratique destiné aux étudiants en santé et au personnel infirmier en apprentissage." },
 
 ];
+let produits = PRODUITS_HARDCODES;
+let produitsById = new Map(produits.map(p => [p.id, p]));
 
 const productDescriptionsEn = {
     1: "Manual cuff blood pressure monitor supplied with a single-head stethoscope. Reliable blood pressure measurement without batteries. Ideal for medical practices and pharmacies.",
@@ -609,9 +611,43 @@ function getProductDescription(produit) {
 }
 
 // Index id -> produit pour des recherches en O(1) (évite les .find() en boucle)
-const produitsById = new Map(produits.map(p => [p.id, p]));
 function getProduitById(id) {
     return produitsById.get(id);
+}
+
+function normaliserImage(image) {
+    if (!image) return 'img/placeholder.jpg';
+    if (image.startsWith('http') || image.startsWith('//') || image.startsWith('/')) return image;
+    if (image.startsWith('img/')) return image;
+    return 'img/' + image;
+}
+
+async function chargerProduits() {
+    try {
+        const res = await fetch(`${BACKEND_URL}/api/produits`);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        if (data.succes && Array.isArray(data.produits)) {
+            produits = data.produits.map(p => ({
+                id: p.id,
+                nom: p.nom,
+                prix: p.prix,
+                image: normaliserImage(p.image),
+                categorie: p.categorie ? p.categorie.toLowerCase() : '',
+                description: p.description || '',
+                stock: p.quantiteEnStock > 0,
+                quantiteEnStock: p.quantiteEnStock || 0,
+                actif: p.actif !== false,
+                reference: p.reference || '',
+                marque: p.marque || '',
+                notice: p.notice || '',
+                promo: p.promo || false
+            }));
+            produitsById = new Map(produits.map(p => [p.id, p]));
+        }
+    } catch (err) {
+        console.error('chargerProduits:', err);
+    }
 }
 
 // Échappe les caractères HTML sensibles avant insertion via innerHTML
@@ -959,7 +995,7 @@ function afficherProduits(listeProduits, limite = null, page = 1) {
 
             card.innerHTML = `
           <a href="produit.html?id=${produit.id}" class="product-link">
-            <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}" loading="lazy" decoding="async">
+            <img src='${escapeHtml(encodeURI(normaliserImage(produit.image)))}' alt='${escapeHtml(produit.nom)}' loading='lazy' decoding='async' onerror='this.style.display="none";this.onerror=null;'>
             <h3>${escapeHtml(produit.nom)}</h3>
           </a>
           <p class="price">${produit.prix.toLocaleString()} FCFA</p>
@@ -1210,7 +1246,7 @@ function afficherOverlayAjoutPanier(produit) {
         </div>
         <div class="cart-overlay-content">
             <div class="cart-overlay-product">
-                <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}" loading="lazy" decoding="async">
+                <img src='${escapeHtml(encodeURI(normaliserImage(produit.image)))}' alt='${escapeHtml(produit.nom)}' loading='lazy' decoding='async' onerror='this.style.display="none";this.onerror=null;'>
                 <div class="cart-overlay-product-info">
                     <h4>${escapeHtml(produit.nom)}</h4>
                     <p>${produit.prix.toLocaleString()} FCFA</p>
@@ -1374,7 +1410,7 @@ function afficherPanier() {
         div.className = "panier-item";
 
         div.innerHTML = `
-            <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}" loading="lazy" decoding="async">
+            <img src='${escapeHtml(encodeURI(normaliserImage(produit.image)))}' alt='${escapeHtml(produit.nom)}' loading='lazy' decoding='async' onerror='this.style.display="none";this.onerror=null;'>
             <div class="panier-item-info">
                 <h3>${escapeHtml(produit.nom)}</h3>
                 <p class="price-unit">${produit.prix.toLocaleString()} FCFA ${t("unit.price")}</p>
@@ -1684,7 +1720,7 @@ function afficherPageProduit() {
 
     container.innerHTML = `
         <div class="produit-detail-image">
-            <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}" loading="lazy" decoding="async">
+            <img src='${escapeHtml(encodeURI(normaliserImage(produit.image)))}' alt='${escapeHtml(produit.nom)}' loading='lazy' decoding='async' onerror='this.style.display="none";this.onerror=null;'>
         </div>
         <div class="produit-detail-info">
             <h1>${escapeHtml(produit.nom)}</h1>
@@ -1725,7 +1761,7 @@ function afficherPageProduit() {
                 card.className = "product-card";
                 card.innerHTML = `
                     <a href="produit.html?id=${p.id}" class="product-link">
-                        <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.nom)}" loading="lazy" decoding="async">
+                        <img src='${escapeHtml(encodeURI(normaliserImage(p.image)))}' alt='${escapeHtml(p.nom)}' loading='lazy' decoding='async' onerror='this.style.display="none";this.onerror=null;'>
                         <h3>${escapeHtml(p.nom)}</h3>
                     </a>
                     <p class="price">${p.prix.toLocaleString()} FCFA</p>
@@ -1849,7 +1885,7 @@ function initRechercheLive() {
                 item.href = `produit.html?id=${produit.id}`;
 
                 item.innerHTML = `
-                    <img src="${escapeHtml(produit.image)}" alt="${escapeHtml(produit.nom)}" loading="lazy" decoding="async">
+                    <img src='${escapeHtml(encodeURI(normaliserImage(produit.image)))}' alt='${escapeHtml(produit.nom)}' loading='lazy' decoding='async' onerror='this.style.display="none";this.onerror=null;'>
                     <div class="search-result-info">
                         <div class="nom">${escapeHtml(produit.nom)}</div>
                         <div class="prix">${produit.prix.toLocaleString()} FCFA</div>
@@ -2661,6 +2697,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initPasswordToggles();
     initMobileMenu();
     initScrollReveal();
+    await chargerProduits();
 
     if (document.getElementById("coupon-input")) {
         resetCouponUI();
