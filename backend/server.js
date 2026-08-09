@@ -1108,22 +1108,6 @@ app.delete('/api/admin/produits/:id', verifierAdmin, async (req, res) => {
 });
 
 // ===========================================
-// PAIEMENT (DESACTIVE TEMPORAIREMENT)
-// ===========================================
-
-app.post('/api/paiement/initier', (req, res) => {
-    return res.status(501).json({
-        succes: false,
-        erreur: 'Paiement desactive temporairement (integration en cours).'
-    });
-});
-
-app.post('/api/paiement/notification', (req, res) => {
-    return res.status(200).json({ status: 'ok' });
-});
-
-/*
-// ===========================================
 // PAIEMENT PAYTECH
 // ===========================================
 
@@ -1251,7 +1235,6 @@ app.post('/api/paiement/notification', async (req, res) => {
         return res.status(200).json({ status: 'ok' });
     }
 });
-*/
 
 // Vérifier le statut d'un paiement (appelé depuis commande-confirmee.html)
 app.get('/api/paiement/statut', async (req, res) => {
