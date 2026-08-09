@@ -172,8 +172,9 @@ const i18n = {
 
     "apropos.label"      : "ABOUT US",
     "apropos.titre"      : "Who are we?",
-    "apropos.texte1"     : "Hygia is a Malian company specializing in the distribution of certified medical equipment. Through direct partnerships with international manufacturers, we make quality medical equipment accessible to everyone in Mali.",
-    "apropos.texte2"     : "Our commitment: better equipped to save more lives.",
+    "apropos.qui.p1"     : "Hygia is a Malian company specializing in the distribution of certified medical equipment, founded with a clear vision: to make quality medical equipment accessible to everyone in Mali, whether for individuals, pharmacies or clinics.",
+    "apropos.qui.p2"     : "Thanks to direct partnerships with recognized international manufacturers, we offer a complete range from everyday consumables (thermometers, cotton, rapid tests) to specialized equipment for healthcare professionals (microscopes, centrifuges, hemoglobin analyzers).",
+    "apropos.qui.p3"     : "Our commitment: Better equipped — More lives saved. Every product we sell contributes to improving healthcare in Mali and West Africa.",
     "apropos.cta"        : "Learn more",
 
     "why.label"          : "WHY CHOOSE US",
