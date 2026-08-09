@@ -661,19 +661,6 @@ app.post('/api/commandes', async (req, res) => {
 
         const totalFinal = Math.max(0, sousTotal - reduction + fraisLivraison);
 
-        // Décrémentation atomique du stock
-        for (const upd of stockUpdates) {
-            const result = await Produit.updateOne(
-                { id: upd.id, quantiteEnStock: { $gte: upd.quantite } },
-                { $inc: { quantiteEnStock: -upd.quantite } }
-            );
-            if (result.modifiedCount !== 1) {
-                return res.status(409).json({
-                    erreur: `Le stock du produit ${upd.id} a changé entre temps. Veuillez rafraîchir votre panier.`
-                });
-            }
-        }
-
         // Déterminer le statut selon le mode de paiement
         const modeNormalise = modePaiement.toLowerCase();
         const estPaiementLivraison = modeNormalise.includes('livraison');
