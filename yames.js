@@ -1695,12 +1695,15 @@ async function confirmerCommande(methode) {
 
     // Paiement à la livraison : pas d'appel PayTech, on confirme directement
     if (isLivraison) {
+        console.log("DEBUG: Paiement à la livraison, redirection vers confirmation");
         enregistrerCommande(panier, methode, totalCommande);
         savePanier([]);
         mettreAJourCompteurPanier();
         window.location.href = `commande-confirmee.html?numero=${numeroCommande}`;
         return;
     }
+
+    console.log("DEBUG: Paiement en ligne, appel PayTech");
 
     // ÉTAPE 2 : Initier le paiement PayTech
     try {
