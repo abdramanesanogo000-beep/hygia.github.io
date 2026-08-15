@@ -1611,6 +1611,7 @@ function validerFormulaireLivraison() {
 }
 
 async function confirmerCommande(methode) {
+    console.log("DEBUG: confirmerCommande appelée avec methode =", methode);
     const panier = getPanier();
     if (panier.length === 0) return;
 
@@ -2961,7 +2962,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             const btnConfirmer = paymentDetails.querySelector(".btn-confirmer");
             if (btnConfirmer) {
-                btnConfirmer.addEventListener("click", () => confirmerCommande(methode));
+                btnConfirmer.addEventListener("click", () => {
+                    console.log("DEBUG: Bouton confirmer cliqué avec methode =", methode);
+                    confirmerCommande(methode);
+                });
             }
         });
     });
