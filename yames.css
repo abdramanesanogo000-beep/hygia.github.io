@@ -3436,6 +3436,53 @@ img {
         flex-direction: column;
     }
 
+    .coupon-row {
+        flex-wrap: wrap;
+    }
+
+    .coupon-row input {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .coupon-row button {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .panier-page {
+        padding: 15px;
+    }
+
+    .panier-item {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .panier-item img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .panier-item-info h3 {
+        font-size: 13px;
+    }
+
+    .panier-item-info .price-unit {
+        font-size: 11px;
+    }
+
+    .panier-qty button {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+    }
+
+    .panier-item-total {
+        font-size: 13px;
+        min-width: auto;
+    }
+
     .btn-continue,
     .btn-paiement {
         width: 100%;
