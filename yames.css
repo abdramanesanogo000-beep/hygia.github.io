@@ -27,7 +27,7 @@
     border: 1px solid #cfd8e3;
     border-radius: 6px;
     padding: 9px 12px;
-    font-size: 13px;
+    font-size: 16px;
 }
 
 .field-error {
@@ -415,7 +415,7 @@ nav {
 .nav-right input[type="search"] {
     border: none;
     padding: 6px 10px;
-    font-size: 13px;
+    font-size: 16px;
     outline: none;
     flex: 1;
     width: auto;
@@ -1059,12 +1059,20 @@ footer p {
     box-shadow: 0 2px 8px rgba(24,95,165,0.3);
 }
 
+.filter-group input[type="text"] {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
 .filter-group input[type="number"] {
     width: 70px;
     padding: 4px 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 16px;
     -webkit-appearance: textfield;
     -moz-appearance: textfield;
     appearance: textfield;
@@ -1081,7 +1089,7 @@ footer p {
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 16px;
 }
 
 .btn-reset {
@@ -1433,7 +1441,7 @@ footer p {
     border: 1px solid #cfd8e3;
     border-radius: 8px;
     padding: 10px;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .contact-form button {
@@ -2191,8 +2199,8 @@ footer p {
     width: 100%;
     border: 1px solid #cfd8e3;
     border-radius: 8px;
-    padding: 10px;
-    font-size: 14px;
+    padding: 10px 12px;
+    font-size: 16px;
 }
 
 .auth-form button {
@@ -2928,7 +2936,7 @@ footer p {
     border: 1px solid #cfd8e3;
     border-radius: 7px;
     padding: 10px 12px;
-    font-size: 13px;
+    font-size: 16px;
     font-family: Arial, Helvetica, sans-serif;
     background-color: #ffffff;
     transition: border-color 0.2s;
@@ -3345,7 +3353,7 @@ img {
 
     .nav-right input[type="search"] {
         padding: 4px 6px;
-        font-size: 11px;
+        font-size: 16px;
     }
 
     .nav-right form button {
