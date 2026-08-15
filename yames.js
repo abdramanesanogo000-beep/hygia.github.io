@@ -1707,6 +1707,12 @@ async function confirmerCommande(methode) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 commande_id: numeroCommande,
+                montant: totalCommande,
+                client: {
+                    nom: nomClient,
+                    telephone: telClient,
+                    email: emailClient || getUtilisateurConnecte()?.email || ""
+                },
                 methode: methode
             })
         });
