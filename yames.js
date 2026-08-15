@@ -1649,6 +1649,7 @@ async function confirmerCommande(methode) {
 
     // ÉTAPE 1 : Créer la commande dans MongoDB
     let numeroCommande = "";
+    let data = {};
     try {
         const payload = {
             client: {
@@ -1669,7 +1670,7 @@ async function confirmerCommande(methode) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
         });
-        const data = await res.json();
+        data = await res.json();
         numeroCommande = data.numero || "";
 
         if (!numeroCommande) {
