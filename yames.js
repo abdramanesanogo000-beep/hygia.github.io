@@ -1634,6 +1634,8 @@ async function confirmerCommande(methode) {
     const codePromo = activeAppliedCoupon || (partnerCoupon ? partnerCoupon.code : "");
     const isLivraison = methode === "livraison";
 
+    console.log("DEBUG: methode =", methode, "isLivraison =", isLivraison);
+
     // Feedback visuel sur le bouton + loader Sypha
     const btnConfirmer = document.querySelector(".btn-confirmer");
     if (btnConfirmer) {
@@ -1702,6 +1704,7 @@ async function confirmerCommande(methode) {
 
     // ÉTAPE 2 : Initier le paiement PayTech
     try {
+        console.log("DEBUG: Appel PayTech avec commande_id =", numeroCommande, "montant =", totalCommande);
         const res = await fetch(`${BACKEND_URL}/api/paiement/initier`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -1718,6 +1721,7 @@ async function confirmerCommande(methode) {
         });
 
         const paymentData = await res.json();
+        console.log("DEBUG: Réponse PayTech =", paymentData);
 
         if (paymentData.succes && paymentData.redirect_url) {
             // Sauvegarder dans l'historique local avant redirection
