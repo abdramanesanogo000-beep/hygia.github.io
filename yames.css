@@ -1621,6 +1621,7 @@ footer p {
     border: 1px solid #cddbf5;
     border-radius: 6px;
     outline: none;
+    font-size: 16px;
 }
 
 .coupon-row button {
