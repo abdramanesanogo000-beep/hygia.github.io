@@ -483,6 +483,7 @@ nav {
     padding: 8px 14px;
     border-radius: 5px;
     transition: background-color 0.2s;
+    white-space: nowrap;
 }
 
 .nav-right>a:hover {
@@ -533,6 +534,50 @@ nav {
     border-radius: 12px;
     margin-left: 6px;
     font-weight: 700;
+}
+
+/* Icône panier pour petits écrans - seulement l'icône SVG sans texte */
+@media (max-width: 480px) {
+    .nav-right a[href="panier.html"] {
+        padding: 8px;
+        min-width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .nav-right a[href="panier.html"] span {
+        display: none;
+    }
+    
+    .nav-right a[href="panier.html"]::before {
+        margin-right: 0;
+        width: 22px;
+        height: 22px;
+    }
+    
+    .nav-right a[href="panier.html"]::after {
+        content: attr(data-count);
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #e74c3c;
+        color: white;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 2px 5px;
+        border-radius: 10px;
+        min-width: 16px;
+        text-align: center;
+    }
+    
+    .nav-right a[href="panier.html"] {
+        position: relative;
+    }
+    
+    .nav-right a[href="panier.html"][data-count="0"]::after {
+        display: none;
+    }
 }
 
 /* ===== HERO ===== */
