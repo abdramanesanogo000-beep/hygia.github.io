@@ -1705,11 +1705,11 @@ async function confirmerCommande(methode) {
         return;
     }
 
-    console.log("DEBUG: Paiement en ligne, appel PayTech");
+    console.log("DEBUG: Paiement en ligne, appel PawaPay");
 
-    // ÉTAPE 2 : Initier le paiement PayTech
+    // ÉTAPE 2 : Initier le paiement PawaPay
     try {
-        console.log("DEBUG: Appel PayTech avec commande_id =", numeroCommande, "montant =", totalCommande);
+        console.log("DEBUG: Appel PawaPay avec commande_id =", numeroCommande, "montant =", totalCommande);
         const res = await fetch(`${BACKEND_URL}/api/paiement/initier`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -1726,31 +1726,37 @@ async function confirmerCommande(methode) {
         });
 
         const paymentData = await res.json();
-        console.log("DEBUG: Réponse PayTech =", paymentData);
+        console.log("DEBUG: Réponse PawaPay =", paymentData);
 
-        if (paymentData.succes && paymentData.redirect_url) {
-            // Sauvegarder dans l'historique local avant redirection
+        if (paymentData.succes && paymentData.status === 'ACCEPTED') {
+            // Sauvegarder dans l'historique local
             enregistrerCommande(panier, methode, totalCommande);
             savePanier([]);
             mettreAJourCompteurPanier();
 
-            // Rediriger vers la page de paiement PayTech
-            window.location.href = paymentData.redirect_url;
+            // PawaPay : pas de redirection, le client reçoit une notification PIN sur son téléphone
+            hideSyphaLoader();
+            afficherToast(paymentData.message || "Paiement initié. Veuillez autoriser sur votre téléphone.", "success");
+
+            // Rediriger vers la page de confirmation après un court délai
+            setTimeout(() => {
+                window.location.href = `commande-confirmee.html?numero=${numeroCommande}`;
+            }, 3000);
             return;
 
         } else {
-            // Si le paiement électronique n'est pas disponible, on redirige quand même vers le reçu
-            // avec une mention d'attente. Le client pourra régler plus tard.
+            // Si le paiement électronique n'est pas disponible
             enregistrerCommande(panier, methode, totalCommande);
             savePanier([]);
             mettreAJourCompteurPanier();
-            afficherToast("Votre commande est enregistrée. Finalisez le paiement depuis votre compte.", "info");
+            hideSyphaLoader();
+            afficherToast(paymentData.erreur || "Erreur initialisation paiement", "error");
             window.location.href = `commande-confirmee.html?numero=${numeroCommande}`;
         }
 
     } catch (err) {
         hideSyphaLoader();
-        console.error("Erreur PayTech:", err);
+        console.error("Erreur PawaPay:", err);
         // Même comportement en cas d'erreur réseau
         enregistrerCommande(panier, methode, totalCommande);
         savePanier([]);
